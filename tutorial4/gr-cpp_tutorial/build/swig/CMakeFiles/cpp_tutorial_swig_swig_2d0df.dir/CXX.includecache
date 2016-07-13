@@ -1,0 +1,10 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/investigador/gr-tutorials/tutorial4/gr-cpp_tutorial/build/swig/cpp_tutorial_swig_swig_2d0df.cpp
+

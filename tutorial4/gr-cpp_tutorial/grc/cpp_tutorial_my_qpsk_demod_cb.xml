@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<block>
+  <name>my_qpsk_demod_cb</name>
+  <key>cpp_tutorial_my_qpsk_demod_cb</key>
+  <category>cpp_tutorial</category>
+  <import>import cpp_tutorial</import>
+  <make>cpp_tutorial.my_qpsk_demod_cb($gray_code)</make>
+
+  <param>
+    <name>Gray Code</name>
+    <key>gray_code</key>
+    <type>bool</type>
+    <value>True</value>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>
