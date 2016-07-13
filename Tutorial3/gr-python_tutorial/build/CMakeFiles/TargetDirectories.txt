@@ -1,0 +1,4 @@
+/home/investigador/gr-tutorials/tutorial3/gr-python_tutorial/build/docs/doxygen/CMakeFiles/doxygen_target.dir
+/home/investigador/gr-tutorials/tutorial3/gr-python_tutorial/build/apps/CMakeFiles/pygen_apps_9a6dd.dir
+/home/investigador/gr-tutorials/tutorial3/gr-python_tutorial/build/python/CMakeFiles/pygen_python_6f546.dir
+/home/investigador/gr-tutorials/tutorial3/gr-python_tutorial/build/CMakeFiles/uninstall.dir

@@ -1,0 +1,30 @@
+INCLUDE(FindPkgConfig)
+PKG_CHECK_MODULES(PC_PYTHON_TUTORIAL python_tutorial)
+
+FIND_PATH(
+    PYTHON_TUTORIAL_INCLUDE_DIRS
+    NAMES python_tutorial/api.h
+    HINTS $ENV{PYTHON_TUTORIAL_DIR}/include
+        ${PC_PYTHON_TUTORIAL_INCLUDEDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/include
+          /usr/local/include
+          /usr/include
+)
+
+FIND_LIBRARY(
+    PYTHON_TUTORIAL_LIBRARIES
+    NAMES gnuradio-python_tutorial
+    HINTS $ENV{PYTHON_TUTORIAL_DIR}/lib
+        ${PC_PYTHON_TUTORIAL_LIBDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+          ${CMAKE_INSTALL_PREFIX}/lib64
+          /usr/local/lib
+          /usr/local/lib64
+          /usr/lib
+          /usr/lib64
+)
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(PYTHON_TUTORIAL DEFAULT_MSG PYTHON_TUTORIAL_LIBRARIES PYTHON_TUTORIAL_INCLUDE_DIRS)
+MARK_AS_ADVANCED(PYTHON_TUTORIAL_LIBRARIES PYTHON_TUTORIAL_INCLUDE_DIRS)
+
