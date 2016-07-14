@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="api_8h" kind="file">
+    <compoundname>api.h</compoundname>
+    <includes local="no">gnuradio/attributes.h</includes>
+    <incdepgraph>
+      <node id="0">
+        <label>api.h</label>
+        <link refid="api.h"/>
+        <childnode refid="1" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>gnuradio/attributes.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="api_8h_1ac5f5e08acf3f034dc21a141b4db06d4f" prot="public" static="no">
+        <name>PYTHON_TUTORIAL_API</name>
+        <initializer>__GR_ATTR_IMPORT</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/include/python_tutorial/api.h" line="30" column="12" bodyfile="/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/include/python_tutorial/api.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/include/python_tutorial/api.h"/>
+  </compounddef>
+</doxygen>

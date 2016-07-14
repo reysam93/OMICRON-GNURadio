@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Qpsk Demod
-# Generated: Wed Jul 13 11:05:47 2016
+# Generated: Thu Jul 14 12:36:11 2016
 ##################################################
 
 if __name__ == '__main__':
@@ -78,6 +78,7 @@ class qpsk_demod(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
         self.qtgui_time_sink_x_0.enable_autoscale(False)
         self.qtgui_time_sink_x_0.enable_grid(False)
+        self.qtgui_time_sink_x_0.enable_axis_labels(True)
         self.qtgui_time_sink_x_0.enable_control_panel(False)
         
         if not True:
@@ -120,6 +121,7 @@ class qpsk_demod(gr.top_block, Qt.QWidget):
         self.qtgui_const_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, "")
         self.qtgui_const_sink_x_0.enable_autoscale(False)
         self.qtgui_const_sink_x_0.enable_grid(False)
+        self.qtgui_const_sink_x_0.enable_axis_labels(True)
         
         if not True:
           self.qtgui_const_sink_x_0.disable_legend()
@@ -167,7 +169,6 @@ class qpsk_demod(gr.top_block, Qt.QWidget):
         self.settings = Qt.QSettings("GNU Radio", "qpsk_demod")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
-
 
     def get_samp_rate(self):
         return self.samp_rate

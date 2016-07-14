@@ -1,0 +1,4 @@
+/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/build/docs/doxygen/CMakeFiles/doxygen_target.dir
+/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/build/apps/CMakeFiles/pygen_apps_9a6dd.dir
+/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/build/python/CMakeFiles/pygen_python_578b5.dir
+/home/samuelvm/GNURadio-Tutorials/Tutorial3/gr-python_tutorial/build/CMakeFiles/uninstall.dir
