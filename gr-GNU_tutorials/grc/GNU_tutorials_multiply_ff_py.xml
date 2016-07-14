@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<block>
+  <name>My Multiply</name>
+  <key>GNU_tutorials_multiply_ff_py</key>
+  <category>[GNU_tutorials]</category>
+  <import>import GNU_tutorials</import>
+  <make>GNU_tutorials.multiply_ff_py($multiple)</make>
+
+  <param>
+    <name>Multiple</name>
+    <key>multiple</key>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

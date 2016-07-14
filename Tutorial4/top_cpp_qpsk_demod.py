@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Cpp Qpsk Demod
-# Generated: Thu Jul 14 17:52:18 2016
+# Generated: Thu Jul 14 17:56:54 2016
 ##################################################
 
 if __name__ == '__main__':
@@ -159,7 +159,7 @@ class top_cpp_qpsk_demod(gr.top_block, Qt.QWidget):
         self.blocks_add_xx_0 = blocks.add_vcc(1)
         self.analog_random_source_x_0 = blocks.vector_source_i(map(int, numpy.random.randint(0, 4, 10000)), True)
         self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 0.01, 0)
-        self.GNU_tutorials_my_qpsk_demod_cb_0 = GNU_tutorials.my_qpsk_demod_cb(1)
+        self.GNU_tutorials_my_qpsk_demod_cb_0 = GNU_tutorials.my_qpsk_demod_cb(True)
 
         ##################################################
         # Connections

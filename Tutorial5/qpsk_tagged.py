@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Qpsk Tagged
-# Generated: Thu Jul 14 12:52:48 2016
+# Generated: Thu Jul 14 18:01:07 2016
 ##################################################
 
 if __name__ == '__main__':
@@ -113,7 +113,7 @@ class qpsk_tagged(gr.top_block, Qt.QWidget):
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
         self.blocks_repeat_0 = blocks.repeat(gr.sizeof_gr_complex*1, 10)
-        self.GNU_tutorials_qpsk_tagged_demod_cb_py_0 = GNU_tutorials.qpsk_tagged_demod_cb_py(1)
+        self.GNU_tutorials_qpsk_tagged_demod_cb_py_0 = GNU_tutorials.qpsk_tagged_demod_cb_py(True)
 
         ##################################################
         # Connections

@@ -1,0 +1,6 @@
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="2" time="0.006">
+  <testcase classname="__main__.qa_qpsk_tagged_demod_cb_py" name="test_001_t" time="0.0020"></testcase>
+  <testcase classname="__main__.qa_qpsk_tagged_demod_cb_py" name="test_002_t" time="0.0042"></testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
