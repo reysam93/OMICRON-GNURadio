@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Multiplyblock
-# Generated: Wed Jul 13 11:04:42 2016
+# Generated: Thu Jul 14 17:37:16 2016
 ##################################################
 
 if __name__ == '__main__':
@@ -25,7 +25,7 @@ from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
-import python_tutorial
+import GNU_tutorials
 import sip
 import sys
 
@@ -78,6 +78,7 @@ class multiplyBlock(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
         self.qtgui_time_sink_x_0.enable_autoscale(False)
         self.qtgui_time_sink_x_0.enable_grid(False)
+        self.qtgui_time_sink_x_0.enable_axis_labels(True)
         self.qtgui_time_sink_x_0.enable_control_panel(False)
         
         if not True:
@@ -109,31 +110,30 @@ class multiplyBlock(gr.top_block, Qt.QWidget):
         
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_0_win)
-        self.python_tutorial_multiply_ff_0 = python_tutorial.multiply_ff(0.333)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 1000, 1, 0)
+        self.GNU_tutorials_multiply_ff_py_0 = GNU_tutorials.multiply_ff_py(.333)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.python_tutorial_multiply_ff_0, 0))    
+        self.connect((self.GNU_tutorials_multiply_ff_py_0, 0), (self.blocks_throttle_0, 0))    
+        self.connect((self.analog_sig_source_x_0, 0), (self.GNU_tutorials_multiply_ff_py_0, 0))    
         self.connect((self.blocks_throttle_0, 0), (self.qtgui_time_sink_x_0, 0))    
-        self.connect((self.python_tutorial_multiply_ff_0, 0), (self.blocks_throttle_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "multiplyBlock")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
-
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
-        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
+        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
 
 
 def main(top_block_cls=multiplyBlock, options=None):
