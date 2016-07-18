@@ -89,6 +89,60 @@
     </param>
     <param>
       <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(8, 75)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>audio_interp</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>4</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(120, 83)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>audio_rate</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>48000</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
@@ -105,7 +159,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5000000</value>
+      <value>20000000</value>
     </param>
   </block>
   <block>
@@ -116,7 +170,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>2417000000</value>
+      <value>88500000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -152,15 +206,15 @@
     </param>
     <param>
       <key>start</key>
-      <value>2412000000</value>
+      <value>70000000</value>
     </param>
     <param>
       <key>step</key>
-      <value>5000000</value>
+      <value>1000</value>
     </param>
     <param>
       <key>stop</key>
-      <value>2484000000</value>
+      <value>105000000</value>
     </param>
     <param>
       <key>rangeType</key>
@@ -179,7 +233,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>30</value>
+      <value>3</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -223,7 +277,7 @@
     </param>
     <param>
       <key>stop</key>
-      <value>75</value>
+      <value>50</value>
     </param>
     <param>
       <key>rangeType</key>
@@ -258,14 +312,108 @@
     </param>
     <param>
       <key>value</key>
-      <value>12000000</value>
+      <value>250e3</value>
+    </param>
+  </block>
+  <block>
+    <key>analog_wfm_rcv</key>
+    <param>
+      <key>audio_decimation</key>
+      <value>audio_interp</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(544, 315)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>analog_wfm_rcv_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>quad_rate</key>
+      <value>audio_rate * audio_interp</value>
+    </param>
+  </block>
+  <block>
+    <key>audio_sink</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>device_name</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(808, 323)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>audio_sink_0</value>
+    </param>
+    <param>
+      <key>num_inputs</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>ok_to_block</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>samp_rate</key>
+      <value>audio_rate</value>
     </param>
   </block>
   <block>
     <key>qtgui_sink_x</key>
     <param>
       <key>bw</key>
-      <value>bandwidth</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>alias</key>
@@ -273,7 +421,7 @@
     </param>
     <param>
       <key>fc</key>
-      <value>freq</value>
+      <value>0</value>
     </param>
     <param>
       <key>freqchangevar</key>
@@ -297,7 +445,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 259)</value>
+      <value>(536, 163)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -361,6 +509,65 @@
     </param>
   </block>
   <block>
+    <key>rational_resampler_xxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>int(samp_rate)</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>fbw</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(320, 299)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>rational_resampler_xxx_0</value>
+    </param>
+    <param>
+      <key>interp</key>
+      <value>audio_rate*audio_interp</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>taps</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>ccc</value>
+    </param>
+  </block>
+  <block>
     <key>uhd_usrp_source</key>
     <param>
       <key>alias</key>
@@ -372,7 +579,7 @@
     </param>
     <param>
       <key>bw0</key>
-      <value>bandwidth</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>center_freq0</key>
@@ -1288,7 +1495,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(80, 251)</value>
+      <value>(16, 211)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1440,8 +1647,26 @@
     </param>
   </block>
   <connection>
+    <source_block_id>analog_wfm_rcv_0</source_block_id>
+    <sink_block_id>audio_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>rational_resampler_xxx_0</source_block_id>
+    <sink_block_id>analog_wfm_rcv_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>uhd_usrp_source_0</source_block_id>
     <sink_block_id>qtgui_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>uhd_usrp_source_0</source_block_id>
+    <sink_block_id>rational_resampler_xxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
