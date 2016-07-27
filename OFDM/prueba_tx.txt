@@ -1,0 +1,3 @@
+Este es un archivo de prueba.
+
+Este archivo será enviado y recibido utilizando un sistema OFDM.
