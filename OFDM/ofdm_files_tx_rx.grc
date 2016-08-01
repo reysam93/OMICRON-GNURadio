@@ -240,7 +240,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/GNURadio/OFDM/prueba_rx.txt</value>
+      <value>/home/samuel/GNURadio/OFDM/prueba_rx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/GNURadio/OFDM/prueba_tx.txt</value>
+      <value>/home/samuel/GNURadio/OFDM/prueba_tx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -629,7 +629,7 @@
     </param>
     <param>
       <key>payload_mod</key>
-      <value>"8-PSK"</value>
+      <value>"QPSK"</value>
     </param>
     <param>
       <key>pilot_carriers</key>
@@ -716,7 +716,7 @@
     </param>
     <param>
       <key>payload_mod</key>
-      <value>"8-PSK"</value>
+      <value>"QPSK"</value>
     </param>
     <param>
       <key>pilot_carriers</key>
@@ -752,6 +752,10 @@
     <param>
       <key>average</key>
       <value>1.0</value>
+    </param>
+    <param>
+      <key>axislabels</key>
+      <value>True</value>
     </param>
     <param>
       <key>bw</key>
@@ -1022,12 +1026,20 @@
       <value>firdes.WIN_BLACKMAN_hARRIS</value>
     </param>
     <param>
+      <key>label</key>
+      <value>Relative Gain</value>
+    </param>
+    <param>
       <key>ymax</key>
       <value>10</value>
     </param>
     <param>
       <key>ymin</key>
       <value>-140</value>
+    </param>
+    <param>
+      <key>units</key>
+      <value>dB</value>
     </param>
   </block>
   <block>
@@ -1039,6 +1051,10 @@
     <param>
       <key>average</key>
       <value>1.0</value>
+    </param>
+    <param>
+      <key>axislabels</key>
+      <value>True</value>
     </param>
     <param>
       <key>bw</key>
@@ -1309,6 +1325,10 @@
       <value>firdes.WIN_BLACKMAN_hARRIS</value>
     </param>
     <param>
+      <key>label</key>
+      <value>Relative Gain</value>
+    </param>
+    <param>
       <key>ymax</key>
       <value>10</value>
     </param>
@@ -1316,11 +1336,19 @@
       <key>ymin</key>
       <value>-140</value>
     </param>
+    <param>
+      <key>units</key>
+      <value>dB</value>
+    </param>
   </block>
   <block>
     <key>qtgui_time_sink_x</key>
     <param>
       <key>autoscale</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>axislabels</key>
       <value>True</value>
     </param>
     <param>
