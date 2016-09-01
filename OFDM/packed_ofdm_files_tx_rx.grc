@@ -93,6 +93,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(584, 12)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>cp_len</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>fft_len/4</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(496, 12)</value>
     </param>
     <param>
@@ -620,7 +647,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -647,7 +674,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -779,7 +806,7 @@
     </param>
     <param>
       <key>delay</key>
-      <value>fft_len+fft_len/4</value>
+      <value>fft_len+cp_len</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1278,7 +1305,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1498,7 +1525,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1144, 1728)</value>
+      <value>(880, 1728)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1844,108 +1871,6 @@
     </param>
   </block>
   <block>
-    <key>digital_crc32_bb</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(488, 188)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>digital_crc32_bb_0</value>
-    </param>
-    <param>
-      <key>lengthtagname</key>
-      <value>len_tag_key</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>check</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>packed</key>
-      <value>True</value>
-    </param>
-  </block>
-  <block>
-    <key>digital_crc32_bb</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(880, 1564)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>digital_crc32_bb_1</value>
-    </param>
-    <param>
-      <key>lengthtagname</key>
-      <value>len_tag_key</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>check</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>packed</key>
-      <value>True</value>
-    </param>
-  </block>
-  <block>
     <key>digital_header_payload_demux</key>
     <param>
       <key>alias</key>
@@ -1973,7 +1898,7 @@
     </param>
     <param>
       <key>guard_interval</key>
-      <value>fft_len/4</value>
+      <value>cp_len</value>
     </param>
     <param>
       <key>header_len</key>
@@ -2162,7 +2087,7 @@
     </param>
     <param>
       <key>cp_len</key>
-      <value>fft_len/4</value>
+      <value>cp_len</value>
     </param>
     <param>
       <key>comment</key>
@@ -2217,7 +2142,7 @@
     </param>
     <param>
       <key>cp_len</key>
-      <value>fft_len/4</value>
+      <value>cp_len</value>
     </param>
     <param>
       <key>comment</key>
@@ -2485,7 +2410,7 @@
     </param>
     <param>
       <key>cp_len</key>
-      <value>fft_len/4</value>
+      <value>cp_len</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -3828,7 +3753,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1312, 1700)</value>
+      <value>(1144, 1708)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -5065,20 +4990,8 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_repack_bits_bb_2</source_block_id>
-    <sink_block_id>digital_crc32_bb_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
     <sink_block_id>blocks_repack_bits_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
-    <sink_block_id>digital_crc32_bb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -5163,30 +5076,6 @@
   <connection>
     <source_block_id>digital_constellation_decoder_cb_0_0</source_block_id>
     <sink_block_id>blocks_repack_bits_bb_2</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_crc32_bb_0</source_block_id>
-    <sink_block_id>blocks_repack_bits_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_crc32_bb_0</source_block_id>
-    <sink_block_id>digital_protocol_formatter_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_crc32_bb_1</source_block_id>
-    <sink_block_id>blocks_file_sink_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_crc32_bb_1</source_block_id>
-    <sink_block_id>blocks_uchar_to_float_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
