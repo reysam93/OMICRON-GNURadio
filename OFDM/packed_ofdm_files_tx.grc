@@ -483,7 +483,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>digital.constellation_bpsk()</value>
+      <value>digital.constellation_qpsk()</value>
     </param>
   </block>
   <block>
@@ -664,11 +664,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>file</key>
-      <value>/home/samuel/GNURadio/OFDM/prueba_tx.txt</value>
+      <value>/home/investigador/GNURadio/OFDM/prueba_tx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -786,7 +786,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(624, 220)</value>
+      <value>(800, 220)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -845,7 +845,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(888, 140)</value>
+      <value>(1024, 140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1041,7 +1041,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1203,6 +1203,57 @@
     </param>
   </block>
   <block>
+    <key>digital_crc32_bb</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(536, 148)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>digital_crc32_bb_0</value>
+    </param>
+    <param>
+      <key>lengthtagname</key>
+      <value>"packet_len"</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>check</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>packed</key>
+      <value>True</value>
+    </param>
+  </block>
+  <block>
     <key>digital_ofdm_carrier_allocator_cvc</key>
     <param>
       <key>alias</key>
@@ -1344,7 +1395,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(624, 140)</value>
+      <value>(800, 140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3604,7 +3655,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1104, 148)</value>
+      <value>(1232, 148)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3631,7 +3682,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(888, 228)</value>
+      <value>(1016, 228)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3840,19 +3891,13 @@
   </connection>
   <connection>
     <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
-    <sink_block_id>blocks_repack_bits_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
     <sink_block_id>blocks_uchar_to_float_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
-    <sink_block_id>digital_protocol_formatter_bb_0</sink_block_id>
+    <sink_block_id>digital_crc32_bb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -3895,6 +3940,18 @@
   <connection>
     <source_block_id>digital_chunks_to_symbols_xx_1</source_block_id>
     <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>digital_crc32_bb_0</source_block_id>
+    <sink_block_id>blocks_repack_bits_bb_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>digital_crc32_bb_0</source_block_id>
+    <sink_block_id>digital_protocol_formatter_bb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
