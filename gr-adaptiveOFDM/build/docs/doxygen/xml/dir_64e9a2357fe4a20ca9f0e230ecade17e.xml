@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_64e9a2357fe4a20ca9f0e230ecade17e" kind="dir">
+    <compoundname>adaptiveOFDM</compoundname>
+    <innerfile refid="api_8h">api.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/samuel/GNURadio/gr-adaptiveOFDM/include/adaptiveOFDM/"/>
+  </compounddef>
+</doxygen>
