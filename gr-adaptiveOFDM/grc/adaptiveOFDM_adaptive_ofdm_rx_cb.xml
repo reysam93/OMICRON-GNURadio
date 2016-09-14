@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<block>
+  <name>Adaptive OFDM Rx</name>
+  <key>adaptiveOFDM_adaptive_ofdm_rx_cb</key>
+  <category>[adaptiveOFDM]</category>
+  <import>import adaptiveOFDM</import>
+  <make>adaptiveOFDM.adaptive_ofdm_rx_cb($samp_rate, $len_tag_key, $fft_len, $cp_len, $occupied_carriers, $pilot_carriers, $pilot_symbols, $sync_words)</make>
+
+  <param>
+    <name>Sample Rate</name>
+    <key>samp_rate</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Length Tag Key</name>
+    <key>len_tag_key</key>
+    <value>packet_len</value>
+    <type>string</type>
+  </param>
+  <param>
+    <name>FFT Length</name>
+    <key>fft_len</key>
+    <value>64</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Cyclic Prefix Length</name>
+    <key>cp_len</key>
+    <value>16</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Occupied Carriers</name>
+    <key>occupied_carriers</key>
+    <value>()</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Pilot Carriers</name>
+    <key>pilot_carriers</key>
+    <value>()</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Pilot Symbols</name>
+    <key>pilot_symbols</key>
+    <value>()</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Sync Words</name>
+    <key>sync_words</key>
+    <value>()</value>
+    <type>raw</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>
