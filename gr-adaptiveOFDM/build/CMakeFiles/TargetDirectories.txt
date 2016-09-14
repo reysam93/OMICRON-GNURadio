@@ -1,4 +1,0 @@
-/home/samuel/GNURadio/gr-adaptiveOFDM/build/docs/doxygen/CMakeFiles/doxygen_target.dir
-/home/samuel/GNURadio/gr-adaptiveOFDM/build/apps/CMakeFiles/pygen_apps_9a6dd.dir
-/home/samuel/GNURadio/gr-adaptiveOFDM/build/python/CMakeFiles/pygen_python_cd8a5.dir
-/home/samuel/GNURadio/gr-adaptiveOFDM/build/CMakeFiles/uninstall.dir

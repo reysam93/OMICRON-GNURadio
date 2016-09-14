@@ -31,7 +31,8 @@ endif()
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    adaptive_ofdm_tx_bc.py DESTINATION ${GR_PYTHON_DIR}/adaptiveOFDM
+    adaptive_ofdm_tx_bc.py
+    adaptive_ofdm_rx_cb.py DESTINATION ${GR_PYTHON_DIR}/adaptiveOFDM
 )
 
 ########################################################################
@@ -42,3 +43,4 @@ include(GrTest)
 set(GR_TEST_TARGET_DEPS gnuradio-adaptiveOFDM)
 set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
 GR_ADD_TEST(qa_adaptive_ofdm_tx_bc ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_adaptive_ofdm_tx_bc.py)
+GR_ADD_TEST(qa_adaptive_ofdm_rx_cb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_adaptive_ofdm_rx_cb.py)
