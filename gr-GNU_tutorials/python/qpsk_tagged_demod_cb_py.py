@@ -61,7 +61,7 @@ class qpsk_tagged_demod_cb_py(gr.sync_block):
         if abs(sample) < 0.01 and not self.low_ampl_state:
             self.add_item_tag(0,                                # Port number
                     self.nitems_written(0) + i,                 # Offset
-                    pmt.intern("amplitude_warning"),           # Key
+                    pmt.intern("amplitude_warning"),            # Key
                     pmt.from_double(numpy.double(abs(sample)))  # Value
                     # Note: is necessary to explicity create a double because
                     # sample is an explicit 32-bit float
