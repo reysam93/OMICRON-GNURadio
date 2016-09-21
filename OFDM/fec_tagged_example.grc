@@ -907,7 +907,7 @@
     </param>
     <param>
       <key>len_tag_key</key>
-      <value>""</value>
+      <value>len_tag_key</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1229,11 +1229,11 @@
     </param>
     <param>
       <key>decoder_list</key>
-      <value>dec_rep</value>
+      <value>dec_cc</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1441,7 +1441,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
