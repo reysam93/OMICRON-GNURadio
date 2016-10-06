@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<block>
+  <name>WiFi Parse MAC (return Data)</name>
+  <key>adaptiveOFDM_parse_mac</key>
+  <category>[adaptiveOFDM]</category>
+  <import>import adaptiveOFDM</import>
+  <make>adaptiveOFDM.parse_mac($log, $debug)</make>
+
+  <param>
+    <name>Log</name>
+    <key>log</key>
+    <value>False</value>
+    <type>bool</type>
+
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Debug</name>
+    <key>debug</key>
+    <value>False</value>
+    <type>bool</type>
+
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>fer</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+
+  <source>
+    <name>data</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

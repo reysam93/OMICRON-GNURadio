@@ -26,6 +26,7 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND adaptiveOFDM_sources
+    parse_mac_impl.cc
 )
 
 set(adaptiveOFDM_sources "${adaptiveOFDM_sources}" PARENT_SCOPE)
@@ -60,6 +61,7 @@ include_directories(${CPPUNIT_INCLUDE_DIRS})
 list(APPEND test_adaptiveOFDM_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/test_adaptiveOFDM.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_adaptiveOFDM.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/qa_parse_mac.cc
 )
 
 add_executable(test-adaptiveOFDM ${test_adaptiveOFDM_sources})
