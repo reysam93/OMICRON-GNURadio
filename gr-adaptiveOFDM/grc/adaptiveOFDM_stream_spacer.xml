@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<block>
+  <name>Stream Spacer</name>
+  <key>adaptiveOFDM_stream_spacer</key>
+  <category>[adaptiveOFDM]</category>
+  <import>import adaptiveOFDM</import>
+  <import>from gnuradio import blocks</import>
+  <make>adaptiveOFDM.stream_spacer($type.tv, $interval)</make>
+
+  <param>
+    <name>Item Type</name>
+    <key>type</key>
+    <type>enum</type>
+    <option>
+      <name>Byte</name>
+      <key>byte</key>
+      <opt>tv:blocks.byte_t</opt>
+    </option>
+    <option>
+      <name>Complex</name>
+      <key>complex</key>
+      <opt>tv:blocks.complex_t</opt>
+    </option>
+    <option>
+      <name>Float</name>
+      <key>float</key>
+      <opt>tv:blocks.float_t</opt>
+    </option>
+    <option>
+      <name>Short</name>
+      <key>short</key>
+      <opt>tv:blocks.short_t</opt>
+    </option>
+  </param>
+
+  <param>
+    <name>Interval (ms)</name>
+    <key>interval</key>
+    <value>500</value>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+  </source>
+</block>

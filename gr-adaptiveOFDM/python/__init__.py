@@ -33,4 +33,5 @@ except ImportError:
 # import any pure python here
 from adaptive_ofdm_tx_bc import adaptive_ofdm_tx_bc
 from adaptive_ofdm_rx_cb import adaptive_ofdm_rx_cb
+from stream_spacer import stream_spacer
 #
