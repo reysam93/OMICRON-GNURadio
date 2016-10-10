@@ -745,11 +745,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 148)</value>
+      <value>(480, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -843,7 +843,7 @@
     </param>
     <param>
       <key>const</key>
-      <value>.6</value>
+      <value>0.6</value>
     </param>
     <param>
       <key>affinity</key>
@@ -855,11 +855,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 516)</value>
+      <value>(272, 412)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -875,7 +875,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>0</value>
+      <value>100000</value>
     </param>
     <param>
       <key>vlen</key>
@@ -906,7 +906,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(744, 392)</value>
+      <value>(744, 408)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -957,7 +957,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 148)</value>
+      <value>(248, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1012,7 +1012,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 156)</value>
+      <value>(680, 140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1118,7 +1118,7 @@
     </param>
     <param>
       <key>delay_sec</key>
-      <value>0.001</value>
+      <value>0.01</value>
     </param>
     <param>
       <key>delay</key>
@@ -1130,7 +1130,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(480, 484)</value>
+      <value>(264, 532)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1150,18 +1150,18 @@
     </param>
     <param>
       <key>pad_front</key>
-      <value>500</value>
+      <value>100</value>
     </param>
     <param>
       <key>pad_tail</key>
-      <value>0</value>
+      <value>1000</value>
     </param>
   </block>
   <block>
     <key>ieee802_11_mac</key>
     <param>
       <key>bss_mac</key>
-      <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
+      <value>[0xff, 0xff, 0xff, 0xff, 0xff, 255]</value>
     </param>
     <param>
       <key>alias</key>
@@ -1185,7 +1185,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(568, 228)</value>
+      <value>(528, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1205,7 +1205,7 @@
     </param>
     <param>
       <key>src_mac</key>
-      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
+      <value>[0x36, 0x36, 0x36, 0x36, 0x36, 0x36]</value>
     </param>
   </block>
   <block>
@@ -1880,7 +1880,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 452)</value>
+      <value>(568, 500)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2051,7 +2051,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(560, 340)</value>
+      <value>(552, 348)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2075,7 +2075,7 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>chan_est</value>
+      <value>0</value>
     </param>
     <param>
       <key>encoding</key>
