@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
+ *                          Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +28,12 @@ class parse_mac_impl : public parse_mac {
 
 public:
 
-parse_mac_impl(bool log, bool debug) :
+parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug) :
     block("parse_mac",
         gr::io_signature::make(0, 0, 0),
         gr::io_signature::make(0, 0, 0)),
     d_log(log), d_last_seq_no(-1),
-    d_debug(debug) {
+    d_debug(debug), d_my_mac(mac) {
 
   message_port_register_in(pmt::mp("in"));
   set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
@@ -67,12 +68,22 @@ void parse(pmt::pmt_t msg) {
     dout << "frame too short to parse (<20)" << std::endl;
     return;
   }
+
   #define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
   dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
   dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
 
-        switch((h->frame_control >> 2) & 3) {
 
+  dout << std::endl << "MY MAC: ";
+  print_mac_address(d_my_mac, true);
+  dout << "SRC MAC: ";
+  print_mac_address(h->addr2, true);
+  dout << std::endl;
+  if (equal_mac(d_my_mac, h->addr2)){
+    dout << "MACs ARE THE SAME. SIPING MSG" << std::endl;
+  }
+
+  switch((h->frame_control >> 2) & 3) {
     case 0:
       dout << " (MANAGEMENT)" << std::endl;
       parse_management((char*)h, data_len);
@@ -341,6 +352,16 @@ void print_mac_address(uint8_t *addr, bool new_line = false) {
   }
 }
 
+bool equal_mac(uint8_t *addr1, uint8_t *addr2) {
+
+  for(int i = 0; i < 6; i++){
+    if(addr1[i] != addr2[i]){
+      return false;
+    }
+  }
+  return true;
+}
+
 void print_ascii(char* buf, int length) {
 
   for(int i = 0; i < length; i++) {
@@ -360,6 +381,7 @@ void print_ascii(char* buf, int length) {
 private:
   bool d_log;
   bool d_debug;
+  uint8_t d_my_mac[6];
   int d_last_seq_no;
 };
 

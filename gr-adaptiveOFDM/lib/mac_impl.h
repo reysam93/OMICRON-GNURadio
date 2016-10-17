@@ -18,22 +18,22 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
+#ifndef INCLUDED_ADAPTIVEOFDM_MAC_IMPL_H
+#define INCLUDED_ADAPTIVEOFDM_MAC_IMPL_H
 
-#include <adaptiveOFDM/parse_mac.h>
+#include <adaptiveOFDM/mac.h>
 
 namespace gr {
   namespace adaptiveOFDM {
 
-    class parse_mac_impl : public parse_mac
+    class mac_impl : public mac
     {
      private:
       // Nothing to declare in this block.
 
      public:
-      parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug);
-      ~parse_mac_impl();
+      mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac);
+      ~mac_impl();
 
       // Where all the action really happens
       int work(int noutput_items,
@@ -44,5 +44,5 @@ namespace gr {
   } // namespace adaptiveOFDM
 } // namespace gr
 
-#endif /* INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H */
+#endif /* INCLUDED_ADAPTIVEOFDM_MAC_IMPL_H */
 

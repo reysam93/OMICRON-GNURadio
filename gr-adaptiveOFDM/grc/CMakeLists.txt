@@ -21,5 +21,6 @@ install(FILES
     adaptiveOFDM_adaptive_ofdm_tx_bc.xml
     adaptiveOFDM_adaptive_ofdm_rx_cb.xml
     adaptiveOFDM_parse_mac.xml
-    adaptiveOFDM_stream_spacer.xml DESTINATION share/gnuradio/grc/blocks
+    adaptiveOFDM_stream_spacer.xml
+    adaptiveOFDM_mac.xml DESTINATION share/gnuradio/grc/blocks
 )

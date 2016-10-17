@@ -18,31 +18,29 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
 
-#include <adaptiveOFDM/parse_mac.h>
+#ifndef _QA_MAC_H_
+#define _QA_MAC_H_
+
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/TestCase.h>
 
 namespace gr {
   namespace adaptiveOFDM {
 
-    class parse_mac_impl : public parse_mac
+    class qa_mac : public CppUnit::TestCase
     {
-     private:
-      // Nothing to declare in this block.
+    public:
+      CPPUNIT_TEST_SUITE(qa_mac);
+      CPPUNIT_TEST(t1);
+      CPPUNIT_TEST_SUITE_END();
 
-     public:
-      parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug);
-      ~parse_mac_impl();
-
-      // Where all the action really happens
-      int work(int noutput_items,
-         gr_vector_const_void_star &input_items,
-         gr_vector_void_star &output_items);
+    private:
+      void t1();
     };
 
-  } // namespace adaptiveOFDM
-} // namespace gr
+  } /* namespace adaptiveOFDM */
+} /* namespace gr */
 
-#endif /* INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H */
+#endif /* _QA_MAC_H_ */
 

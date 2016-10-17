@@ -47,3 +47,4 @@ GR_ADD_TEST(qa_adaptive_ofdm_tx_bc ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_D
 GR_ADD_TEST(qa_adaptive_ofdm_rx_cb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_adaptive_ofdm_rx_cb.py)
 GR_ADD_TEST(qa_parse_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_parse_mac.py)
 GR_ADD_TEST(qa_stream_spacer ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_stream_spacer.py)
+GR_ADD_TEST(qa_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mac.py)

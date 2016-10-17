@@ -26,7 +26,13 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND adaptiveOFDM_sources
+    equalizer/base.cc
+    equalizer/comb.cc
+    equalizer/ls.cc
+    equalizer/lms.cc
+    equalizer/sta.cc
     parse_mac_impl.cc
+    mac_impl.cc
 )
 
 set(adaptiveOFDM_sources "${adaptiveOFDM_sources}" PARENT_SCOPE)
@@ -61,6 +67,7 @@ include_directories(${CPPUNIT_INCLUDE_DIRS})
 list(APPEND test_adaptiveOFDM_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/test_adaptiveOFDM.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_adaptiveOFDM.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/qa_mac.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_parse_mac.cc
 )
 

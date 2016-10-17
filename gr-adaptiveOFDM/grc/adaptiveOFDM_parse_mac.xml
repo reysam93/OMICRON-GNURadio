@@ -4,7 +4,17 @@
   <key>adaptiveOFDM_parse_mac</key>
   <category>[adaptiveOFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.parse_mac($log, $debug)</make>
+  <make>adaptiveOFDM.parse_mac($mac, $log, $debug)</make>
+
+  <param>
+    <name>SRC MAC</name>
+    <key>mac</key>
+    <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
+    <type>int_vector</type>
+  </param>
+
+  <check>len($mac) == 6</check>
+  <check>all([x >= 0 and 255 >= x for x in $mac])</check>
 
   <param>
     <name>Log</name>

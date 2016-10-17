@@ -123,15 +123,13 @@ frame_param::print() {
 
 
 void scramble(const char *in, char *out, frame_param &frame, char initial_state) {
-
     int state = initial_state;
     int feedback;
 
     for (int i = 0; i < frame.n_data_bits; i++) {
-
-	feedback = (!!(state & 64)) ^ (!!(state & 8));
-	out[i] = feedback ^ in[i];
-	state = ((state << 1) & 0x7e) | feedback;
+		feedback = (!!(state & 64)) ^ (!!(state & 8));
+		out[i] = feedback ^ in[i];
+		state = ((state << 1) & 0x7e) | feedback;
     }
 }
 
@@ -153,7 +151,6 @@ int ones(int n) {
 
 
 void convolutional_encoding(const char *in, char *out, frame_param &frame) {
-
 	int state = 0;
 
 	for(int i = 0; i < frame.n_data_bits; i++) {
@@ -166,7 +163,6 @@ void convolutional_encoding(const char *in, char *out, frame_param &frame) {
 
 
 void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm) {
-
 	int mod;
 
 	for (int i = 0; i < frame.n_data_bits * 2; i++) {
@@ -204,7 +200,6 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 
 
 void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm, bool reverse) {
-
 	int n_cbps = ofdm.n_cbps;
 	int first[n_cbps];
 	int second[n_cbps];
@@ -231,7 +226,6 @@ void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm,
 
 
 void split_symbols(const char *in, char *out, frame_param &frame, ofdm_param &ofdm) {
-
 	int symbols = frame.n_sym * 48;
 
 	for (int i = 0; i < symbols; i++) {

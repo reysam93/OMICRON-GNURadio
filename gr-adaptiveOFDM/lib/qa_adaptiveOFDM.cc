@@ -27,12 +27,14 @@
 
 #include "qa_adaptiveOFDM.h"
 #include "qa_parse_mac.h"
+#include "qa_mac.h"
 
 CppUnit::TestSuite *
 qa_adaptiveOFDM::suite()
 {
   CppUnit::TestSuite *s = new CppUnit::TestSuite("adaptiveOFDM");
   s->addTest(gr::adaptiveOFDM::qa_parse_mac::suite());
+  s->addTest(gr::adaptiveOFDM::qa_mac::suite());
 
   return s;
 }

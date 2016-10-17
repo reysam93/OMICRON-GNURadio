@@ -9,8 +9,11 @@
 
 %{
 #include "adaptiveOFDM/parse_mac.h"
+#include "adaptiveOFDM/mac.h"
 %}
 
 
 %include "adaptiveOFDM/parse_mac.h"
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, parse_mac);
+%include "adaptiveOFDM/mac.h"
+GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mac);

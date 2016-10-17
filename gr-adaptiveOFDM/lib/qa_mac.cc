@@ -18,31 +18,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
 
-#include <adaptiveOFDM/parse_mac.h>
+#include <gnuradio/attributes.h>
+#include <cppunit/TestAssert.h>
+#include "qa_mac.h"
+#include <adaptiveOFDM/mac.h>
 
 namespace gr {
   namespace adaptiveOFDM {
 
-    class parse_mac_impl : public parse_mac
+    void
+    qa_mac::t1()
     {
-     private:
-      // Nothing to declare in this block.
+      // Put test here
+    }
 
-     public:
-      parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug);
-      ~parse_mac_impl();
-
-      // Where all the action really happens
-      int work(int noutput_items,
-         gr_vector_const_void_star &input_items,
-         gr_vector_void_star &output_items);
-    };
-
-  } // namespace adaptiveOFDM
-} // namespace gr
-
-#endif /* INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H */
+  } /* namespace adaptiveOFDM */
+} /* namespace gr */
 

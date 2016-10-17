@@ -22,5 +22,6 @@
 ########################################################################
 install(FILES
     api.h
-    parse_mac.h DESTINATION include/adaptiveOFDM
+    parse_mac.h
+    mac.h DESTINATION include/adaptiveOFDM
 )

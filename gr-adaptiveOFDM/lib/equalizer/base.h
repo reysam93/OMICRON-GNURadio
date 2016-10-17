@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
- *                          Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
+ * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,25 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
 
-#include <adaptiveOFDM/api.h>
-#include <gnuradio/block.h>
+#ifndef  INCLUDED_ADAPTIVEOFDM_EQUALIZER_BASE_H
+#define  INCLUDED_ADAPTIVEOFDM_EQUALIZER_BASE_H
+
+#include <gnuradio/gr_complex.h>
+#include <gnuradio/digital/constellation.h>
 
 namespace gr {
 namespace adaptiveOFDM {
+namespace equalizer {
 
-class ADAPTIVEOFDM_API parse_mac : virtual public block
-{
+class base {
 public:
+	virtual ~base() {};
+	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) = 0;
+	virtual double get_snr() = 0;
 
-	typedef boost::shared_ptr<parse_mac> sptr;
-	static sptr make(std::vector<uint8_t> mac, bool log = false, bool debug = false);
+	static const gr_complex POLARITY[127];
 
+protected:
+	static const gr_complex LONG[64];
 };
 
-} // namespace adaptiveOFDM
-} // namespace gr
+} /* namespace channel_estimation */
+} /* namespace adaptiveOFDM */
+} /* namespace gr */
 
-#endif /* INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H */
+#endif /* INCLUDED_ADAPTIVEOFDM_EQUALIZER_BASE_H */

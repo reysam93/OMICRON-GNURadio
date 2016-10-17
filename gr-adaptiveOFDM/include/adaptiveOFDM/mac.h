@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
+#ifndef INCLUDED_ADAPTIVEOFD_MAC_H
+#define INCLUDED_ADAPTIVEOFD_MAC_H
 
 #include <adaptiveOFDM/api.h>
 #include <gnuradio/block.h>
@@ -24,16 +24,17 @@
 namespace gr {
 namespace adaptiveOFDM {
 
-class ADAPTIVEOFDM_API parse_mac : virtual public block
+class ADAPTIVEOFDM_API mac : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<parse_mac> sptr;
-	static sptr make(std::vector<uint8_t> mac, bool log = false, bool debug = false);
-
+  typedef boost::shared_ptr<mac> sptr;
+  static sptr make(std::vector<uint8_t> src_mac,
+      std::vector<uint8_t> dst_mac,
+      std::vector<uint8_t> bss_mac);
 };
 
-} // namespace adaptiveOFDM
-} // namespace gr
+}  // namespace adaptiveOFDM
+}  // namespace gr
 
-#endif /* INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H */
+#endif /* INCLUDED_ADAPTIVEOFD_MAC_H */
