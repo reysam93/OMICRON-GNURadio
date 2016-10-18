@@ -65,12 +65,12 @@ void parse(pmt::pmt_t msg) {
   int data_len = pmt::blob_length(msg);
   mac_header *h = (mac_header*)pmt::blob_data(msg);
 
-  mylog(boost::format("length: %1%") % data_len );
-
   if (equal_mac(d_my_mac, h->addr2)){
     dout << std::endl << std::endl << "Received my own msg. Ignoring it." << std::endl;
     return;
   }
+
+  mylog(boost::format("length: %1%") % data_len );
 
   dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
   dout << "=========================================" << std::endl;
@@ -108,9 +108,11 @@ void parse(pmt::pmt_t msg) {
   // DATA
   if((((h->frame_control) >> 2) & 63) == 2) {
     print_ascii(frame + 24, data_len - 24);
+    send_data(frame + 24, data_len - 24);
   // QoS Data
   } else if((((h->frame_control) >> 2) & 63) == 34) {
     print_ascii(frame + 26, data_len - 26);
+    send_data(frame + 26, data_len - 26);
   }
 }
 
@@ -189,13 +191,14 @@ void parse_management(char *buf, int length) {
   dout << std::endl;
 
   dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
+  dout << "My mac: ";
+  print_mac_address(d_my_mac, true);
   dout << "mac 1: ";
   print_mac_address(h->addr1, true);
   dout << "mac 2: ";
   print_mac_address(h->addr2, true);
   dout << "mac 3: ";
   print_mac_address(h->addr3, true);
-
 }
 
 
@@ -263,6 +266,8 @@ void parse_data(char *buf, int length) {
 
   int seq_no = int(h->seq_nr >> 4);
   dout << "seq nr: " << seq_no << std::endl;
+  dout << "My mac: ";
+  print_mac_address(d_my_mac, true);
   dout << "mac 1: ";
   print_mac_address(h->addr1, true);
   dout << "mac 2: ";
@@ -353,7 +358,6 @@ void print_mac_address(uint8_t *addr, bool new_line = false) {
 }
 
 bool equal_mac(uint8_t *addr1, uint8_t *addr2) {
-
   for(int i = 0; i < 6; i++){
     if(addr1[i] != addr2[i]){
       return false;
@@ -363,7 +367,6 @@ bool equal_mac(uint8_t *addr1, uint8_t *addr2) {
 }
 
 void print_ascii(char* buf, int length) {
-
   for(int i = 0; i < length; i++) {
     if((buf[i] > 31) && (buf[i] < 127)) {
       dout << buf[i];
@@ -372,10 +375,16 @@ void print_ascii(char* buf, int length) {
     }
   }
   dout << std::endl;
+}
 
+void send_data(char* buf, int length){
+  pmt::pmt_t dict = pmt::make_dict();
   uint8_t* data = (uint8_t*) buf;
   pmt::pmt_t pdu = pmt::init_u8vector(length, data);
-  message_port_pub(pmt::mp("data"), pmt::cons( pmt::PMT_NIL, pdu ));
+
+  dict = pmt::dict_add(dict, pmt::mp("seq_num"), pmt::from_float(d_last_seq_no));
+  dict = pmt::dict_add(dict, pmt::mp("needs_ack"), pmt::from_float(true));
+  message_port_pub(pmt::mp("data"), pmt::cons( dict, pdu ));
 }
 
 bool check_mac(std::vector<uint8_t> mac) {

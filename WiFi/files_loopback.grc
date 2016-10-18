@@ -582,7 +582,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(168, 296)</value>
+      <value>(208, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -595,6 +595,10 @@
     <param>
       <key>log</key>
       <value>False</value>
+    </param>
+    <param>
+      <key>mac</key>
+      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x20]</value>
     </param>
     <param>
       <key>maxoutbuf</key>
