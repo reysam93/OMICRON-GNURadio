@@ -33,13 +33,18 @@ parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug) :
         gr::io_signature::make(0, 0, 0),
         gr::io_signature::make(0, 0, 0)),
     d_log(log), d_last_seq_no(-1),
-    d_debug(debug), d_my_mac(mac) {
+    d_debug(debug){
 
   message_port_register_in(pmt::mp("in"));
   set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
 
   message_port_register_out(pmt::mp("data"));
   message_port_register_out(pmt::mp("fer"));
+
+  if(!check_mac(mac)) throw std::invalid_argument("wrong mac address size");
+  for(int i = 0; i < 6; i++) {
+    d_my_mac[i] = mac[i];
+  }
 }
 
 ~parse_mac_impl() {
@@ -62,6 +67,11 @@ void parse(pmt::pmt_t msg) {
 
   mylog(boost::format("length: %1%") % data_len );
 
+  if (equal_mac(d_my_mac, h->addr2)){
+    dout << std::endl << std::endl << "Received my own msg. Ignoring it." << std::endl;
+    return;
+  }
+
   dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
   dout << "=========================================" << std::endl;
   if(data_len < 20) {
@@ -72,16 +82,6 @@ void parse(pmt::pmt_t msg) {
   #define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
   dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
   dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
-
-
-  dout << std::endl << "MY MAC: ";
-  print_mac_address(d_my_mac, true);
-  dout << "SRC MAC: ";
-  print_mac_address(h->addr2, true);
-  dout << std::endl;
-  if (equal_mac(d_my_mac, h->addr2)){
-    dout << "MACs ARE THE SAME. SIPING MSG" << std::endl;
-  }
 
   switch((h->frame_control >> 2) & 3) {
     case 0:
@@ -378,6 +378,11 @@ void print_ascii(char* buf, int length) {
   message_port_pub(pmt::mp("data"), pmt::cons( pmt::PMT_NIL, pdu ));
 }
 
+bool check_mac(std::vector<uint8_t> mac) {
+  if(mac.size() != 6) return false;
+  return true;
+}
+
 private:
   bool d_log;
   bool d_debug;
@@ -386,8 +391,6 @@ private:
 };
 
 parse_mac::sptr
-parse_mac::make(bool log, bool debug) {
-  return gnuradio::get_initial_sptr(new parse_mac_impl(log, debug));
+parse_mac::make(std::vector<uint8_t> mac, bool log, bool debug) {
+  return gnuradio::get_initial_sptr(new parse_mac_impl(mac, log, debug));
 }
-
-
