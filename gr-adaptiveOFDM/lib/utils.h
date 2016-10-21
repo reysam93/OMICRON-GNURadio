@@ -40,6 +40,12 @@ struct mac_header {
 	uint16_t seq_nr;
 }__attribute__((packed));
 
+struct mac_ack_header {
+	uint16_t frame_control;
+	uint16_t duration;
+	uint8_t ra[6];
+};
+
 /**
  * WIFI parameters
  */

@@ -108,11 +108,11 @@ void parse(pmt::pmt_t msg) {
   // DATA
   if((((h->frame_control) >> 2) & 63) == 2) {
     print_ascii(frame + 24, data_len - 24);
-    send_data(frame + 24, data_len - 24);
+    send_data(frame + 24, data_len - 24, h->addr2);
   // QoS Data
   } else if((((h->frame_control) >> 2) & 63) == 34) {
     print_ascii(frame + 26, data_len - 26);
-    send_data(frame + 26, data_len - 26);
+    send_data(frame + 26, data_len - 26, h->addr2);
   }
 }
 
@@ -377,13 +377,15 @@ void print_ascii(char* buf, int length) {
   dout << std::endl;
 }
 
-void send_data(char* buf, int length){
+void send_data(char* buf, int length, uint8_t *addr1){
   pmt::pmt_t dict = pmt::make_dict();
   uint8_t* data = (uint8_t*) buf;
   pmt::pmt_t pdu = pmt::init_u8vector(length, data);
+  pmt::pmt_t sa = pmt::init_u8vector(6, addr1);
 
-  dict = pmt::dict_add(dict, pmt::mp("seq_num"), pmt::from_float(d_last_seq_no));
+  //dict = pmt::dict_add(dict, pmt::mp("seq_num"), pmt::from_float(d_last_seq_no));
   dict = pmt::dict_add(dict, pmt::mp("needs_ack"), pmt::from_float(true));
+  dict = pmt::dict_add(dict, pmt::mp("address"), sa);
   message_port_pub(pmt::mp("data"), pmt::cons( dict, pdu ));
 }
 

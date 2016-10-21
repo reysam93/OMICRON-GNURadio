@@ -71,37 +71,40 @@ void phy_in (pmt::pmt_t msg) {
     throw std::runtime_error("PMT must be blob");
   }
 
-  bool is_ack = false;
-
+  bool needs_ack = false;
   pmt::pmt_t dict = pmt::car(msg);
   if (pmt::is_dict(dict)) {
-    std::cout << "IS DICT" << std::endl;
-    is_ack = pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_float(false));
-    if (is_ack) {
-      std::cout << "BUILD AN ACK!!" << std::endl;
-      return;
-    } else {
-      std::cout << "IS DICT BUT NOT NEED ACK???" << std::endl;
-    }
-  } else {
-    std::cout << "IS NOT DICT" << std::endl;
+    needs_ack = pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_float(false));
   }
 
-  msg = pmt::cdr(msg);
+  if (needs_ack){
+    //TODO: needs to wait 10 usecs before sending ack. (n time shifts)
+    std::cout << "GENERATING ACK MSG!!!" << std::endl;
 
-  // strip MAC header
-  // TODO: check for frame type to determine header size
-  pmt::pmt_t blob(pmt::cdr(msg));
+    pmt::pmt_t elements = pmt::dict_ref(dict, pmt::mp("address"), pmt::make_u8vector(6,0));
+    std:std::vector<uint8_t> address = pmt_u8vector_elements(elements);
+    if(!check_mac(address)) throw std::invalid_argument("wrong mac address size");
 
-  const char *mpdu = reinterpret_cast<const char *>(pmt::blob_data(blob));
-  std::cout << "pdu len " << pmt::blob_length(blob) << std::endl;
-  pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
+    int psdu_length;
+    generate_mac_ack_frame(address, &psdu_length);
+    send_message(psdu_length);
+  } else {
+    std::cout << "ACK NOT NEEDED" << std::endl;
 
-  message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
+    msg = pmt::cdr(msg);
+
+    // strip MAC header
+    // TODO: check for frame type to determine header size
+    pmt::pmt_t blob(pmt::cdr(msg));
+    const char *mpdu = reinterpret_cast<const char *>(pmt::blob_data(blob));
+    std::cout << "pdu len " << pmt::blob_length(blob) << std::endl;
+    pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
+
+    message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
+  }
 }
 
 void app_in (pmt::pmt_t msg) {
-
   size_t       msg_len;
   const char   *msdu;
   std::string  str;
@@ -129,7 +132,10 @@ void app_in (pmt::pmt_t msg) {
   // make MAC frame
   int    psdu_length;
   generate_mac_data_frame(msdu, msg_len, &psdu_length);
+  send_message(psdu_length);
+}
 
+void send_message(int psdu_length) {
   // dict
   pmt::pmt_t dict = pmt::make_dict();
   dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
@@ -176,6 +182,28 @@ void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size) {
 
   uint32_t fcs = result.checksum();
   memcpy(d_psdu + msdu_size + 24, &fcs, sizeof(uint32_t));
+}
+
+void generate_mac_ack_frame(std::vector<uint8_t> ra, int *psdu_size){
+  mac_ack_header header;
+  header.frame_control = 0x00D4;
+  header.duration = 0x0000;
+
+  for(int i = 0; i < 6; i++) {
+    header.ra[i] = ra[i];
+  }
+
+  //header size is 0
+  *psdu_size = 10;
+  std::memcpy(d_psdu, &header, *psdu_size);
+  boost::crc_32_type result;
+  result.process_bytes(d_psdu, *psdu_size);
+
+  uint32_t fcs = result.checksum();
+  memcpy(d_psdu + *psdu_size, &fcs, sizeof(uint32_t));
+
+  // Plus 4bytes of FCS
+  *psdu_size += 4;
 }
 
 bool check_mac(std::vector<uint8_t> mac) {
