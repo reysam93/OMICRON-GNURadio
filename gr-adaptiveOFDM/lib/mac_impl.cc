@@ -193,7 +193,6 @@ void generate_mac_ack_frame(std::vector<uint8_t> ra, int *psdu_size){
     header.ra[i] = ra[i];
   }
 
-  //header size is 0
   *psdu_size = 10;
   std::memcpy(d_psdu, &header, *psdu_size);
   boost::crc_32_type result;
@@ -223,4 +222,3 @@ mac::sptr
 mac::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac) {
   return gnuradio::get_initial_sptr(new mac_impl(src_mac, dst_mac, bss_mac));
 }
-

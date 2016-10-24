@@ -63,6 +63,11 @@ void parse(pmt::pmt_t msg) {
   msg = pmt::cdr(msg);
 
   int data_len = pmt::blob_length(msg);
+  /*if (data_len == ACK_FRAME_SIZE){
+    mac_ack_header *h = (mac_ack_header)pmt::blob_data(msg);
+  } else {
+    mac_header *h = (mac_header*)pmt::blob_data(msg);
+  }*/
   mac_header *h = (mac_header*)pmt::blob_data(msg);
 
   if (equal_mac(d_my_mac, h->addr2)){
