@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ *                          Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_UTILS_H
-#define INCLUDED_IEEE802_11_UTILS_H
+#ifndef INCLUDED_ADAPTIVEOFDM_UTILS_H
+#define INCLUDED_ADAPTIVEOFDM_UTILS_H
 
 #include <adaptiveOFDM/api.h>
 #include <adaptiveOFDM/mapper.h>
@@ -116,4 +117,4 @@ void split_symbols(const char *input, char *out, frame_param &frame, ofdm_param 
 
 void generate_bits(const char *psdu, char *data_bits, frame_param &frame);
 
-#endif /* INCLUDED_IEEE802_11_UTILS_H */
+#endif /* INCLUDED_ADAPTIVEOFDM_UTILS_H */

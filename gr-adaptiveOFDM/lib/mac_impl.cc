@@ -82,7 +82,7 @@ void phy_in (pmt::pmt_t msg) {
     std::cout << "GENERATING ACK MSG!!!" << std::endl;
 
     pmt::pmt_t elements = pmt::dict_ref(dict, pmt::mp("address"), pmt::make_u8vector(6,0));
-    std:std::vector<uint8_t> address = pmt_u8vector_elements(elements);
+    std:std::vector<uint8_t> address = pmt::u8vector_elements(elements);
     if(!check_mac(address)) throw std::invalid_argument("wrong mac address size");
 
     int psdu_length;

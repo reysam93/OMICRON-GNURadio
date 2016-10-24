@@ -388,7 +388,6 @@ void send_data(char* buf, int length, uint8_t *addr1){
   pmt::pmt_t pdu = pmt::init_u8vector(length, data);
   pmt::pmt_t sa = pmt::init_u8vector(6, addr1);
 
-  //dict = pmt::dict_add(dict, pmt::mp("seq_num"), pmt::from_float(d_last_seq_no));
   dict = pmt::dict_add(dict, pmt::mp("needs_ack"), pmt::from_float(true));
   dict = pmt::dict_add(dict, pmt::mp("address"), sa);
   message_port_pub(pmt::mp("data"), pmt::cons( dict, pdu ));

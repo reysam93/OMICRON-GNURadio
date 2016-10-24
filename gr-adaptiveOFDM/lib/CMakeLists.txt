@@ -28,8 +28,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND adaptiveOFDM_sources
     equalizer/base.cc
     equalizer/comb.cc
-    equalizer/ls.cc
     equalizer/lms.cc
+    equalizer/ls.cc
     equalizer/sta.cc
     parse_mac_impl.cc
     mac_impl.cc
