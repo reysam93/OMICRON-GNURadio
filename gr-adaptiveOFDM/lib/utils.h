@@ -28,8 +28,6 @@
 #define MAX_SYM (((16 + 8 * MAX_PSDU_SIZE + 6) / 24) + 1)
 #define MAX_ENCODED_BITS ((16 + 8 * MAX_PSDU_SIZE + 6) * 2 + 288)
 
-#define ACK_FRAME_SIZE 10
-
 #define dout d_debug && std::cout
 #define mylog(msg) do { if(d_log) { GR_LOG_INFO(d_logger, msg); }} while(0);
 

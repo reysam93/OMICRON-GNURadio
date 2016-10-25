@@ -63,15 +63,10 @@ void parse(pmt::pmt_t msg) {
   msg = pmt::cdr(msg);
 
   int data_len = pmt::blob_length(msg);
-  /*if (data_len == ACK_FRAME_SIZE){
-    mac_ack_header *h = (mac_ack_header)pmt::blob_data(msg);
-  } else {
-    mac_header *h = (mac_header*)pmt::blob_data(msg);
-  }*/
   mac_header *h = (mac_header*)pmt::blob_data(msg);
 
-  if (equal_mac(d_my_mac, h->addr2)){
-    dout << std::endl << std::endl << "Received my own msg. Ignoring it." << std::endl;
+  if (!equal_mac(d_my_mac, h->addr1)){
+    dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
     return;
   }
 
@@ -79,10 +74,10 @@ void parse(pmt::pmt_t msg) {
 
   dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
   dout << "=========================================" << std::endl;
-  if(data_len < 20) {
+  /*if(data_len < 20) {
     dout << "frame too short to parse (<20)" << std::endl;
     return;
-  }
+  }*/
 
   #define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
   dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
@@ -101,23 +96,12 @@ void parse(pmt::pmt_t msg) {
     case 2:
       dout << " (DATA)" << std::endl;
       parse_data((char*)h, data_len);
+      parse_body((char*)pmt::blob_data(msg), h, data_len);
       break;
 
     default:
       dout << " (unknown)" << std::endl;
       break;
-  }
-
-  char *frame = (char*)pmt::blob_data(msg);
-
-  // DATA
-  if((((h->frame_control) >> 2) & 63) == 2) {
-    print_ascii(frame + 24, data_len - 24);
-    send_data(frame + 24, data_len - 24, h->addr2);
-  // QoS Data
-  } else if((((h->frame_control) >> 2) & 63) == 34) {
-    print_ascii(frame + 26, data_len - 26);
-    send_data(frame + 26, data_len - 26, h->addr2);
   }
 }
 
@@ -336,9 +320,18 @@ void parse_control(char *buf, int length) {
 
   dout << "RA: ";
   print_mac_address(h->addr1, true);
-  dout << "TA: ";
-  print_mac_address(h->addr2, true);
+}
 
+void parse_body(char* frame, mac_header *h, int data_len){
+  // DATA
+  if((((h->frame_control) >> 2) & 63) == 2) {
+    print_ascii(frame + 24, data_len - 24);
+    send_data(frame + 24, data_len - 24, h->addr2);
+  // QoS Data
+  } else if((((h->frame_control) >> 2) & 63) == 34) {
+    print_ascii(frame + 26, data_len - 26);
+    send_data(frame + 26, data_len - 26, h->addr2);
+  }
 }
 
 void print_mac_address(uint8_t *addr, bool new_line = false) {
