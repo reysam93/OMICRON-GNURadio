@@ -28,16 +28,17 @@ class parse_mac_impl : public parse_mac {
 
 public:
 
-parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug) :
+parse_mac_impl(std::vector<uint8_t> mac, int e, bool log, bool debug) :
     block("parse_mac",
         gr::io_signature::make(0, 0, 0),
         gr::io_signature::make(0, 0, 0)),
     d_log(log), d_last_seq_no(-1),
     d_debug(debug){
 
+  set_encoding(e);
+  std::cerr << "ENCODING INIT TO: " << d_encoding << std::endl;
   message_port_register_in(pmt::mp("in"));
   set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
-
   message_port_register_out(pmt::mp("data"));
   message_port_register_out(pmt::mp("fer"));
 
@@ -59,6 +60,10 @@ void parse(pmt::pmt_t msg) {
   } else if(pmt::is_symbol(msg)) {
     return;
   }
+
+  pmt::pmt_t dict = pmt::car(msg);
+  double snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+  decide_modulation(snr);
 
   msg = pmt::cdr(msg);
 
@@ -103,6 +108,29 @@ void parse(pmt::pmt_t msg) {
       dout << " (unknown)" << std::endl;
       break;
   }
+}
+
+void decide_modulation(double snr){
+  gr::thread::scoped_lock lock(d_mutex);
+  std::cout << "SNR: " << snr << std::endl;
+  std::cout << "PREV ENCODING: " << d_encoding << std::endl;
+  if (snr >= MIN_SNR_64QAM) {
+    std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
+    d_encoding = QAM64_2_3;
+  } else if (snr >= MIN_SNR_16QAM) {
+    std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
+    d_encoding = QAM16_1_2;
+  } else if (snr >= MIN_SNR_QPSK) {
+    std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
+    d_encoding = QPSK_1_2;
+  } else if (snr >= MIN_SNR_BPSK) {
+    std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
+    d_encoding = BPSK_1_2;
+  } else {
+    std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+  }
+
+  std::cout << "ENCODING: " << d_encoding << std::endl;
 }
 
 void parse_management(char *buf, int length) {
@@ -391,6 +419,11 @@ bool check_mac(std::vector<uint8_t> mac) {
   return true;
 }
 
+void set_encoding(int encoding) {
+  gr::thread::scoped_lock lock(d_mutex);
+  d_encoding = encoding;
+}
+
 private:
   bool d_log;
   bool d_debug;
@@ -398,7 +431,13 @@ private:
   int d_last_seq_no;
 };
 
+int 
+parse_mac::get_encoding(){
+  gr::thread::scoped_lock lock(d_mutex);
+  return d_encoding; 
+}
+
 parse_mac::sptr
-parse_mac::make(std::vector<uint8_t> mac, bool log, bool debug) {
-  return gnuradio::get_initial_sptr(new parse_mac_impl(mac, log, debug));
+parse_mac::make(std::vector<uint8_t> mac, int e, bool log, bool debug) {
+  return gnuradio::get_initial_sptr(new parse_mac_impl(mac, e, log, debug));
 }

@@ -79,7 +79,6 @@ void phy_in (pmt::pmt_t msg) {
 
   if (needs_ack){
     //TODO: needs to wait 10 usecs before sending ack. (n time shifts)
-    std::cout << "GENERATING ACK MSG!!!" << std::endl;
 
     pmt::pmt_t elements = pmt::dict_ref(dict, pmt::mp("address"), pmt::make_u8vector(6,0));
     std:std::vector<uint8_t> address = pmt::u8vector_elements(elements);

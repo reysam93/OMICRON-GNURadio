@@ -19,7 +19,9 @@
 #define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
 
 #include <adaptiveOFDM/api.h>
+#include <adaptiveOFDM/mapper.h>
 #include <gnuradio/block.h>
+
 
 namespace gr {
 namespace adaptiveOFDM {
@@ -28,9 +30,26 @@ class ADAPTIVEOFDM_API parse_mac : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<parse_mac> sptr;
-	static sptr make(std::vector<uint8_t> mac, bool log = false, bool debug = false);
+	/* 
+	 * Min SNR has been calculated considering a maximum bit error rate probability
+	 * of 0.001 and using the approximation:
+	 *
+	 *		Pbmax = 0.2*e(-1'5*SNR_MIN/(M-1))
+	 *
+	 * where M is the bits per simbol in the modulation.
+	 */
+	static const float MIN_SNR_BPSK = 3.532211577698691;
+	static const float MIN_SNR_QPSK = 3.532211577698691*3;
+	static const float MIN_SNR_16QAM = 3.532211577698691*15;
+	static const float MIN_SNR_64QAM = 3.532211577698691*63;
 
+	int d_encoding;
+	gr::thread::mutex d_mutex;
+
+	int get_encoding();
+
+	typedef boost::shared_ptr<parse_mac> sptr;
+	static sptr make(std::vector<uint8_t> mac, int e, bool log = false, bool debug = false);
 };
 
 } // namespace adaptiveOFDM
