@@ -113,7 +113,6 @@ void parse(pmt::pmt_t msg) {
 void decide_modulation(double snr){
   gr::thread::scoped_lock lock(d_mutex);
   std::cout << "SNR: " << snr << std::endl;
-  std::cout << "PREV ENCODING: " << d_encoding << std::endl;
   if (snr >= MIN_SNR_64QAM) {
     std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
     d_encoding = QAM64_2_3;
@@ -129,8 +128,6 @@ void decide_modulation(double snr){
   } else {
     std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
   }
-
-  std::cout << "ENCODING: " << d_encoding << std::endl;
 }
 
 void parse_management(char *buf, int length) {
