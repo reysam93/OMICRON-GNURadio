@@ -111,20 +111,19 @@ void parse(pmt::pmt_t msg) {
 }
 
 void decide_modulation(double snr){
-  gr::thread::scoped_lock lock(d_mutex);
   std::cout << "SNR: " << snr << std::endl;
   if (snr >= MIN_SNR_64QAM) {
     std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
-    d_encoding = QAM64_2_3;
+    set_encoding(QAM64_2_3);
   } else if (snr >= MIN_SNR_16QAM) {
     std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
-    d_encoding = QAM16_1_2;
+    set_encoding(QAM16_1_2);
   } else if (snr >= MIN_SNR_QPSK) {
     std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
-    d_encoding = QPSK_1_2;
+    set_encoding(QPSK_1_2);
   } else if (snr >= MIN_SNR_BPSK) {
     std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
-    d_encoding = BPSK_1_2;
+    set_encoding(BPSK_1_2);
   } else {
     std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
   }
@@ -426,12 +425,12 @@ private:
   bool d_debug;
   uint8_t d_my_mac[6];
   int d_last_seq_no;
+  gr::thread::mutex d_mutex;
 };
 
 int 
 parse_mac::get_encoding(){
-  gr::thread::scoped_lock lock(d_mutex);
-  return d_encoding; 
+  return d_encoding;
 }
 
 parse_mac::sptr

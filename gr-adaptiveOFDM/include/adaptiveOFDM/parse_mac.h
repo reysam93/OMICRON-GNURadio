@@ -44,7 +44,6 @@ public:
 	static const float MIN_SNR_64QAM = 3.532211577698691*63;
 
 	int d_encoding;
-	gr::thread::mutex d_mutex;
 
 	int get_encoding();
 
