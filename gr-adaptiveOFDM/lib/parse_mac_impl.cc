@@ -36,7 +36,6 @@ parse_mac_impl(std::vector<uint8_t> mac, int e, bool log, bool debug) :
     d_debug(debug){
 
   set_encoding(e);
-  std::cerr << "ENCODING INIT TO: " << d_encoding << std::endl;
   message_port_register_in(pmt::mp("in"));
   set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
   message_port_register_out(pmt::mp("data"));
@@ -63,7 +62,6 @@ void parse(pmt::pmt_t msg) {
 
   pmt::pmt_t dict = pmt::car(msg);
   double snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
-  decide_modulation(snr);
 
   msg = pmt::cdr(msg);
 
@@ -108,10 +106,12 @@ void parse(pmt::pmt_t msg) {
       dout << " (unknown)" << std::endl;
       break;
   }
+
+  decide_modulation(snr);
 }
 
 void decide_modulation(double snr){
-  std::cout << "SNR: " << snr << std::endl;
+  std::cout << std::endl << "SNR: " << snr << std::endl;
   if (snr >= MIN_SNR_64QAM) {
     std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
     set_encoding(QAM64_2_3);
