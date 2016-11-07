@@ -45,10 +45,12 @@ parse_mac_impl(std::vector<uint8_t> mac, int e, bool log, bool debug) :
   for(int i = 0; i < 6; i++) {
     d_my_mac[i] = mac[i];
   }
+
+  pthread_mutex_init(&d_mutex, NULL);
 }
 
 ~parse_mac_impl() {
-
+  pthread_mutex_destroy(&d_mutex);
 }
 
 void parse(pmt::pmt_t msg) {
@@ -416,8 +418,9 @@ bool check_mac(std::vector<uint8_t> mac) {
 }
 
 void set_encoding(int encoding) {
-  gr::thread::scoped_lock lock(d_mutex);
+  pthread_mutex_lock(&d_mutex);
   d_encoding = encoding;
+  pthread_mutex_unlock(&d_mutex);
 }
 
 private:
@@ -425,12 +428,14 @@ private:
   bool d_debug;
   uint8_t d_my_mac[6];
   int d_last_seq_no;
-  gr::thread::mutex d_mutex;
 };
 
 int 
 parse_mac::get_encoding(){
-  return d_encoding;
+  pthread_mutex_lock(&d_mutex);
+  int tmp = d_encoding;
+  pthread_mutex_unlock(&d_mutex);
+  return tmp;
 }
 
 parse_mac::sptr

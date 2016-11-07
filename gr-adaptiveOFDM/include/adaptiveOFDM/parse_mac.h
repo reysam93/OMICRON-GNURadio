@@ -22,6 +22,8 @@
 #include <adaptiveOFDM/mapper.h>
 #include <gnuradio/block.h>
 
+ #include <pthread.h>
+
 
 namespace gr {
 namespace adaptiveOFDM {
@@ -44,6 +46,7 @@ public:
 	static const float MIN_SNR_64QAM = 3.532211577698691*63;
 
 	int d_encoding;
+	pthread_mutex_t d_mutex;
 
 	int get_encoding();
 
