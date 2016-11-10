@@ -63,6 +63,12 @@ mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector
     d_dst_mac[i] = dst_mac[i];
     d_bss_mac[i] = bss_mac[i];
   }
+  pthread_mutex_init(&d_mutex, NULL);
+
+}
+
+~mac_impl() {
+  pthread_mutex_destroy(&d_mutex);
 }
 
 void phy_in (pmt::pmt_t msg) {
@@ -74,7 +80,7 @@ void phy_in (pmt::pmt_t msg) {
   bool needs_ack = false;
   pmt::pmt_t dict = pmt::car(msg);
   if (pmt::is_dict(dict)) {
-    needs_ack = pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_float(false));
+    needs_ack = pmt::to_bool(pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_float(false)));
   }
 
   if (needs_ack){
@@ -88,9 +94,8 @@ void phy_in (pmt::pmt_t msg) {
     generate_mac_ack_frame(address, &psdu_length);
     send_message(psdu_length);
   } else {
-    std::cout << "ACK NOT NEEDED" << std::endl;
-
-    msg = pmt::cdr(msg);
+    
+    /*msg = pmt::cdr(msg);
 
     // strip MAC header
     // TODO: check for frame type to determine header size
@@ -99,7 +104,7 @@ void phy_in (pmt::pmt_t msg) {
     std::cout << "pdu len " << pmt::blob_length(blob) << std::endl;
     pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
 
-    message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
+    message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));*/
   }
 }
 
@@ -209,6 +214,31 @@ bool check_mac(std::vector<uint8_t> mac) {
   return true;
 }
 
+void decide_modulation(double snr){
+  std::cout << std::endl << "SNR: " << snr << std::endl;
+  if (snr >= MIN_SNR_64QAM) {
+    std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
+    set_encoding(QAM64_2_3);
+  } else if (snr >= MIN_SNR_16QAM) {
+    std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
+    set_encoding(QAM16_1_2);
+  } else if (snr >= MIN_SNR_QPSK) {
+    std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
+    set_encoding(QPSK_1_2);
+  } else if (snr >= MIN_SNR_BPSK) {
+    std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
+    set_encoding(BPSK_1_2);
+  } else {
+    std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+  }
+}
+
+void set_encoding(int encoding) {
+  pthread_mutex_lock(&d_mutex);
+  d_encoding = encoding;
+  pthread_mutex_unlock(&d_mutex);
+}
+
 private:
   uint16_t d_seq_nr;
   uint8_t d_src_mac[6];
@@ -216,6 +246,14 @@ private:
   uint8_t d_bss_mac[6];
   uint8_t d_psdu[1528];
 };
+
+int 
+mac::get_encoding(){
+  pthread_mutex_lock(&d_mutex);
+  int tmp = d_encoding;
+  pthread_mutex_unlock(&d_mutex);
+  return tmp;
+}
 
 mac::sptr
 mac::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac) {

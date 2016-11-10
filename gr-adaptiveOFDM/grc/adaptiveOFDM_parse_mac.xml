@@ -4,21 +4,13 @@
   <key>adaptiveOFDM_parse_mac</key>
   <category>[adaptiveOFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.parse_mac($mac, $encoding, $log, $debug)</make>
-  <callback>set_encoding($encoding)</callback>
+  <make>adaptiveOFDM.parse_mac($mac, $log, $debug)</make>
   
   <param>
     <name>MAC</name>
     <key>mac</key>
     <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
     <type>int_vector</type>
-  </param>
-
-  <param>
-    <name>encoding</name>
-    <key>encoding</key>
-    <value>adaptiveOFDM.BPSK_1_2</value>
-    <type>raw</type>
   </param>
 
   <param>
@@ -69,6 +61,12 @@
 
   <source>
     <name>data</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+
+  <source>
+    <name>phy_metadata</name>
     <type>message</type>
     <optional>1</optional>
   </source>

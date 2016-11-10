@@ -577,7 +577,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 268)</value>
+      <value>(424, 248)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -601,10 +601,6 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>encoding</key>
       <value>0</value>
     </param>
   </block>
@@ -679,7 +675,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/GNURadio/resources/prueba_rx.txt</value>
+      <value>/home/investigador/OMICRON-GNURadio/resources/prueba_rx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -722,11 +718,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/GNURadio/resources/prueba_tx.txt</value>
+      <value>/home/investigador/OMICRON-GNURadio/resources/prueba_tx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -969,7 +965,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1169,7 +1165,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2405,12 +2401,6 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_parse_mac_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_mac_0</sink_block_id>
-    <source_key>data</source_key>
-    <sink_key>phy in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_parse_mac_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_1</sink_block_id>
     <source_key>data</source_key>
     <sink_key>pdus</sink_key>
@@ -2420,6 +2410,12 @@
     <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
     <source_key>fer</source_key>
     <sink_key>pdus</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>adaptiveOFDM_parse_mac_0</source_block_id>
+    <sink_block_id>adaptiveOFDM_mac_0</sink_block_id>
+    <source_key>phy_metadata</source_key>
+    <sink_key>phy in</sink_key>
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_stream_spacer_0</source_block_id>

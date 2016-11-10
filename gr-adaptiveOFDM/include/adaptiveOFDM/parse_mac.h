@@ -51,7 +51,7 @@ public:
 	int get_encoding();
 
 	typedef boost::shared_ptr<parse_mac> sptr;
-	static sptr make(std::vector<uint8_t> mac, int e, bool log = false, bool debug = false);
+	static sptr make(std::vector<uint8_t> mac, bool log = false, bool debug = false);
 };
 
 } // namespace adaptiveOFDM

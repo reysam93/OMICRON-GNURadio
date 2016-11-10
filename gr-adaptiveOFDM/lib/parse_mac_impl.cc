@@ -28,16 +28,16 @@ class parse_mac_impl : public parse_mac {
 
 public:
 
-parse_mac_impl(std::vector<uint8_t> mac, int e, bool log, bool debug) :
+parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug) :
     block("parse_mac",
         gr::io_signature::make(0, 0, 0),
         gr::io_signature::make(0, 0, 0)),
     d_log(log), d_last_seq_no(-1),
     d_debug(debug){
 
-  set_encoding(e);
   message_port_register_in(pmt::mp("in"));
   set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
+  message_port_register_out(pmt::mp("phy_metadata"));
   message_port_register_out(pmt::mp("data"));
   message_port_register_out(pmt::mp("fer"));
 
@@ -47,6 +47,9 @@ parse_mac_impl(std::vector<uint8_t> mac, int e, bool log, bool debug) :
   }
 
   pthread_mutex_init(&d_mutex, NULL);
+  d_need_ack = false;
+  d_snr = 0;
+  set_encoding(0);
 }
 
 ~parse_mac_impl() {
@@ -63,7 +66,7 @@ void parse(pmt::pmt_t msg) {
   }
 
   pmt::pmt_t dict = pmt::car(msg);
-  double snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+  d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
 
   msg = pmt::cdr(msg);
 
@@ -91,25 +94,27 @@ void parse(pmt::pmt_t msg) {
   switch((h->frame_control >> 2) & 3) {
     case 0:
       dout << " (MANAGEMENT)" << std::endl;
+
       parse_management((char*)h, data_len);
       break;
     case 1:
       dout << " (CONTROL)" << std::endl;
       parse_control((char*)h, data_len);
+      send_metadata(h->addr1);
       break;
 
     case 2:
       dout << " (DATA)" << std::endl;
       parse_data((char*)h, data_len);
       parse_body((char*)pmt::blob_data(msg), h, data_len);
+      send_metadata(h->addr2);
       break;
 
     default:
       dout << " (unknown)" << std::endl;
       break;
   }
-
-  decide_modulation(snr);
+  decide_modulation(d_snr);
 }
 
 void decide_modulation(double snr){
@@ -228,6 +233,7 @@ void parse_data(char *buf, int length) {
   switch(((h->frame_control) >> 4) & 0xf) {
     case 0:
       dout << "Data";
+      d_need_ack = true;
       break;
     case 1:
       dout << "Data + CF-ACK";
@@ -331,6 +337,7 @@ void parse_control(char *buf, int length) {
       break;
     case 13:
       dout << "ACK";
+      d_need_ack = false;
       break;
     case 14:
       dout << "CF-End";
@@ -352,11 +359,11 @@ void parse_body(char* frame, mac_header *h, int data_len){
   // DATA
   if((((h->frame_control) >> 2) & 63) == 2) {
     print_ascii(frame + 24, data_len - 24);
-    send_data(frame + 24, data_len - 24, h->addr2);
+    send_data(frame + 24, data_len - 24);
   // QoS Data
   } else if((((h->frame_control) >> 2) & 63) == 34) {
     print_ascii(frame + 26, data_len - 26);
-    send_data(frame + 26, data_len - 26, h->addr2);
+    send_data(frame + 26, data_len - 26);
   }
 }
 
@@ -401,15 +408,20 @@ void print_ascii(char* buf, int length) {
   dout << std::endl;
 }
 
-void send_data(char* buf, int length, uint8_t *addr1){
-  pmt::pmt_t dict = pmt::make_dict();
+void send_data(char* buf, int length){
   uint8_t* data = (uint8_t*) buf;
   pmt::pmt_t pdu = pmt::init_u8vector(length, data);
-  pmt::pmt_t sa = pmt::init_u8vector(6, addr1);
+  message_port_pub(pmt::mp("data"), pmt::cons( pmt::PMT_NIL, pdu ));
+}
 
-  dict = pmt::dict_add(dict, pmt::mp("needs_ack"), pmt::from_float(true));
+void send_metadata(uint8_t *addr){
+  pmt::pmt_t dict = pmt::make_dict();
+  pmt::pmt_t sa = pmt::init_u8vector(6, addr);
+  dict = pmt::dict_add(dict, pmt::mp("needs_ack"), pmt::from_bool(d_need_ack));
+  dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_float(d_snr));
   dict = pmt::dict_add(dict, pmt::mp("address"), sa);
-  message_port_pub(pmt::mp("data"), pmt::cons( dict, pdu ));
+  pmt::pmt_t pdu = pmt::init_u8vector(0, (uint8_t*)"");
+  message_port_pub(pmt::mp("phy_metadata"), pmt::cons( dict, pdu ));
 }
 
 bool check_mac(std::vector<uint8_t> mac) {
@@ -428,6 +440,8 @@ private:
   bool d_debug;
   uint8_t d_my_mac[6];
   int d_last_seq_no;
+  double d_snr;
+  bool d_need_ack;
 };
 
 int 
@@ -439,6 +453,6 @@ parse_mac::get_encoding(){
 }
 
 parse_mac::sptr
-parse_mac::make(std::vector<uint8_t> mac, int e, bool log, bool debug) {
-  return gnuradio::get_initial_sptr(new parse_mac_impl(mac, e, log, debug));
+parse_mac::make(std::vector<uint8_t> mac, bool log, bool debug) {
+  return gnuradio::get_initial_sptr(new parse_mac_impl(mac, log, debug));
 }
