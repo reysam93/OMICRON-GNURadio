@@ -46,14 +46,12 @@ parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug) :
     d_my_mac[i] = mac[i];
   }
 
-  pthread_mutex_init(&d_mutex, NULL);
   d_need_ack = false;
   d_snr = 0;
-  set_encoding(0);
 }
 
 ~parse_mac_impl() {
-  pthread_mutex_destroy(&d_mutex);
+
 }
 
 void parse(pmt::pmt_t msg) {
@@ -113,26 +111,6 @@ void parse(pmt::pmt_t msg) {
     default:
       dout << " (unknown)" << std::endl;
       break;
-  }
-  decide_modulation(d_snr);
-}
-
-void decide_modulation(double snr){
-  std::cout << std::endl << "SNR: " << snr << std::endl;
-  if (snr >= MIN_SNR_64QAM) {
-    std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
-    set_encoding(QAM64_2_3);
-  } else if (snr >= MIN_SNR_16QAM) {
-    std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
-    set_encoding(QAM16_1_2);
-  } else if (snr >= MIN_SNR_QPSK) {
-    std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
-    set_encoding(QPSK_1_2);
-  } else if (snr >= MIN_SNR_BPSK) {
-    std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
-    set_encoding(BPSK_1_2);
-  } else {
-    std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
   }
 }
 
@@ -429,12 +407,6 @@ bool check_mac(std::vector<uint8_t> mac) {
   return true;
 }
 
-void set_encoding(int encoding) {
-  pthread_mutex_lock(&d_mutex);
-  d_encoding = encoding;
-  pthread_mutex_unlock(&d_mutex);
-}
-
 private:
   bool d_log;
   bool d_debug;
@@ -443,14 +415,6 @@ private:
   double d_snr;
   bool d_need_ack;
 };
-
-int 
-parse_mac::get_encoding(){
-  pthread_mutex_lock(&d_mutex);
-  int tmp = d_encoding;
-  pthread_mutex_unlock(&d_mutex);
-  return tmp;
-}
 
 parse_mac::sptr
 parse_mac::make(std::vector<uint8_t> mac, bool log, bool debug) {

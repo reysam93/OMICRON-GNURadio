@@ -47,10 +47,8 @@ mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector
 
   message_port_register_out(pmt::mp("phy out"));
   message_port_register_out(pmt::mp("app out"));
-
   message_port_register_in(pmt::mp("app in"));
   set_msg_handler(pmt::mp("app in"), boost::bind(&mac_impl::app_in, this, _1));
-
   message_port_register_in(pmt::mp("phy in"));
   set_msg_handler(pmt::mp("phy in"), boost::bind(&mac_impl::phy_in, this, _1));
 
@@ -63,8 +61,10 @@ mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector
     d_dst_mac[i] = dst_mac[i];
     d_bss_mac[i] = bss_mac[i];
   }
-  pthread_mutex_init(&d_mutex, NULL);
 
+  ack_received = false;
+  pthread_mutex_init(&d_mutex, NULL);
+  set_encoding(0);
 }
 
 ~mac_impl() {
@@ -81,20 +81,24 @@ void phy_in (pmt::pmt_t msg) {
   pmt::pmt_t dict = pmt::car(msg);
   if (pmt::is_dict(dict)) {
     needs_ack = pmt::to_bool(pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_float(false)));
+    double snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+    decide_modulation(snr);
   }
 
   if (needs_ack){
-    //TODO: needs to wait 10 usecs before sending ack. (n time shifts)
-
     pmt::pmt_t elements = pmt::dict_ref(dict, pmt::mp("address"), pmt::make_u8vector(6,0));
     std:std::vector<uint8_t> address = pmt::u8vector_elements(elements);
     if(!check_mac(address)) throw std::invalid_argument("wrong mac address size");
 
     int psdu_length;
     generate_mac_ack_frame(address, &psdu_length);
+
+    //needs to wait 10 usecs before sending ack.
+    usleep(SIFS);
     send_message(psdu_length);
   } else {
-    
+    std::cout << "ACK RECEIVED." << std::endl;
+    ack_received = true;
     /*msg = pmt::cdr(msg);
 
     // strip MAC header
@@ -137,6 +141,12 @@ void app_in (pmt::pmt_t msg) {
   int    psdu_length;
   generate_mac_data_frame(msdu, msg_len, &psdu_length);
   send_message(psdu_length);
+  usleep(TIME_OUT);
+  if (!ack_received){
+    set_encoding(0);
+    std::cout << "NO ACK RECEIVED. RETRANSMITING" << std::endl;
+  }
+  ack_received = false;
 }
 
 void send_message(int psdu_length) {
@@ -245,6 +255,7 @@ private:
   uint8_t d_dst_mac[6];
   uint8_t d_bss_mac[6];
   uint8_t d_psdu[1528];
+  bool ack_received;
 };
 
 int 

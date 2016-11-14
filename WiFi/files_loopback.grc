@@ -184,7 +184,7 @@
     <key>variable_function_probe</key>
     <param>
       <key>block_id</key>
-      <value>adaptiveOFDM_parse_mac_0</value>
+      <value>adaptiveOFDM_mac_0</value>
     </param>
     <param>
       <key>comment</key>
@@ -620,7 +620,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -965,11 +965,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 92)</value>
+      <value>(1072, 92)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1024,7 +1024,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1079,7 +1079,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1165,7 +1165,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>

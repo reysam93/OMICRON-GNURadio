@@ -20,6 +20,7 @@
 
 #include <adaptiveOFDM/api.h>
 #include <gnuradio/block.h>
+#include <unistd.h>
 
 namespace gr {
 namespace adaptiveOFDM {
@@ -40,6 +41,11 @@ public:
 	static const float MIN_SNR_QPSK = 3.532211577698691*3;
 	static const float MIN_SNR_16QAM = 3.532211577698691*15;
 	static const float MIN_SNR_64QAM = 3.532211577698691*63;
+
+	// Time in usecs
+	static const unsigned int SIFS = 10;
+	static const unsigned int SLOT_TIME = 9;
+	static const unsigned int TIME_OUT = 30;
 
 	int d_encoding;
 	pthread_mutex_t d_mutex;
