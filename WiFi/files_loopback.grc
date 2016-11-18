@@ -184,7 +184,7 @@
     <key>variable_function_probe</key>
     <param>
       <key>block_id</key>
-      <value>adaptiveOFDM_mac_0</value>
+      <value>adaptiveOFDM_mac_and_parse_0</value>
     </param>
     <param>
       <key>comment</key>
@@ -503,7 +503,7 @@
     </param>
   </block>
   <block>
-    <key>adaptiveOFDM_mac</key>
+    <key>adaptiveOFDM_mac_and_parse</key>
     <param>
       <key>bss_mac</key>
       <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
@@ -525,12 +525,16 @@
       <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
     </param>
     <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 172)</value>
+      <value>(864, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -538,7 +542,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>adaptiveOFDM_mac_0</value>
+      <value>adaptiveOFDM_mac_and_parse_0</value>
+    </param>
+    <param>
+      <key>log</key>
+      <value>False</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -551,57 +559,6 @@
     <param>
       <key>src_mac</key>
       <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
-    </param>
-  </block>
-  <block>
-    <key>adaptiveOFDM_parse_mac</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(424, 248)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>adaptiveOFDM_parse_mac_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>mac</key>
-      <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -620,7 +577,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -969,7 +926,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1072, 92)</value>
+      <value>(1080, 76)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1024,7 +981,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1079,7 +1036,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1165,7 +1122,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2394,28 +2351,22 @@
     </param>
   </block>
   <connection>
-    <source_block_id>adaptiveOFDM_mac_0</source_block_id>
-    <sink_block_id>wifi_phy_hier_0</sink_block_id>
-    <source_key>phy out</source_key>
-    <sink_key>mac_in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_parse_mac_0</source_block_id>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_1</sink_block_id>
-    <source_key>data</source_key>
+    <source_key>app out</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>adaptiveOFDM_parse_mac_0</source_block_id>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
     <source_key>fer</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>adaptiveOFDM_parse_mac_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_mac_0</sink_block_id>
-    <source_key>phy_metadata</source_key>
-    <sink_key>phy in</sink_key>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>wifi_phy_hier_0</sink_block_id>
+    <source_key>phy out</source_key>
+    <sink_key>mac_in</sink_key>
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_stream_spacer_0</source_block_id>
@@ -2461,7 +2412,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_socket_pdu_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_mac_0</sink_block_id>
+    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>pdus</source_key>
     <sink_key>app in</sink_key>
   </connection>
@@ -2473,7 +2424,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_tagged_stream_to_pdu_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_mac_0</sink_block_id>
+    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>pdus</source_key>
     <sink_key>app in</sink_key>
   </connection>
@@ -2515,9 +2466,9 @@
   </connection>
   <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_parse_mac_0</sink_block_id>
+    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>mac_out</source_key>
-    <sink_key>in</sink_key>
+    <sink_key>phy in</sink_key>
   </connection>
   <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>

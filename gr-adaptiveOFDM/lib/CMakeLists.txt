@@ -32,6 +32,7 @@ list(APPEND adaptiveOFDM_sources
     equalizer/sta.cc
     parse_mac_impl.cc
     mac_impl.cc
+    mac_and_parse_impl.cc
 )
 
 set(adaptiveOFDM_sources "${adaptiveOFDM_sources}" PARENT_SCOPE)

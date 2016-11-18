@@ -79,6 +79,6 @@ list(APPEND inclue_sources
 
 install(
 	FILES ${include_sources}
-    DESTINATION include/adaptiveOFDM
+    mac_and_parse.h DESTINATION include/adaptiveOFDM
     COMPONENT "adaptiveOFDM_delevel"
 )

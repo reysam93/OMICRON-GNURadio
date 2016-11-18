@@ -22,7 +22,6 @@
 #include <adaptiveOFDM/mapper.h>
 #include <gnuradio/block.h>
 
- #include <pthread.h>
 
 
 namespace gr {

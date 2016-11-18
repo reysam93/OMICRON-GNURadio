@@ -184,7 +184,7 @@
     <key>variable_function_probe</key>
     <param>
       <key>block_id</key>
-      <value>adaptiveOFDM_parse_mac_1</value>
+      <value>adaptiveOFDM_mac_0</value>
     </param>
     <param>
       <key>comment</key>
@@ -836,7 +836,7 @@
     </param>
     <param>
       <key>mac</key>
-      <value>[0x40, 0xe2, 0x30, 0xd6, 0xe9, 0xdf]</value>
+      <value>[0x40, 0xe2, 0x30, 0xd6, 0xec, 0x67]</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -844,10 +844,6 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>encoding</key>
       <value>0</value>
     </param>
   </block>

@@ -15,47 +15,201 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <adaptiveOFDM/parse_mac.h>
-#include "utils.h"
 
+#include <adaptiveOFDM/mac_and_parse.h>
 #include <gnuradio/io_signature.h>
 #include <gnuradio/block_detail.h>
-#include <string>
+
+#include "utils.h"
+
+#if defined(__APPLE__)
+#include <architecture/byte_order.h>
+#define htole16(x) OSSwapHostToLittleInt16(x)
+#else
+#include <endian.h>
+#endif
+
+#include <boost/crc.hpp>
+#include <iostream>
+#include <stdexcept>
 
 using namespace gr::adaptiveOFDM;
 
-class parse_mac_impl : public parse_mac {
+class mac_and_parse_impl : public mac_and_parse {
 
 public:
+  mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug) :
+      block("mac_and_parse",
+        gr::io_signature::make(0, 0, 0),
+        gr::io_signature::make(0, 0, 0)),
+      d_seq_nr(0), d_last_seq_no(-1),
+      d_debug(debug), d_log(log), d_snr(0) {
 
-  parse_mac_impl(std::vector<uint8_t> mac, bool log, bool debug) :
-      block("parse_mac",
-          gr::io_signature::make(0, 0, 0),
-          gr::io_signature::make(0, 0, 0)),
-      d_log(log), d_last_seq_no(-1),
-      d_debug(debug){
-
-    message_port_register_in(pmt::mp("in"));
-    set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
-    message_port_register_out(pmt::mp("phy_metadata"));
-    message_port_register_out(pmt::mp("data"));
+    ack_received = false;
+    message_port_register_out(pmt::mp("phy out"));
     message_port_register_out(pmt::mp("fer"));
+    message_port_register_out(pmt::mp("app out"));
+    message_port_register_in(pmt::mp("app in"));
+    message_port_register_in(pmt::mp("phy in"));
+    set_msg_handler(pmt::mp("phy in"), boost::bind(&mac_and_parse_impl::phy_in, this, _1));
+    set_msg_handler(pmt::mp("app in"), boost::bind(&mac_and_parse_impl::app_in, this, _1));
 
-    if(!check_mac(mac)) throw std::invalid_argument("wrong mac address size");
+    if(!check_mac(src_mac)) throw std::invalid_argument("wrong mac address size");
+    if(!check_mac(dst_mac)) throw std::invalid_argument("wrong mac address size");
+    if(!check_mac(bss_mac)) throw std::invalid_argument("wrong mac address size");
+
     for(int i = 0; i < 6; i++) {
-      d_my_mac[i] = mac[i];
+      d_src_mac[i] = src_mac[i];
+      d_dst_mac[i] = dst_mac[i];
+      d_bss_mac[i] = bss_mac[i];
     }
 
-    d_need_ack = false;
-    d_snr = 0;
+    pthread_mutex_init(&d_mutex, NULL);
+    set_encoding(0);
+    std::cerr << "INIT DONE" << std::endl;
   }
 
-  ~parse_mac_impl() {
-
+  ~mac_and_parse_impl() {
+    pthread_mutex_destroy(&d_mutex);
   }
 
-  void parse(pmt::pmt_t msg) {
+  /*** MAC implementation ***/
 
+  void app_in (pmt::pmt_t msg) {
+    std::cerr << "APP IN MSG RECEIVED" << std::endl;
+    size_t       msg_len;
+    const char   *msdu;
+    std::string  str;
+
+    if(pmt::is_symbol(msg)) {
+
+      str = pmt::symbol_to_string(msg);
+      msg_len = str.length();
+      msdu = str.data();
+
+    } else if(pmt::is_pair(msg)) {
+
+      msg_len = pmt::blob_length(pmt::cdr(msg));
+      msdu = reinterpret_cast<const char *>(pmt::blob_data(pmt::cdr(msg)));
+
+    } else {
+      throw std::invalid_argument("MAC expects PDUs or strings");
+      return;
+    }
+
+    if(msg_len > MAX_PAYLOAD_SIZE) {
+      throw std::invalid_argument("Frame too large (> 1500)");
+    }
+
+    // make MAC frame
+    int    psdu_length;
+    generate_mac_data_frame(msdu, msg_len, &psdu_length);
+    send_message(psdu_length);
+    std::cerr << "WAITING TIME OUT" << std::endl;
+    usleep(100);
+    std::cerr << "TIME OUT ENDED" << std::endl;
+
+    //SE BLOQUEA POR UN DOBLE CIERRE
+    // HAY UN LOCK DENTRO DE SET ENCODING!!
+    pthread_mutex_lock(&d_mutex);
+    bool tmp_ack_received = ack_received;
+    pthread_mutex_unlock(&d_mutex);
+
+    std::cerr << "LOCK" << std::endl;
+    if (!tmp_ack_received){
+      std::cerr << "NO ACK" << std::endl;
+      set_encoding(0);
+      std::cerr << "ENCODING SET" << std::endl;
+      std::cout << "NO ACK RECEIVED. CODING SET TO 0." << std::endl;
+    }
+    std::cerr << "ACK CHECK" << std::endl;
+    pthread_mutex_lock(&d_mutex);
+    ack_received = false;
+    pthread_mutex_unlock(&d_mutex);
+    std::cerr << "BEFORE UNLOCKING" << std::endl;
+    
+    std::cerr << "END OF APP IN" << std::endl;
+  }
+
+  void send_message(int psdu_length) {
+    // dict
+    pmt::pmt_t dict = pmt::make_dict();
+    dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
+
+    // blob
+    pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
+
+    // pdu
+    message_port_pub(pmt::mp("phy out"), pmt::cons(dict, mac));
+  }
+
+  void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size) {
+
+    // mac header
+    mac_header header;
+    header.frame_control = 0x0008;
+    header.duration = 0x0000;
+
+    for(int i = 0; i < 6; i++) {
+      header.addr1[i] = d_dst_mac[i];
+      header.addr2[i] = d_src_mac[i];
+      header.addr3[i] = d_bss_mac[i];
+    }
+
+    header.seq_nr = 0;
+    for (int i = 0; i < 12; i++) {
+      if(d_seq_nr & (1 << i)) {
+        header.seq_nr |=  (1 << (i + 4));
+      }
+    }
+    header.seq_nr = htole16(header.seq_nr);
+    d_seq_nr++;
+
+    //header size is 24, plus 4 for FCS means 28 bytes
+    *psdu_size = 28 + msdu_size;
+
+    //copy mac header into psdu
+    std::memcpy(d_psdu, &header, 24);
+    //copy msdu into psdu
+    memcpy(d_psdu + 24, msdu, msdu_size);
+    //compute and store fcs
+    boost::crc_32_type result;
+    result.process_bytes(d_psdu, msdu_size + 24);
+
+    uint32_t fcs = result.checksum();
+    memcpy(d_psdu + msdu_size + 24, &fcs, sizeof(uint32_t));
+  }
+
+  void generate_mac_ack_frame(uint8_t ra[], int *psdu_size){
+    mac_ack_header header;
+    header.frame_control = 0x00D4;
+    header.duration = 0x0000;
+
+    for(int i = 0; i < 6; i++) {
+      header.ra[i] = ra[i];
+    }
+
+    *psdu_size = 10;
+    std::memcpy(d_psdu, &header, *psdu_size);
+    boost::crc_32_type result;
+    result.process_bytes(d_psdu, *psdu_size);
+
+    uint32_t fcs = result.checksum();
+    memcpy(d_psdu + *psdu_size, &fcs, sizeof(uint32_t));
+
+    // Plus 4bytes of FCS
+    *psdu_size += 4;
+  }
+
+
+  /*** Parse MAC Implementation ***/
+
+  void phy_in (pmt::pmt_t msg) {
+    std::cerr << "PHY IN" << std::endl;
+    // this must be a pair
+    if (!pmt::is_blob(pmt::cdr(msg))) {
+      throw std::runtime_error("PMT must be blob");
+    }
     if(pmt::is_eof_object(msg)) {
       detail().get()->set_done(true);
       return;
@@ -63,15 +217,16 @@ public:
       return;
     }
 
+    std::cerr << "CHECK PASSED" << std::endl;
     pmt::pmt_t dict = pmt::car(msg);
     d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
-
+    decide_modulation();
     msg = pmt::cdr(msg);
 
     int data_len = pmt::blob_length(msg);
     mac_header *h = (mac_header*)pmt::blob_data(msg);
 
-    if (!equal_mac(d_my_mac, h->addr1)){
+    if (!equal_mac(d_src_mac, h->addr1)){
       dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
       return;
     }
@@ -80,38 +235,38 @@ public:
 
     dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
     dout << "=========================================" << std::endl;
-    /*if(data_len < 20) {
-      dout << "frame too short to parse (<20)" << std::endl;
-      return;
-    }*/
 
     #define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
     dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
     dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
 
+    std::cerr << "BEFORE PARSING" << std::endl;
     switch((h->frame_control >> 2) & 3) {
       case 0:
         dout << " (MANAGEMENT)" << std::endl;
-
         parse_management((char*)h, data_len);
         break;
       case 1:
         dout << " (CONTROL)" << std::endl;
         parse_control((char*)h, data_len);
-        send_metadata(h->addr1);
         break;
 
       case 2:
         dout << " (DATA)" << std::endl;
         parse_data((char*)h, data_len);
         parse_body((char*)pmt::blob_data(msg), h, data_len);
-        send_metadata(h->addr2);
+        int psdu_length;
+        generate_mac_ack_frame(h->addr2, &psdu_length);
+        //needs to wait 10 usecs before sending ack.
+        usleep(SIFS);
+        send_message(psdu_length);
         break;
 
       default:
         dout << " (unknown)" << std::endl;
         break;
     }
+    std::cerr << "DONE PARSING" << std::endl;
   }
 
   void parse_management(char *buf, int length) {
@@ -190,7 +345,7 @@ public:
 
     dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
     dout << "My mac: ";
-    print_mac_address(d_my_mac, true);
+    print_mac_address(d_src_mac, true);
     dout << "mac 1: ";
     print_mac_address(h->addr1, true);
     dout << "mac 2: ";
@@ -211,7 +366,6 @@ public:
     switch(((h->frame_control) >> 4) & 0xf) {
       case 0:
         dout << "Data";
-        d_need_ack = true;
         break;
       case 1:
         dout << "Data + CF-ACK";
@@ -266,7 +420,7 @@ public:
     int seq_no = int(h->seq_nr >> 4);
     dout << "seq nr: " << seq_no << std::endl;
     dout << "My mac: ";
-    print_mac_address(d_my_mac, true);
+    print_mac_address(d_src_mac, true);
     dout << "mac 1: ";
     print_mac_address(h->addr1, true);
     dout << "mac 2: ";
@@ -315,7 +469,9 @@ public:
         break;
       case 13:
         dout << "ACK";
-        d_need_ack = false;
+        pthread_mutex_lock(&d_mutex);
+        ack_received = true;
+        pthread_mutex_unlock(&d_mutex);
         break;
       case 14:
         dout << "CF-End";
@@ -351,16 +507,13 @@ public:
     }
 
     std::cout << std::setfill('0') << std::hex << std::setw(2);
-
     for(int i = 0; i < 6; i++) {
       std::cout << (int)addr[i];
       if(i != 5) {
         std::cout << ":";
       }
     }
-
     std::cout << std::dec;
-
     if(new_line) {
       std::cout << std::endl;
     }
@@ -389,17 +542,7 @@ public:
   void send_data(char* buf, int length){
     uint8_t* data = (uint8_t*) buf;
     pmt::pmt_t pdu = pmt::init_u8vector(length, data);
-    message_port_pub(pmt::mp("data"), pmt::cons( pmt::PMT_NIL, pdu ));
-  }
-
-  void send_metadata(uint8_t *addr){
-    pmt::pmt_t dict = pmt::make_dict();
-    pmt::pmt_t sa = pmt::init_u8vector(6, addr);
-    dict = pmt::dict_add(dict, pmt::mp("needs_ack"), pmt::from_bool(d_need_ack));
-    dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_float(d_snr));
-    dict = pmt::dict_add(dict, pmt::mp("address"), sa);
-    pmt::pmt_t pdu = pmt::init_u8vector(0, (uint8_t*)"");
-    message_port_pub(pmt::mp("phy_metadata"), pmt::cons( dict, pdu ));
+    message_port_pub(pmt::mp("app out"), pmt::cons( pmt::PMT_NIL, pdu ));
   }
 
   bool check_mac(std::vector<uint8_t> mac) {
@@ -407,16 +550,56 @@ public:
     return true;
   }
 
+  void decide_modulation(){
+    std::cout << std::endl << "SNR: " << d_snr << std::endl;
+    if (d_snr >= MIN_SNR_64QAM) {
+      std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
+      set_encoding(QAM64_2_3);
+    } else if (d_snr >= MIN_SNR_16QAM) {
+      std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
+      set_encoding(QAM16_1_2);
+    } else if (d_snr >= MIN_SNR_QPSK) {
+      std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
+      set_encoding(QPSK_1_2);
+    } else if (d_snr >= MIN_SNR_BPSK) {
+      std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
+      set_encoding(BPSK_1_2);
+    } else {
+      std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+    }
+  }
+
+  void set_encoding(int encoding) {
+    pthread_mutex_lock(&d_mutex);
+    d_encoding = encoding;
+    pthread_mutex_unlock(&d_mutex);
+  }
+
 private:
+  // For MAC
+  uint16_t d_seq_nr;
+  uint8_t d_src_mac[6];
+  uint8_t d_dst_mac[6];
+  uint8_t d_bss_mac[6];
+  uint8_t d_psdu[1528];
+  bool ack_received;
+
+  // For Parse 
+  double d_snr;
   bool d_log;
   bool d_debug;
-  uint8_t d_my_mac[6];
   int d_last_seq_no;
-  double d_snr;
-  bool d_need_ack;
 };
 
-parse_mac::sptr
-parse_mac::make(std::vector<uint8_t> mac, bool log, bool debug) {
-  return gnuradio::get_initial_sptr(new parse_mac_impl(mac, log, debug));
+int 
+mac_and_parse::get_encoding(){
+  pthread_mutex_lock(&d_mutex);
+  int tmp = d_encoding;
+  pthread_mutex_unlock(&d_mutex);
+  return tmp;
+}
+
+mac_and_parse::sptr
+mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug) {
+  return gnuradio::get_initial_sptr(new mac_and_parse_impl(src_mac, dst_mac, bss_mac, log, debug));
 }

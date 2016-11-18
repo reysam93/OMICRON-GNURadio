@@ -80,7 +80,7 @@ void phy_in (pmt::pmt_t msg) {
   bool needs_ack = false;
   pmt::pmt_t dict = pmt::car(msg);
   if (pmt::is_dict(dict)) {
-    needs_ack = pmt::to_bool(pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_float(false)));
+    needs_ack = pmt::to_bool(pmt::dict_ref(dict, pmt::mp("needs_ack"), pmt::from_bool(false)));
     double snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
     decide_modulation(snr);
   }
@@ -141,10 +141,10 @@ void app_in (pmt::pmt_t msg) {
   int    psdu_length;
   generate_mac_data_frame(msdu, msg_len, &psdu_length);
   send_message(psdu_length);
-  usleep(TIME_OUT);
+  usleep(1000);
   if (!ack_received){
     set_encoding(0);
-    std::cout << "NO ACK RECEIVED. RETRANSMITING" << std::endl;
+    std::cout << "NO ACK RECEIVED. CODING SET TO 0." << std::endl;
   }
   ack_received = false;
 }
