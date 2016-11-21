@@ -184,7 +184,7 @@
     <key>variable_function_probe</key>
     <param>
       <key>block_id</key>
-      <value>adaptiveOFDM_mac_0</value>
+      <value>adaptiveOFDM_mac_and_parse_0</value>
     </param>
     <param>
       <key>comment</key>
