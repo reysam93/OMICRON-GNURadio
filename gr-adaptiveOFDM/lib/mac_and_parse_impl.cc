@@ -66,7 +66,6 @@ public:
 
     pthread_mutex_init(&d_mutex, NULL);
     set_encoding(0);
-    std::cerr << "INIT DONE" << std::endl;
   }
 
   ~mac_and_parse_impl() {
@@ -76,7 +75,6 @@ public:
   /*** MAC implementation ***/
 
   void app_in (pmt::pmt_t msg) {
-    std::cerr << "APP IN MSG RECEIVED" << std::endl;
     size_t       msg_len;
     const char   *msdu;
     std::string  str;
@@ -105,30 +103,19 @@ public:
     int    psdu_length;
     generate_mac_data_frame(msdu, msg_len, &psdu_length);
     send_message(psdu_length);
-    std::cerr << "WAITING TIME OUT" << std::endl;
-    usleep(100);
-    std::cerr << "TIME OUT ENDED" << std::endl;
+    usleep(TIME_OUT);
 
-    //SE BLOQUEA POR UN DOBLE CIERRE
-    // HAY UN LOCK DENTRO DE SET ENCODING!!
+    bool reset_coding = false;
     pthread_mutex_lock(&d_mutex);
-    bool tmp_ack_received = ack_received;
-    pthread_mutex_unlock(&d_mutex);
-
-    std::cerr << "LOCK" << std::endl;
-    if (!tmp_ack_received){
-      std::cerr << "NO ACK" << std::endl;
-      set_encoding(0);
-      std::cerr << "ENCODING SET" << std::endl;
-      std::cout << "NO ACK RECEIVED. CODING SET TO 0." << std::endl;
+    if (!ack_received){
+      reset_coding = true;
+      dout << "NO ACK RECEIVED. CODING SET TO 0." << std::endl;
     }
-    std::cerr << "ACK CHECK" << std::endl;
-    pthread_mutex_lock(&d_mutex);
     ack_received = false;
     pthread_mutex_unlock(&d_mutex);
-    std::cerr << "BEFORE UNLOCKING" << std::endl;
-    
-    std::cerr << "END OF APP IN" << std::endl;
+    if (reset_coding){
+      set_encoding(0);
+    } 
   }
 
   void send_message(int psdu_length) {
