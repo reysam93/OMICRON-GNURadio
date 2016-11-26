@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<block>
+  <name>mapper</name>
+  <key>frequencyAdaptiveOFDM_mapper</key>
+  <category>[frequencyAdaptiveOFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <make>frequencyAdaptiveOFDM.mapper($encoding, $debug)</make>
+
+  <param>
+    <name>Encoding</name>
+    <key>encoding</key>
+    <value>ieee802_11.BPSK_1_2</value>
+    <type>int</type>
+
+    <option>
+      <name>BPSK 1/2</name>
+      <key>0</key>
+    </option>
+    <option>
+      <name>QPSK 1/2</name>
+      <key>1</key>
+    </option>
+    <option>
+      <name>16QAM 1/2</name>
+      <key>2</key>
+    </option>
+    <option>
+      <name>64QAM 1/2</name>
+      <key>3</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Debug</name>
+    <key>debug</key>
+    <value>False</value>
+    <type>bool</type>
+
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <check>$encoding in range(4)</check>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+    <nports>1</nports>
+  </source>
+</block>
