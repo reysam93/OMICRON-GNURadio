@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2016 	Samuel Rey <samuel.rey.escudero@gmail.com>
+ *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +19,32 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ifndef INCLUDED_FREQUENCYADAPTIVEOFDM_SIGNAL_FIELD_IMPL_H
+#define INCLUDED_FREQUENCYADAPTIVEOFDM_SIGNAL_FIELD_IMPL_H
 
-#include <gnuradio/io_signature.h>
 #include <frequencyAdaptiveOFDM/signal_field.h>
+#include "utils.h"
 
 namespace gr {
-  namespace frequencyAdaptiveOFDM {
+namespace frequencyAdaptiveOFDM {
 
-    signal_field::signal_field()
-    {
-    }
+class signal_field_impl : public signal_field
+{
+public:
+	signal_field_impl();
+	~signal_field_impl();
 
-    signal_field::~signal_field()
-    {
-    }
+	bool header_formatter(long packet_len, unsigned char *out,
+			const std::vector<tag_t> &tags);
 
-  } /* namespace frequencyAdaptiveOFDM */
-} /* namespace gr */
+	bool header_parser(const unsigned char *header,
+			std::vector<tag_t> &tags);
+private:
+	int get_bit(int b, int i);
+	void generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm);
+};
 
+} // namespace frequencyAdaptiveOFDM
+} // namespace gr
+
+#endif /* INCLUDED_FREQUENCYADAPTIVEOFDM_SIGNAL_FIELD_IMPL_H */

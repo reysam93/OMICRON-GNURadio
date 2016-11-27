@@ -27,7 +27,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND frequencyAdaptiveOFDM_sources
     mapper_impl.cc
-    signal_field.cc
+    signal_field_impl.cc
+    utils.cc
 )
 
 set(frequencyAdaptiveOFDM_sources "${frequencyAdaptiveOFDM_sources}" PARENT_SCOPE)

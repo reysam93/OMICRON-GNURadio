@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
+ *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +24,24 @@
 #define INCLUDED_FREQUENCYADAPTIVEOFDM_SIGNAL_FIELD_H
 
 #include <frequencyAdaptiveOFDM/api.h>
+#include <gnuradio/digital/packet_header_default.h>
 
+
+/*
+import frequencyAdaptiveOFDM
+help(frequencyAdaptiveOFDM)
+*/
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
-    /*!
-     * \brief <+description+>
-     *
-     */
-    class FREQUENCYADAPTIVEOFDM_API signal_field
+    class FREQUENCYADAPTIVEOFDM_API signal_field : virtual public digital::packet_header_default
     {
     public:
+      typedef boost::shared_ptr<signal_field> sptr;
+      static sptr make();
+
+    protected:
       signal_field();
-      ~signal_field();
-    private:
     };
 
   } // namespace frequencyAdaptiveOFDM

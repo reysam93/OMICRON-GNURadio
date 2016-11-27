@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <block>
-  <name>mapper</name>
+  <name>WiFi Mapper</name>
   <key>frequencyAdaptiveOFDM_mapper</key>
-  <category>[frequencyAdaptiveOFDM]</category>
+  <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
   <make>frequencyAdaptiveOFDM.mapper($encoding, $debug)</make>
 

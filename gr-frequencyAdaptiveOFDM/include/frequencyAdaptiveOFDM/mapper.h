@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
+ *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,28 +26,24 @@
 #include <frequencyAdaptiveOFDM/api.h>
 #include <gnuradio/block.h>
 
+
+enum Encoding {
+  BPSK_1_2  = 0,
+  QPSK_1_2  = 1,
+  QAM16_1_2  = 2,
+  QAM64_1_2 = 3,
+};
+
+
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup frequencyAdaptiveOFDM
-     *
-     */
     class FREQUENCYADAPTIVEOFDM_API mapper : virtual public gr::block
     {
      public:
       typedef boost::shared_ptr<mapper> sptr;
-
-      /*!
-       * \brief Return a shared_ptr to a new instance of frequencyAdaptiveOFDM::mapper.
-       *
-       * To avoid accidental use of raw pointers, frequencyAdaptiveOFDM::mapper's
-       * constructor is in a private implementation
-       * class. frequencyAdaptiveOFDM::mapper::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(int encoding, bool debug);
+      static sptr make(Encoding encoding, bool debug);
+      virtual void set_encoding(Encoding encoding) = 0;
     };
 
   } // namespace frequencyAdaptiveOFDM
