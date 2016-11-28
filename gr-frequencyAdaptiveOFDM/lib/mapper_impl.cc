@@ -177,10 +177,11 @@ namespace gr {
 
     void 
     mapper_impl::set_encoding(Encoding encoding) {
+      if (d_debug){
+        std::cout << "MAPPER: encoding: " << encoding << std::endl;
+      }
 
-      std::cout << "MAPPER: encoding: " << encoding << std::endl;
       gr::thread::scoped_lock lock(d_mutex);
-
       d_ofdm = ofdm_param(encoding);
     }
 

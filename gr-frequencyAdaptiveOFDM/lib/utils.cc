@@ -32,7 +32,6 @@ ofdm_param::ofdm_param(Encoding e) {
 			rate_field = 0x0D; // 0b00001101
 			break;
 
-
 		case QPSK_1_2:
 			n_bpsc = 2;
 			n_cbps = 96;
@@ -144,37 +143,21 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 
 	int mod;
 
-	/*for (int i = 0; i < frame.n_data_bits * 2; i++) {
+	for (int i = 0; i < frame.n_data_bits * 2; i++) {
 		switch(ofdm.encoding) {
 			case BPSK_1_2:
 			case QPSK_1_2:
 			case QAM16_1_2:
+			case QAM64_1_2:
 				*out = in[i];
 				out++;
 				break;
 
-			case QAM64_2_3:
-				if (i % 4 != 3) {
-					*out = in[i];
-					out++;
-				}
-				break;
-
-			case BPSK_3_4:
-			case QPSK_3_4:
-			case QAM16_3_4:
-			case QAM64_3_4:
-				mod = i % 6;
-				if (!(mod == 3 || mod == 4)) {
-					*out = in[i];
-					out++;
-				}
-				break;
 			defaut:
 				assert(false);
 				break;
 		}
-	}*/
+	}
 }
 
 

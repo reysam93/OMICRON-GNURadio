@@ -23,5 +23,6 @@
 install(FILES
     api.h
     mapper.h
-    signal_field.h DESTINATION include/frequencyAdaptiveOFDM
+    signal_field.h
+    chunks_to_symbols.h DESTINATION include/frequencyAdaptiveOFDM
 )

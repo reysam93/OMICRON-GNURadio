@@ -47,7 +47,7 @@ int signal_field_impl::get_bit(int b, int i) {
 void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm) {
 
 	//data bits of the signal header
-	char *signal_header = (char *) malloc(sizeof(char) * 24);
+	char *signal_header = (char *) malloc(sizeof(char) * 28);
 
 	//signal header after...
 	//convolutional encoding
@@ -57,38 +57,47 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 
 	int length = frame.psdu_size;
 
-	// first 4 bits represent the modulation and coding scheme
-	signal_header[ 0] = get_bit(ofdm.rate_field, 3);
-	signal_header[ 1] = get_bit(ofdm.rate_field, 2);
-	signal_header[ 2] = get_bit(ofdm.rate_field, 1);
-	signal_header[ 3] = get_bit(ofdm.rate_field, 0);
-	// 5th bit is reserved and must be set to 0
+
+	// NOW ASSUMING ALWAIS BPSK AMD IGNORING ENCODING
+	// TODO: USE ENCODING
+	// first 8 bits represent the modulation of the 4 resource blocks
+	signal_header[ 0] = 0;//get_bit(ofdm.rate_field, 3);
+	signal_header[ 1] = 0;//get_bit(ofdm.rate_field, 2);
+	signal_header[ 2] = 0;
+	signal_header[ 3] = 0;
 	signal_header[ 4] = 0;
+	signal_header[ 5] = 0;
+	signal_header[ 6] = 0;
+	signal_header[ 7] = 0;
+	
+	// 8th bit is reserved and must be set to 0
+	signal_header[ 8] = 0;
 	// then 12 bits represent the length
-	signal_header[ 5] = get_bit(length,  0);
-	signal_header[ 6] = get_bit(length,  1);
-	signal_header[ 7] = get_bit(length,  2);
-	signal_header[ 8] = get_bit(length,  3);
-	signal_header[ 9] = get_bit(length,  4);
-	signal_header[10] = get_bit(length,  5);
-	signal_header[11] = get_bit(length,  6);
-	signal_header[12] = get_bit(length,  7);
-	signal_header[13] = get_bit(length,  8);
-	signal_header[14] = get_bit(length,  9);
-	signal_header[15] = get_bit(length, 10);
-	signal_header[16] = get_bit(length, 11);
-	//18-th bit is the parity bit for the first 17 bits
+	signal_header[ 9] = get_bit(length,  0);
+	signal_header[10] = get_bit(length,  1);
+	signal_header[11] = get_bit(length,  2);
+	signal_header[12] = get_bit(length,  3);
+	signal_header[13] = get_bit(length,  4);
+	signal_header[14] = get_bit(length,  5);
+	signal_header[15] = get_bit(length,  6);
+	signal_header[16] = get_bit(length,  7);
+	signal_header[17] = get_bit(length,  8);
+	signal_header[18] = get_bit(length,  9);
+	signal_header[19] = get_bit(length, 10);
+	signal_header[20] = get_bit(length, 11);
+
+	//21-st bit is the parity bit for the first 20 bits
 	int sum = 0;
-	for(int i = 0; i < 17; i++) {
+	for(int i = 0; i < 20; i++) {
 		if(signal_header[i]) {
 			sum++;
 		}
 	}
-	signal_header[17] = sum % 2;
+	signal_header[21] = sum % 2;
 
 	// last 6 bits must be set to 0
 	for (int i = 0; i < 6; i++) {
-		signal_header[18 + i] = 0;
+		signal_header[22 + i] = 0;
 	}
 
 	ofdm_param signal_ofdm(BPSK_1_2);

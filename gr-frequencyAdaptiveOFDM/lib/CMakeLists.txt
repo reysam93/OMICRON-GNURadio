@@ -29,6 +29,7 @@ list(APPEND frequencyAdaptiveOFDM_sources
     mapper_impl.cc
     signal_field_impl.cc
     utils.cc
+    chunks_to_symbols_impl.cc
 )
 
 set(frequencyAdaptiveOFDM_sources "${frequencyAdaptiveOFDM_sources}" PARENT_SCOPE)

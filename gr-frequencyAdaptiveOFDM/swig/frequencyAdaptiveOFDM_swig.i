@@ -12,6 +12,7 @@
 %{
 #include "frequencyAdaptiveOFDM/mapper.h"
 #include "frequencyAdaptiveOFDM/signal_field.h"
+#include "frequencyAdaptiveOFDM/chunks_to_symbols.h"
 %}
 
 %include "gnuradio/digital/packet_header_default.h"
@@ -25,3 +26,6 @@ GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, mapper);
 signal_field_sptr.__repr__ = lambda self: "<signal_field>"
 signal_field = signal_field.make;
 %}
+
+%include "frequencyAdaptiveOFDM/chunks_to_symbols.h"
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, chunks_to_symbols);

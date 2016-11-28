@@ -19,5 +19,5 @@
 
 install(FILES
     frequencyAdaptiveOFDM_mapper.xml
-    DESTINATION share/gnuradio/grc/blocks
+    frequencyAdaptiveOFDM_chunks_to_symbols.xml DESTINATION share/gnuradio/grc/blocks
 )

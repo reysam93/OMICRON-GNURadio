@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<block>
+  <name>chunks_to_symbols</name>
+  <key>frequencyAdaptiveOFDM_chunks_to_symbols</key>
+  <category>[Frequency Adaptive OFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <import>import ieee802-11</import>
+  <make>frequencyAdaptiveOFDM.chunks_to_symbols()</make>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+    <nports>1</nports>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <nports>1</nports>
+  </source>
+</block>

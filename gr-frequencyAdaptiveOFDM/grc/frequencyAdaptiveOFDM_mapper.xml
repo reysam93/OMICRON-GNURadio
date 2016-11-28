@@ -5,7 +5,8 @@
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
   <make>frequencyAdaptiveOFDM.mapper($encoding, $debug)</make>
-
+  <callback>set_encoding($encoding)</callback>
+  
   <param>
     <name>Encoding</name>
     <key>encoding</key>
