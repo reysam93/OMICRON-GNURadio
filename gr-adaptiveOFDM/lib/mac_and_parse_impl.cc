@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
- *                          Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
+ * Copyright (C) 2013, 2016   Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
+ *                            Bastian Bloessl <bloessl@ccs-labs.org>
+ *                          
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -192,7 +193,6 @@ public:
   /*** Parse MAC Implementation ***/
 
   void phy_in (pmt::pmt_t msg) {
-    std::cerr << "PHY IN" << std::endl;
     // this must be a pair
     if (!pmt::is_blob(pmt::cdr(msg))) {
       throw std::runtime_error("PMT must be blob");
@@ -204,7 +204,6 @@ public:
       return;
     }
 
-    std::cerr << "CHECK PASSED" << std::endl;
     pmt::pmt_t dict = pmt::car(msg);
     d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
     decide_modulation();
@@ -227,7 +226,6 @@ public:
     dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
     dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
 
-    std::cerr << "BEFORE PARSING" << std::endl;
     switch((h->frame_control >> 2) & 3) {
       case 0:
         dout << " (MANAGEMENT)" << std::endl;
@@ -253,7 +251,6 @@ public:
         dout << " (unknown)" << std::endl;
         break;
     }
-    std::cerr << "DONE PARSING" << std::endl;
   }
 
   void parse_management(char *buf, int length) {
