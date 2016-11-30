@@ -33,7 +33,7 @@ if __name__ == '__main__':
     root, inp = sys.argv[1:3]
     for sig in sys.argv[3:]:
         name = re.sub ('X+', sig, root)
-        d = build_utils.standard_dict(name, sig, 'ieee802_11')
+        d = build_utils.standard_dict(name, sig, 'adaptiveOFDM')
         build_utils.expand_template(d, inp)
 
 ")

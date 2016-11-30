@@ -17,5 +17,6 @@
 %include "adaptiveOFDM/parse_mac.h"
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, parse_mac);
 %include "adaptiveOFDM/mac.h"
-GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mac);%include "adaptiveOFDM/mac_and_parse.h"
+GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mac);
+%include "adaptiveOFDM/mac_and_parse.h"
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mac_and_parse);
