@@ -52,14 +52,16 @@ struct mac_ack_header {
  */
 class ofdm_param {
 public:
-	ofdm_param(Encoding e);
+	ofdm_param(std::vector<int> pilots_enc);
 
 	// data rate
-	Encoding encoding;
+	std::vector<int> resource_blocks_e;
 	// rate field of the SIGNAL header
 	char     rate_field;
-	// number of coded bits per sub carrier
+	// mean number of coded bits per sub carrier
 	int      n_bpsc;
+	// number of coded bits per carrier resource block
+	int	 	 n_bpcrb[4];
 	// number of coded bits per OFDM symbol
 	int      n_cbps;
 	// number of data bits per OFDM symbol

@@ -22,7 +22,7 @@
 #define INCLUDED_FREQUENCYADAPTIVEOFDM_CHUNKS_TO_SYMBOLS_IMPL_H
 
 #include <frequencyAdaptiveOFDM/chunks_to_symbols.h>
-#include <ieee802-11/constellations.h>
+#include <frequencyAdaptiveOFDM/constellations.h>
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -30,7 +30,7 @@ namespace gr {
     class chunks_to_symbols_impl : public chunks_to_symbols
     {
      private:
-        boost::shared_ptr<gr::digital::constellation> d_mapping;
+        boost::shared_ptr<gr::digital::constellation> d_mapping[4];
         constellation_bpsk::sptr d_bpsk;
         constellation_qpsk::sptr d_qpsk;
         constellation_16qam::sptr d_16qam;

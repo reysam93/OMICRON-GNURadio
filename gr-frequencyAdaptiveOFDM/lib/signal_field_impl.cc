@@ -100,7 +100,8 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 		signal_header[22 + i] = 0;
 	}
 
-	ofdm_param signal_ofdm(BPSK_1_2);
+	std::vector<int> resource_block_e (4, 0);
+	ofdm_param signal_ofdm(resource_block_e);
 	frame_param signal_param(signal_ofdm, 0);
 
 	// convolutional encoding (scrambling is not needed)
@@ -117,14 +118,14 @@ bool signal_field_impl::header_formatter(long packet_len, unsigned char *out, co
 {
 	bool encoding_found = false;
 	bool len_found = false;
-	int encoding = 0;
+	std::vector<int> encoding;
 	int len = 0;
 
 	// read tags
-	for(int i = 0; i < tags.size(); i++) {
+	for (int i = 0; i < tags.size(); i++) {
 		if(pmt::eq(tags[i].key, pmt::mp("encoding"))) {
 			encoding_found = true;
-			encoding = pmt::to_long(tags[i].value);
+			encoding = pmt::s32vector_elements(tags[i].value);
 		} else if(pmt::eq(tags[i].key, pmt::mp("psdu_len"))) {
 			len_found = true;
 			len = pmt::to_long(tags[i].value);
@@ -136,7 +137,7 @@ bool signal_field_impl::header_formatter(long packet_len, unsigned char *out, co
 		return false;
 	}
 
-	ofdm_param ofdm((Encoding)encoding);
+	ofdm_param ofdm(encoding);
 	frame_param frame(ofdm, len);
 
 	generate_signal_field((char*)out, frame, ofdm);

@@ -30,23 +30,23 @@ namespace gr {
   namespace frequencyAdaptiveOFDM {
 
     mapper::sptr
-    mapper::make(Encoding encoding, bool debug)
+    mapper::make(std::vector<int> pilots_enc, bool debug)
     {
       return gnuradio::get_initial_sptr
-        (new mapper_impl(encoding, debug));
+        (new mapper_impl(pilots_enc, debug));
     }
 
-    mapper_impl::mapper_impl(Encoding encoding, bool debug)
+    mapper_impl::mapper_impl(std::vector<int> pilots_enc, bool debug)
       : gr::block("mapper",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(1, 1, sizeof(char))),
           d_symbols_offset(0),
           d_symbols(NULL),
           d_debug(debug),
-          d_ofdm(encoding)
+          d_ofdm(pilots_enc)
     {
       message_port_register_in(pmt::mp("in"));
-      //set_encoding(encoding);
+      set_encoding(pilots_enc);
     }
 
     mapper_impl::~mapper_impl()
@@ -74,8 +74,6 @@ namespace gr {
           gr_vector_void_star& output_items ) {
 
       unsigned char *out = (unsigned char*)output_items[0];
-      dout << "MAPPER called offset: " << d_symbols_offset <<
-        "   length: " << d_symbols_len << std::endl;
 
       while(!d_symbols_offset) {
         pmt::pmt_t msg(delete_head_nowait(pmt::intern("in")));
@@ -93,6 +91,9 @@ namespace gr {
 
           // ############ INSERT MAC STUFF
           frame_param frame(d_ofdm, psdu_length);
+          std::cout << "MAPPR: frame created:" << std::endl;
+          frame.print();
+
           if(frame.n_sym > MAX_SYM) {
             std::cout << "packet too large, maximum number of symbols is " << MAX_SYM << std::endl;
             return 0;
@@ -146,7 +147,7 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("psdu_len"),
               psdu_bytes, srcid);
 
-          pmt::pmt_t encoding = pmt::from_long(d_ofdm.encoding);
+          pmt::pmt_t encoding = pmt::init_s32vector(4, d_ofdm.resource_blocks_e);
           add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
               encoding, srcid);
 
@@ -176,13 +177,14 @@ namespace gr {
     }
 
     void 
-    mapper_impl::set_encoding(Encoding encoding) {
+    mapper_impl::set_encoding(std::vector<int> pilots_enc) {
       if (d_debug){
-        std::cout << "MAPPER: encoding: " << encoding << std::endl;
+        std::cout << "MAPPER ENCODDING: ";
+        d_ofdm.print();
       }
 
       gr::thread::scoped_lock lock(d_mutex);
-      d_ofdm = ofdm_param(encoding);
+      d_ofdm = ofdm_param(pilots_enc);
     }
 
   } /* namespace frequencyAdaptiveOFDM */

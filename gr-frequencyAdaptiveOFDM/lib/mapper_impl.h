@@ -41,7 +41,7 @@ namespace gr {
 
 
     public:
-      mapper_impl(Encoding encoding, bool debug);
+      mapper_impl(std::vector<int> pilots_enc, bool debug);
       ~mapper_impl();
 
       int general_work(int noutput_items,
@@ -50,7 +50,7 @@ namespace gr {
            gr_vector_void_star &output_items);
 
       void print_message(const char *msg, size_t len);
-      void set_encoding(Encoding encoding);
+      void set_encoding(std::vector<int> pilots_enc);
     };
 
 

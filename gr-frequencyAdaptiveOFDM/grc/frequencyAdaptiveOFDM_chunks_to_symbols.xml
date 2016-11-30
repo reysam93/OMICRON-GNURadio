@@ -4,7 +4,6 @@
   <key>frequencyAdaptiveOFDM_chunks_to_symbols</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <import>import ieee802-11</import>
   <make>frequencyAdaptiveOFDM.chunks_to_symbols()</make>
   <sink>
     <name>in</name>

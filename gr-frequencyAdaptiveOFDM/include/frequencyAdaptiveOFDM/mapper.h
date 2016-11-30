@@ -42,8 +42,8 @@ namespace gr {
     {
      public:
       typedef boost::shared_ptr<mapper> sptr;
-      static sptr make(Encoding encoding, bool debug);
-      virtual void set_encoding(Encoding encoding) = 0;
+      static sptr make(std::vector<int> pilots_enc, bool debug);
+      virtual void set_encoding(std::vector<int> pilots_enc) = 0;
     };
 
   } // namespace frequencyAdaptiveOFDM

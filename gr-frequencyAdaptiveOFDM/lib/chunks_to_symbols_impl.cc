@@ -28,7 +28,6 @@
 #include <gnuradio/tag_checker.h>
 #include <assert.h>
 
-using namespace gr::ieee802_11;
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -50,7 +49,10 @@ namespace gr {
       d_16qam = constellation_16qam::make();
       d_64qam = constellation_64qam::make();
 
-      d_mapping = d_bpsk;
+      d_mapping[0] = d_bpsk;
+      d_mapping[1] = d_bpsk;
+      d_mapping[2] = d_bpsk;
+      d_mapping[3] = d_bpsk;
     }
 
     chunks_to_symbols_impl::~chunks_to_symbols_impl() { }
@@ -72,37 +74,53 @@ namespace gr {
         throw std::runtime_error("no encoding in input stream");
       }
 
-      Encoding encoding = (Encoding)pmt::to_long(tags[0].value);
+      std::vector<int> encoding = pmt::s32vector_elements(tags[0].value);
+      for (int i = 0; i < 4; i++){
+        switch (encoding[i]) {
+        case BPSK_1_2:
+          d_mapping[i] = d_bpsk;
+          break;
 
-      switch (encoding) {
-      case BPSK_1_2:
-      case BPSK_3_4:
-        d_mapping = d_bpsk;
-        break;
+        case QPSK_1_2:
+          d_mapping[i] = d_qpsk;
+          break;
 
-      case QPSK_1_2:
-      case QPSK_3_4:
-        d_mapping = d_qpsk;
-        break;
+        case QAM16_1_2:
+          d_mapping[i] = d_16qam;
+          break;
 
-      case QAM16_1_2:
-      case QAM16_3_4:
-        d_mapping = d_16qam;
-        break;
+        case QAM64_1_2:
+          d_mapping[i] = d_64qam;
+          break;
 
-      case QAM64_2_3:
-      case QAM64_3_4:
-        d_mapping = d_64qam;
-        break;
-
-      default:
-        throw std::invalid_argument("wrong encoding");
-        break;
+        default:
+          throw std::invalid_argument("wrong encoding");
+          break;
+        }
       }
+        
 
+      int j;
+      boost::shared_ptr<gr::digital::constellation> mapping;
       for(int i = 0; i < ninput_items[0]; i++) {
-        d_mapping->map_to_points(in[i], out + i);
+        if ((i % 48) < 12){
+          mapping = d_mapping[0];
+        }else if ((i % 48) < 24){
+          mapping = d_mapping[1];
+        }else if((i % 48) < 36){
+          mapping = d_mapping[2];
+        }else if((i % 48) < 48){
+          mapping = d_mapping[3];
+        }else{
+          assert(false);
+        }
+        mapping->map_to_points(in[i], out + i);
+        std::cout << "Símbolo(" << i << "): " << out[i] << std::endl;
+        j = i;
       }
+
+      std::cout << "TOTAL: " << j+1 << std::endl;
+      std::cout << std::endl;
 
       return ninput_items[0];
     }

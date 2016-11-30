@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Mon Nov 28 11:39:57 2016
+# Generated: Wed Nov 30 12:58:05 2016
 ##################################################
 
 if __name__ == '__main__':
@@ -38,6 +38,7 @@ import foo
 import sip
 import threading
 import time
+from gnuradio import qtgui
 
 
 class files_loopback(gr.top_block, Qt.QWidget):
@@ -46,6 +47,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
         gr.top_block.__init__(self, "Files Loopback")
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Files Loopback")
+        qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -83,9 +85,6 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self._snr_range = Range(-15, 30, 0.1, 15, 200)
         self._snr_win = RangeWidget(self._snr_range, self.set_snr, "snr", "counter_slider", float)
         self.top_layout.addWidget(self._snr_win)
-        self._pdu_length_range = Range(0, 1500, 1, 500, 200)
-        self._pdu_length_win = RangeWidget(self._pdu_length_range, self.set_pdu_length, "pdu_length", "counter_slider", int)
-        self.top_layout.addWidget(self._pdu_length_win)
         self._epsilon_range = Range(-20e-6, 20e-6, 1e-6, 0, 200)
         self._epsilon_win = RangeWidget(self._epsilon_range, self.set_epsilon, "epsilon", "counter_slider", float)
         self.top_layout.addWidget(self._epsilon_win)
@@ -255,6 +254,9 @@ class files_loopback(gr.top_block, Qt.QWidget):
         	  flt_size=32)
         self.pfb_arb_resampler_xxx_0.declare_sample_delay(0)
         	
+        self._pdu_length_range = Range(0, 1500, 1, 500, 200)
+        self._pdu_length_win = RangeWidget(self._pdu_length_range, self.set_pdu_length, "pdu_length", "counter_slider", int)
+        self.top_layout.addWidget(self._pdu_length_win)
         self._interval_range = Range(10, 1000, 1, 300, 200)
         self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
         self.top_layout.addWidget(self._interval_win)
@@ -268,16 +270,12 @@ class files_loopback(gr.top_block, Qt.QWidget):
         	noise_seed=0,
         	block_tags=False
         )
-        self.blocks_vector_source_x_0 = blocks.vector_source_b(range(100), True, 1, [])
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
-        self.blocks_tagged_stream_to_pdu_0 = blocks.tagged_stream_to_pdu(blocks.byte_t, 'packet_len')
-        self.blocks_stream_to_tagged_stream_0 = blocks.stream_to_tagged_stream(gr.sizeof_char, 1, pdu_length, 'packet_len')
         self.blocks_socket_pdu_0 = blocks.socket_pdu("UDP_SERVER", '', '52001', 10000, False)
         self.blocks_pdu_to_tagged_stream_0_1 = blocks.pdu_to_tagged_stream(blocks.byte_t, 'packet_len')
         self.blocks_pdu_to_tagged_stream_0_0 = blocks.pdu_to_tagged_stream(blocks.complex_t, 'packet_len')
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'packet_len')
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
-        self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, 1000)
 
         ##################################################
         # Connections
@@ -286,17 +284,13 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))    
         self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))    
         self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.adaptiveOFDM_mac_and_parse_0, 'app in'))    
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.adaptiveOFDM_mac_and_parse_0, 'app in'))    
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.adaptiveOFDM_mac_and_parse_0, 'phy in'))    
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'carrier'), (self.blocks_pdu_to_tagged_stream_0_0, 'pdus'))    
-        self.connect((self.adaptiveOFDM_stream_spacer_0, 0), (self.blocks_tagged_stream_to_pdu_0, 0))    
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.channels_channel_model_0, 0))    
         self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.qtgui_number_sink_0, 0))    
         self.connect((self.blocks_pdu_to_tagged_stream_0_0, 0), (self.qtgui_const_sink_x_0, 0))    
         self.connect((self.blocks_pdu_to_tagged_stream_0_1, 0), (self.blocks_uchar_to_float_0, 0))    
-        self.connect((self.blocks_stream_to_tagged_stream_0, 0), (self.adaptiveOFDM_stream_spacer_0, 0))    
         self.connect((self.blocks_uchar_to_float_0, 0), (self.qtgui_time_sink_x_0, 0))    
-        self.connect((self.blocks_vector_source_x_0, 0), (self.blocks_stream_to_tagged_stream_0, 0))    
         self.connect((self.channels_channel_model_0, 0), (self.pfb_arb_resampler_xxx_0, 0))    
         self.connect((self.foo_packet_pad2_0, 0), (self.blocks_multiply_const_vxx_0, 0))    
         self.connect((self.pfb_arb_resampler_xxx_0, 0), (self.wifi_freq_adap_phy_hier_0, 0))    
@@ -319,8 +313,6 @@ class files_loopback(gr.top_block, Qt.QWidget):
 
     def set_pdu_length(self, pdu_length):
         self.pdu_length = pdu_length
-        self.blocks_stream_to_tagged_stream_0.set_packet_len(self.pdu_length)
-        self.blocks_stream_to_tagged_stream_0.set_packet_len_pmt(self.pdu_length)
 
     def get_out_buf_size(self):
         return self.out_buf_size
