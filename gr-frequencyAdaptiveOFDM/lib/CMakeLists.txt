@@ -18,6 +18,19 @@
 # Boston, MA 02110-1301, USA.
 
 ########################################################################
+# Invoke macro to generate various sources
+########################################################################
+
+include (CheckCCompilerFlag)
+CHECK_C_COMPILER_FLAG ("-msse2" SSE2_SUPPORTED)
+
+if(SSE2_SUPPORTED)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
+    add_definitions(-DFREQUENCYADAPTIVEOFDM_MSSE2)
+endif(SSE2_SUPPORTED)
+
+
+########################################################################
 # Setup library
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
@@ -31,7 +44,26 @@ list(APPEND frequencyAdaptiveOFDM_sources
     utils.cc
     chunks_to_symbols_impl.cc
     constellations_impl.cc
+    equalizer/base.cc
+    equalizer/comb.cc
+    equalizer/ls.cc
+    equalizer/lms.cc
+    equalizer/sta.cc
+    frame_equalizer_impl.cc
+    viterbi_decoder/base.cc
 )
+
+# QUITAR SI HAY PROBLEMAS!
+# use SSE2 optimized viterbi implementation if SSE2 is enabled
+if(SSE2_SUPPORTED)
+    list(APPEND frequencyAdaptiveOFDM_sources
+        viterbi_decoder/viterbi_decoder_x86.cc
+    )
+else()
+    list(APPEND frequencyAdaptiveOFDM_sources
+        viterbi_decoder/viterbi_decoder_generic.cc
+    )
+endif(SSE2_SUPPORTED)
 
 set(frequencyAdaptiveOFDM_sources "${frequencyAdaptiveOFDM_sources}" PARENT_SCOPE)
 if(NOT frequencyAdaptiveOFDM_sources)

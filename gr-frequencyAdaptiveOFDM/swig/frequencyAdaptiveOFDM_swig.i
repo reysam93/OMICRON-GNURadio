@@ -14,6 +14,7 @@
 #include "frequencyAdaptiveOFDM/signal_field.h"
 #include "frequencyAdaptiveOFDM/chunks_to_symbols.h"
 #include "frequencyAdaptiveOFDM/constellations.h"
+#include "frequencyAdaptiveOFDM/frame_equalizer.h"
 %}
 
 %include "gnuradio/digital/packet_header_default.h"
@@ -21,6 +22,7 @@
 %ignore gr::digital::constellation_qpsk;
 %ignore gr::digital::constellation_16qam;
 %include "gnuradio/digital/constellation.h"
+%include "frequencyAdaptiveOFDM/frame_equalizer.h"
 
 
 %include "frequencyAdaptiveOFDM/mapper.h"
@@ -30,6 +32,7 @@
 
 GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, mapper);
 GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, chunks_to_symbols);
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, frame_equalizer);
 
 %template(signal_field_sptr) boost::shared_ptr<gr::frequencyAdaptiveOFDM::signal_field>;
 %pythoncode %{
@@ -60,7 +63,3 @@ constellation_16qam = constellation_16qam.make;
 constellation_64qam_sptr.__repr__ = lambda self: "<constellation 64QAM>"
 constellation_64qam = constellation_64qam.make;
 %}
-
-
-
-
