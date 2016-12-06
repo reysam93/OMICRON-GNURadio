@@ -69,9 +69,9 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
 void
 ofdm_param::print() {
 	std::cout << "OFDM Symbol Parameters:" << std::endl;
-	std::cout << "n_bpsc :" << n_bpsc << std::endl;
-	std::cout << "n_cbps :" << n_cbps << std::endl;
-	std::cout << "n_dbps :" << n_dbps << std::endl;
+	std::cout << "n_bpsc: " << n_bpsc << std::endl;
+	std::cout << "n_cbps: " << n_cbps << std::endl;
+	std::cout << "n_dbps: " << n_dbps << std::endl;
 
 	for (int i = 0; i < 4; i++) {
 		std::cout << "Resource block " << i << " encoding: " << resource_blocks_e[i] << std::endl;

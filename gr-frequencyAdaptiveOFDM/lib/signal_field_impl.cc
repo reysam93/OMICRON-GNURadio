@@ -47,7 +47,7 @@ int signal_field_impl::get_bit(int b, int i) {
 void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm) {
 
 	//data bits of the signal header
-	char *signal_header = (char *) malloc(sizeof(char) * 28);
+	char *signal_header = (char *) malloc(sizeof(char) * 24);
 
 	//signal header after...
 	//convolutional encoding
@@ -58,17 +58,15 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	int length = frame.psdu_size;
 
 
-	// NOW ASSUMING ALWAIS BPSK AMD IGNORING ENCODING
-	// TODO: USE ENCODING
 	// first 8 bits represent the modulation of the 4 resource blocks
-	signal_header[ 0] = 0;//get_bit(ofdm.rate_field, 3);
-	signal_header[ 1] = 0;//get_bit(ofdm.rate_field, 2);
-	signal_header[ 2] = 0;
-	signal_header[ 3] = 0;
-	signal_header[ 4] = 0;
-	signal_header[ 5] = 0;
-	signal_header[ 6] = 0;
-	signal_header[ 7] = 0;
+	signal_header[ 0] = get_bit(ofdm.resource_blocks_e[0], 0);
+	signal_header[ 1] = get_bit(ofdm.resource_blocks_e[0], 1);
+	signal_header[ 2] = get_bit(ofdm.resource_blocks_e[1], 0);
+	signal_header[ 3] = get_bit(ofdm.resource_blocks_e[1], 1);
+	signal_header[ 4] = get_bit(ofdm.resource_blocks_e[2], 0);
+	signal_header[ 5] = get_bit(ofdm.resource_blocks_e[2], 1);
+	signal_header[ 6] = get_bit(ofdm.resource_blocks_e[3], 0);
+	signal_header[ 7] = get_bit(ofdm.resource_blocks_e[3], 1);
 	
 	// 8th bit is reserved and must be set to 0
 	signal_header[ 8] = 0;
@@ -95,8 +93,8 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	}
 	signal_header[21] = sum % 2;
 
-	// last 6 bits must be set to 0
-	for (int i = 0; i < 6; i++) {
+	// last 2 bits must be set to 0
+	for (int i = 0; i < 2; i++) {
 		signal_header[22 + i] = 0;
 	}
 

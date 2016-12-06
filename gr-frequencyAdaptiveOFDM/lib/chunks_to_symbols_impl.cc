@@ -115,7 +115,7 @@ namespace gr {
           assert(false);
         }
         mapping->map_to_points(in[i], out + i);
-        std::cout << "Símbolo(" << i << "): " << out[i] << std::endl;
+        //std::cout << "Símbolo(" << i << "): " << out[i] << std::endl;
         j = i;
       }
 

@@ -376,29 +376,9 @@ void
 viterbi_decoder::reset() {
 
 	viterbi_chunks_init_generic();
-
-	switch(d_ofdm->encoding) {
-	case BPSK_1_2:
-	case QPSK_1_2:
-	case QAM16_1_2:
-		d_ntraceback = 5;
-		d_depuncture_pattern = PUNCTURE_1_2;
-		d_k = 1;
-		break;
-	case QAM64_2_3:
-		d_ntraceback = 9;
-		d_depuncture_pattern = PUNCTURE_2_3;
-		d_k = 2;
-		break;
-	case BPSK_3_4:
-	case QPSK_3_4:
-	case QAM16_3_4:
-	case QAM64_3_4:
-		d_ntraceback = 10;
-		d_depuncture_pattern = PUNCTURE_3_4;
-		d_k = 3;
-		break;
-	}
+	d_ntraceback = 5;
+	d_depuncture_pattern = PUNCTURE_1_2;
+	d_k = 1;
 }
 
 // Initialize starting metrics to prefer 0 state

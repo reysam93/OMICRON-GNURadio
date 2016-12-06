@@ -21,7 +21,7 @@
 
 using namespace gr::frequencyAdaptiveOFDM::equalizer;
 
-void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]) {
 
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
@@ -59,9 +59,22 @@ void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 				continue;
 			} else {
 				symbols[c] = in[i] / d_H[i];
-				bits[c] = mod->decision_maker(&symbols[c]);
 				gr_complex point;
-				mod->map_to_points(bits[c], &point);
+
+				if (i < (12+6)) {
+					bits[c] = mod[0]->decision_maker(&symbols[c]);
+					mod[0]->map_to_points(bits[c], &point);
+				} else if (i < (24+6)) {
+					bits[c] = mod[1]->decision_maker(&symbols[c]);
+					mod[1]->map_to_points(bits[c], &point);
+				} else if (i < (36+6)) {
+					bits[c] = mod[2]->decision_maker(&symbols[c]);
+					mod[2]->map_to_points(bits[c], &point);
+				} else if (i < (48+6)) {
+					bits[c] = mod[3]->decision_maker(&symbols[c]);
+					mod[3]->map_to_points(bits[c], &point);
+				}
+
 				H[i] = in[i] / point;
 				c++;
 			}

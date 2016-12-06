@@ -48,7 +48,7 @@ namespace gr {
           gr::io_signature::make(1, 1, 48)),
       d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
       d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
-      d_freq_offset_from_synclong(0.0) {
+      d_freq_offset_from_synclong(0.0), d_frame_encoding(4,0) {
 
       message_port_register_out(pmt::mp("symbols"));
 
@@ -57,7 +57,10 @@ namespace gr {
       d_16qam = constellation_16qam::make();
       d_64qam = constellation_64qam::make();
 
-      d_frame_mod = d_bpsk;
+      d_frame_mod[0] = d_bpsk;
+      d_frame_mod[1] = d_bpsk;
+      d_frame_mod[2] = d_bpsk;
+      d_frame_mod[3] = d_bpsk;
 
       set_tag_propagation_policy(block::TPP_DONT);
       set_algorithm(algo);
@@ -138,7 +141,10 @@ namespace gr {
         if(tags.size()) {
           d_current_symbol = 0;
           d_frame_symbols = 0;
-          d_frame_mod = d_bpsk;
+          d_frame_mod[0] = d_bpsk;
+          d_frame_mod[1] = d_bpsk;
+          d_frame_mod[2] = d_bpsk;
+          d_frame_mod[3] = d_bpsk;
 
           d_freq_offset_from_synclong = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI);
           d_epsilon0 = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI * d_freq);
@@ -216,10 +222,9 @@ namespace gr {
         if(d_current_symbol == 2) {
 
           if(decode_signal_field(out + o * 48)) {
-
             pmt::pmt_t dict = pmt::make_dict();
             dict = pmt::dict_add(dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
-            dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_uint64(d_frame_encoding));
+            dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_frame_encoding));
             dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_equalizer->get_snr()));
             dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
             dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
@@ -229,7 +234,6 @@ namespace gr {
                 pmt::string_to_symbol(alias()));
           }
         }
-
         if(d_current_symbol > 2) {
           o++;
           pmt::pmt_t pdu = pmt::make_dict();
@@ -247,7 +251,9 @@ namespace gr {
     bool
     frame_equalizer_impl::decode_signal_field(uint8_t *rx_bits) {
 
-      static ofdm_param ofdm(BPSK_1_2);
+
+      std::vector<int> resource_block_e (4, 0);
+      static ofdm_param ofdm(resource_block_e);
       static frame_param frame(ofdm, 0);
 
       deinterleave(rx_bits);
@@ -265,83 +271,43 @@ namespace gr {
 
     bool
     frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
+      for (int i = 0; i < 4; i++){
+        d_frame_encoding[i] = 0;
+      }
 
-      int r = 0;
       d_frame_bytes = 0;
       bool parity = false;
-      for(int i = 0; i < 17; i++) {
+      for(int i = 0; i < 21; i++) {
         parity ^= decoded_bits[i];
 
-        if((i < 4) && decoded_bits[i]) {
-          r = r | (1 << i);
+        if((i < 2) && decoded_bits[i]) {
+          d_frame_encoding[0] = d_frame_encoding[0] | (1 << i);
+        }else if(i < 4 && decoded_bits[i]){
+          d_frame_encoding[1] = d_frame_encoding[1] | (1 << (i-2));
+        }else if(i < 6 && decoded_bits[i]){
+          d_frame_encoding[2] = d_frame_encoding[2] | (1 << (i-4));
+        }else if(i < 8 && decoded_bits[i]){
+          d_frame_encoding[3] = d_frame_encoding[3] | (1 << (i-6));
         }
 
-        if(decoded_bits[i] && (i > 4) && (i < 17)) {
-          d_frame_bytes = d_frame_bytes | (1 << (i-5));
+        if(decoded_bits[i] && (i > 8) && (i < 21)) {
+          d_frame_bytes = d_frame_bytes | (1 << (i-9));
         }
       }
 
-      if(parity != decoded_bits[17]) {
+      ofdm_param ofdm_received(d_frame_encoding);
+      frame_param frame_received(ofdm_received, d_frame_bytes);
+      d_frame_symbols = frame_received.n_sym;
+
+      std::cerr << "IN FRAME EQUALIZER:" << std::endl;
+      ofdm_received.print();
+      frame_received.print();
+
+      if(parity != decoded_bits[21]) {
         dout << "SIGNAL: wrong parity" << std::endl;
         return false;
       }
 
-      switch(r) {
-      case 11:
-        d_frame_encoding = 0;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 24);
-        d_frame_mod = d_bpsk;
-        dout << "Encoding: 3 Mbit/s   ";
-        break;
-      case 15:
-        d_frame_encoding = 1;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 36);
-        d_frame_mod = d_bpsk;
-        dout << "Encoding: 4.5 Mbit/s   ";
-        break;
-      case 10:
-        d_frame_encoding = 2;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 48);
-        d_frame_mod = d_qpsk;
-        dout << "Encoding: 6 Mbit/s   ";
-        break;
-      case 14:
-        d_frame_encoding = 3;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 72);
-        d_frame_mod = d_qpsk;
-        dout << "Encoding: 9 Mbit/s   ";
-        break;
-      case 9:
-        d_frame_encoding = 4;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 96);
-        d_frame_mod = d_16qam;
-        dout << "Encoding: 12 Mbit/s   ";
-        break;
-      case 13:
-        d_frame_encoding = 5;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 144);
-        d_frame_mod = d_16qam;
-        dout << "Encoding: 18 Mbit/s   ";
-        break;
-      case 8:
-        d_frame_encoding = 6;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 192);
-        d_frame_mod = d_64qam;
-        dout << "Encoding: 24 Mbit/s   ";
-        break;
-      case 12:
-        d_frame_encoding = 7;
-        d_frame_symbols = (int) ceil((16 + 8 * d_frame_bytes + 6) / (double) 216);
-        d_frame_mod = d_64qam;
-        dout << "Encoding: 27 Mbit/s   ";
-        break;
-      default:
-        dout << "unknown encoding" << std::endl;
-        return false;
-      }
-
-      mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%")
-          % d_frame_encoding % d_frame_bytes % d_frame_symbols);
       return true;
     }
 
