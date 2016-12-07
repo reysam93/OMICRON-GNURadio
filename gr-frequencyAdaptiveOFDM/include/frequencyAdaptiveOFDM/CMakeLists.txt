@@ -26,5 +26,6 @@ install(FILES
     signal_field.h
     chunks_to_symbols.h
     constellations.h
-    frame_equalizer.h DESTINATION include/frequencyAdaptiveOFDM
+    frame_equalizer.h
+    decode_mac.h DESTINATION include/frequencyAdaptiveOFDM
 )

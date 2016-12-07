@@ -45,3 +45,4 @@ GR_ADD_TEST(qa_mapper ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mapper
 GR_ADD_TEST(qa_chunks_to_symbols ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_chunks_to_symbols.py)
 GR_ADD_TEST(qa_constellations ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_constellations.py)
 GR_ADD_TEST(qa_frame_equalizer ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_frame_equalizer.py)
+GR_ADD_TEST(qa_decode_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_decode_mac.py)

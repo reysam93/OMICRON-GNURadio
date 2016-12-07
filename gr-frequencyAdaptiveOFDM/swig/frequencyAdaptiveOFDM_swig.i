@@ -15,6 +15,7 @@
 #include "frequencyAdaptiveOFDM/chunks_to_symbols.h"
 #include "frequencyAdaptiveOFDM/constellations.h"
 #include "frequencyAdaptiveOFDM/frame_equalizer.h"
+#include "frequencyAdaptiveOFDM/decode_mac.h"
 %}
 
 %include "gnuradio/digital/packet_header_default.h"
@@ -63,3 +64,5 @@ constellation_16qam = constellation_16qam.make;
 constellation_64qam_sptr.__repr__ = lambda self: "<constellation 64QAM>"
 constellation_64qam = constellation_64qam.make;
 %}
+%include "frequencyAdaptiveOFDM/decode_mac.h"
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, decode_mac);

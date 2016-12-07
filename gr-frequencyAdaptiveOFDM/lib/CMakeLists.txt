@@ -51,6 +51,7 @@ list(APPEND frequencyAdaptiveOFDM_sources
     equalizer/sta.cc
     frame_equalizer_impl.cc
     viterbi_decoder/base.cc
+    decode_mac_impl.cc
 )
 
 # QUITAR SI HAY PROBLEMAS!
