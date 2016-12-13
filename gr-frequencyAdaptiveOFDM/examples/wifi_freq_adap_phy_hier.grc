@@ -1225,6 +1225,53 @@
     </param>
   </block>
   <block>
+    <key>frequencyAdaptiveOFDM_decode_mac</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(520, 924)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_decode_mac_0</value>
+    </param>
+    <param>
+      <key>log</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
     <key>frequencyAdaptiveOFDM_frame_equalizer</key>
     <param>
       <key>algo</key>
@@ -1320,53 +1367,6 @@
     <param>
       <key>id</key>
       <value>frequencyAdaptiveOFDM_mapper_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_decode_mac</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(512, 924)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_decode_mac_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1938,8 +1938,14 @@
     <sink_key>1</sink_key>
   </connection>
   <connection>
+    <source_block_id>frequencyAdaptiveOFDM_decode_mac_0</source_block_id>
+    <sink_block_id>pad_sink_2</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
     <source_block_id>frequencyAdaptiveOFDM_frame_equalizer_0</source_block_id>
-    <sink_block_id>ieee802_11_decode_mac_0</sink_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_decode_mac_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1960,12 +1966,6 @@
     <sink_block_id>frequencyAdaptiveOFDM_chunks_to_symbols_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_decode_mac_0</source_block_id>
-    <sink_block_id>pad_sink_2</sink_block_id>
-    <source_key>out</source_key>
-    <sink_key>in</sink_key>
   </connection>
   <connection>
     <source_block_id>ieee802_11_moving_average_xx_0</source_block_id>

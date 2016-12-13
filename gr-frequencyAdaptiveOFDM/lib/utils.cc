@@ -21,6 +21,7 @@
 #include <cstring>
 #include <math.h>
 
+
 ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
 	resource_blocks_e = pilots_enc;
 	n_bpsc = 0;

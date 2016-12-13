@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <block>
-  <name>decode_mac</name>
+  <name>WiFi Decode MAC</name>
   <key>frequencyAdaptiveOFDM_decode_mac</key>
-  <category>[frequencyAdaptiveOFDM]</category>
+  <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
   <make>frequencyAdaptiveOFDM.decode_mac($log, $debug)</make>
-
+  
   <param>
     <name>Log</name>
     <key>log</key>

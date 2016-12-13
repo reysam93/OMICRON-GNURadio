@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
+ * Copyright 2016 <+YOU OR YOUR COMPANY+>.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,11 @@
 #endif
 
 #include "decode_mac_impl.h"
-#include "viterbi_decoder/viterbi_decoder.h"
 
-#include <boost/crc.hpp>
 #include <gnuradio/io_signature.h>
+#include <boost/crc.hpp>
+
+#define LINKTYPE_IEEE802_11 105 /* http://www.tcpdump.org/linktypes.html */
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -41,21 +42,26 @@ namespace gr {
     /*
      * The private constructor
      */
-    decode_mac_impl::decode_mac_impl(bool log, bool debug) :
-      block("decode_mac",
-          gr::io_signature::make(1, 1, 48),
-          gr::io_signature::make(0, 0, 0)),
-      d_log(log),
-      d_debug(debug),
-      d_snr(0),
-      d_nom_freq(0.0),
-      d_freq_offset(0.0),
-      d_encoding(4,BPSK_1_2),
-      d_ofdm(d_encoding),
-      d_frame(d_ofdm, 0),
-      d_frame_complete(true) {
-
+    decode_mac_impl::decode_mac_impl(bool log, bool debug):
+     block("decode_mac",
+              gr::io_signature::make(1, 1, 48),
+              gr::io_signature::make(0, 0, 0)),
+     d_log(log),
+    d_debug(debug),
+    d_snr(0),
+    d_nom_freq(0.0),
+    d_freq_offset(0.0),
+    init_encoding(4,BPSK_1_2),
+    d_ofdm(init_encoding),
+    d_frame(d_ofdm, 0),
+    d_frame_complete(true)
+    {
       message_port_register_out(pmt::mp("out"));
+    }
+
+
+    decode_mac_impl::~decode_mac_impl()
+    {
     }
 
 
@@ -77,7 +83,7 @@ namespace gr {
       while(i < ninput_items[0]) {
 
         get_tags_in_range(tags, 0, nread + i, nread + i + 1,
-          pmt::string_to_symbol("wifi_start"));
+                            pmt::string_to_symbol("wifi_start"));
 
         if(tags.size()) {
           if (d_frame_complete == false) {
@@ -88,12 +94,12 @@ namespace gr {
 
           pmt::pmt_t dict = tags[0].value;
           int len_data = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE+1)));
-          int encoding = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::from_uint64(0)));
+          std::vector<int> encoding = pmt::s32vector_elements(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
           d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
           d_nom_freq = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
           d_freq_offset = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
 
-          ofdm_param ofdm = ofdm_param((Encoding)encoding);
+          ofdm_param ofdm = ofdm_param(encoding);
           frame_param frame = frame_param(ofdm, len_data);
 
           // check for maximum frame size
@@ -101,9 +107,11 @@ namespace gr {
             d_ofdm = ofdm;
             d_frame = frame;
             copied = 0;
-            dout << "Decode MAC: frame start -- len " << len_data
-              << "  symbols " << frame.n_sym << "  encoding "
-              << encoding << std::endl;
+            if (d_debug){
+              std::cout << "Decode MAC: frame start -- len " << len_data << std::endl;
+              d_frame.print();
+              d_ofdm.print();
+            }
           } else {
             dout << "Dropping frame which is too large (symbols or bits)" << std::endl;
           }
@@ -135,8 +143,7 @@ namespace gr {
 
 
     void 
-    decode_mac_impl::decode() {
-
+    decode_mac_impl::decode(){
       for(int i = 0; i < d_frame.n_sym * 48; i++) {
         for(int k = 0; k < d_ofdm.n_bpsc; k++) {
           d_rx_bits[i*d_ofdm.n_bpsc + k] = !!(d_rx_symbols[i] & (1 << k));
@@ -156,12 +163,11 @@ namespace gr {
         return;
       }
 
-      mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%")
-          % d_ofdm.encoding % d_frame.psdu_size % d_frame.n_sym);
-
+      std::cout << "DECODE: SENDING OFDM FRAME:\n";
+      d_ofdm.print();
       // create PDU
       pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);
-      pmt::pmt_t enc = pmt::from_uint64(d_ofdm.encoding);
+      pmt::pmt_t enc = pmt::init_s32vector(4, d_ofdm.resource_blocks_e);
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("encoding"), enc);
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
@@ -171,9 +177,9 @@ namespace gr {
       message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
     }
 
-    void 
-    decode_mac_impl::deinterleave() {
 
+    void
+    decode_mac_impl::deinterleave(){
       int n_cbps = d_ofdm.n_cbps;
       int first[n_cbps];
       int second[n_cbps];
@@ -196,9 +202,8 @@ namespace gr {
     }
 
 
-    void 
-    decode_mac_impl::descramble (uint8_t *decoded_bits) {
-
+    void
+    decode_mac_impl::descramble (uint8_t *decoded_bits){
       int state = 0;
       std::memset(out_bytes, 0, d_frame.psdu_size+2);
 
@@ -220,11 +225,11 @@ namespace gr {
       }
     }
 
-    void 
-    decode_mac_impl::print_output() {
 
+    void
+    decode_mac_impl::print_output(){
       dout << std::endl;
-      dout << "psdu size" << d_frame.psdu_size << std::endl;
+      dout << "psdu size: " << d_frame.psdu_size << std::endl;
       for(int i = 2; i < d_frame.psdu_size+2; i++) {
         dout << std::setfill('0') << std::setw(2) << std::hex << ((unsigned int)out_bytes[i] & 0xFF) << std::dec << " ";
         if(i % 16 == 15) {

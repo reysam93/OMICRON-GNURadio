@@ -30,10 +30,12 @@
 %include "frequencyAdaptiveOFDM/signal_field.h"
 %include "frequencyAdaptiveOFDM/chunks_to_symbols.h"
 %include "frequencyAdaptiveOFDM/constellations.h"
+%include "frequencyAdaptiveOFDM/decode_mac.h"
 
 GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, mapper);
 GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, chunks_to_symbols);
 GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, frame_equalizer);
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, decode_mac);
 
 %template(signal_field_sptr) boost::shared_ptr<gr::frequencyAdaptiveOFDM::signal_field>;
 %pythoncode %{
@@ -64,5 +66,5 @@ constellation_16qam = constellation_16qam.make;
 constellation_64qam_sptr.__repr__ = lambda self: "<constellation 64QAM>"
 constellation_64qam = constellation_64qam.make;
 %}
-%include "frequencyAdaptiveOFDM/decode_mac.h"
-GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, decode_mac);
+
+

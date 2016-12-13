@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
+ * Copyright 2016 <+YOU OR YOUR COMPANY+>.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
+
 
     class FREQUENCYADAPTIVEOFDM_API decode_mac : virtual public block
     {

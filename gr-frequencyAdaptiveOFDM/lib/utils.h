@@ -52,6 +52,7 @@ struct mac_ack_header {
  */
 class ofdm_param {
 public:
+	ofdm_param(int e);
 	ofdm_param(std::vector<int> pilots_enc);
 
 	// data rate

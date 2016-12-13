@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
+ * Copyright 2016 <+YOU OR YOUR COMPANY+>.
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@
 #define INCLUDED_FREQUENCYADAPTIVEOFDM_DECODE_MAC_IMPL_H
 
 #include <frequencyAdaptiveOFDM/decode_mac.h>
+
 #include "utils.h"
 #include "viterbi_decoder/viterbi_decoder.h"
-
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -37,7 +37,7 @@ namespace gr {
 
       frame_param d_frame;
       ofdm_param d_ofdm;
-      std::vector<int> d_encoding;
+      std::vector<int> init_encoding;
       double d_snr;  // dB
       double d_nom_freq;  // nominal frequency, Hz
       double d_freq_offset;  // frequency offset, Hz
@@ -55,15 +55,16 @@ namespace gr {
       decode_mac_impl(bool log, bool debug);
       ~decode_mac_impl();
 
-      void decode();
-      void deinterleave();
-      void descramble (uint8_t *decoded_bits);
-      void print_output();
 
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
            gr_vector_const_void_star &input_items,
            gr_vector_void_star &output_items);
+
+      void decode();
+      void deinterleave();
+      void descramble (uint8_t *decoded_bits);
+      void print_output();
     };
 
   } // namespace frequencyAdaptiveOFDM
