@@ -115,12 +115,8 @@ namespace gr {
           assert(false);
         }
         mapping->map_to_points(in[i], out + i);
-        //std::cout << "Símbolo(" << i << "): " << out[i] << std::endl;
         j = i;
       }
-
-      std::cout << "TOTAL: " << j+1 << std::endl;
-      std::cout << std::endl;
 
       return ninput_items[0];
     }

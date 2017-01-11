@@ -295,19 +295,29 @@ namespace gr {
         }
       }
 
+      for(int i = 0; i < 4; i++){
+        if(d_frame_encoding[i] == 0){
+          d_frame_mod[i] = d_bpsk;
+        }else if(d_frame_encoding[i] == 1){
+          d_frame_mod[i] = d_qpsk;
+        }else if(d_frame_encoding[i] == 2){
+          d_frame_mod[i] = d_16qam;
+        }else if(d_frame_encoding[i] == 3){
+          d_frame_mod[i] = d_64qam;
+        }else{
+          std::cerr << "FRAME EQUALIZER: wrong modulation found.\n";
+          return false;
+        }
+      }
+
       ofdm_param ofdm_received(d_frame_encoding);
       frame_param frame_received(ofdm_received, d_frame_bytes);
       d_frame_symbols = frame_received.n_sym;
 
-      std::cerr << "IN FRAME EQUALIZER:" << std::endl;
-      ofdm_received.print();
-      frame_received.print();
-
       if(parity != decoded_bits[21]) {
-        dout << "SIGNAL: wrong parity" << std::endl;
+        std::cerr << "FRAME EQUALIZER: wrong parity" << std::endl;
         return false;
       }
-
       return true;
     }
 

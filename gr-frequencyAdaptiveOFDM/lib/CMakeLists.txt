@@ -41,6 +41,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND frequencyAdaptiveOFDM_sources
     mapper_impl.cc
     signal_field_impl.cc
+    decode_mac_impl.cc
     utils.cc
     chunks_to_symbols_impl.cc
     constellations_impl.cc
@@ -51,10 +52,8 @@ list(APPEND frequencyAdaptiveOFDM_sources
     equalizer/sta.cc
     frame_equalizer_impl.cc
     viterbi_decoder/base.cc
-    decode_mac_impl.cc
 )
 
-# QUITAR SI HAY PROBLEMAS!
 # use SSE2 optimized viterbi implementation if SSE2 is enabled
 if(SSE2_SUPPORTED)
     list(APPEND frequencyAdaptiveOFDM_sources

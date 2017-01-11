@@ -28,6 +28,7 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
 	n_cbps = 0;
 	n_dbps = 0;
 
+
 	// Rate field will not be used. The header sends the codification of each resource blocks directly. 
 	// Each resource block have 12 carriers 
 	for (int i = 0; i < 4; i++) {
@@ -40,7 +41,7 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
 		case QPSK_1_2:
 			n_bpcrb[i] = 2;
 			n_bpsc += 2;
-			n_cbps+= (12*2);
+			n_cbps += (12*2);
 			break;
 
 		case QAM16_1_2:
@@ -69,6 +70,7 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
 
 void
 ofdm_param::print() {
+	std::cout << std::endl;
 	std::cout << "OFDM Symbol Parameters:" << std::endl;
 	std::cout << "n_bpsc: " << n_bpsc << std::endl;
 	std::cout << "n_cbps: " << n_cbps << std::endl;
@@ -79,7 +81,6 @@ ofdm_param::print() {
 		std::cout << "Resource block " << i << " bits per carrier: " << n_bpcrb[i] << std::endl;
 	}
 	std::cout << std::endl;
-	//std::cout << "rate_field :" << (int)rate_field << std::endl;
 }
 
 
@@ -98,6 +99,7 @@ frame_param::frame_param(ofdm_param &ofdm, int psdu_length) {
 }
 void
 frame_param::print() {
+	std::cout << std::endl;
 	std::cout << "FRAME Parameters:" << std::endl;
 	std::cout << "psdu_size (bytes): " << psdu_size << std::endl;
 	std::cout << "n_sym: " << n_sym << std::endl;
@@ -175,7 +177,7 @@ void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm,
 	int n_cbps = ofdm.n_cbps;
 	int first[n_cbps];
 	int second[n_cbps];
-	int s = floor(std::max(ofdm.n_bpsc / 2, 1));
+	int s = floor(std::max(int(ofdm.n_bpsc) / 2, 1));
 
 	for(int j = 0; j < n_cbps; j++) {
 		first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
@@ -234,4 +236,16 @@ void generate_bits(const char *psdu, char *data_bits, frame_param &frame) {
 			data_bits[i * 8 + b] = !!(psdu[i] & (1 << b));
 		}
 	}
+}
+
+void 
+print_bytes(std::string tag, char bytes[], int size)
+{
+    std::cout << tag << std::endl;
+    for(int i = 0; i < size; i++)
+    {
+    	std::cout << std::setw(2) << std::setfill('0') << int(bytes[i]);
+        std::cout << " ";
+ 	}
+    std::cout << std::endl << std::endl;
 }

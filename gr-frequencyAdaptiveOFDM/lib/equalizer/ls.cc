@@ -49,18 +49,19 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 				continue;
 			} else {
 				symbols[c] = in[i] / d_H[i];
-				if (i < (12+6)) {
+				if (i < 19) {
 					bits[c] = mod[0]->decision_maker(&symbols[c]);
-				} else if (i < (24+6)) {
+				} else if (i < 32) {
 					bits[c] = mod[1]->decision_maker(&symbols[c]);
-				} else if (i < (36+6)) {
+				} else if (i < 46) {
 					bits[c] = mod[2]->decision_maker(&symbols[c]);
-				} else if (i < (48+6)) {
+				} else if (i < 59) {
 					bits[c] = mod[3]->decision_maker(&symbols[c]);
-				}
+				}				
 				c++;
 			}
 		}
+		std::cout << std::endl;
 	}
 }
 

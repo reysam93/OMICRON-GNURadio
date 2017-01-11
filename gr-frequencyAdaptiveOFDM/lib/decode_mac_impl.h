@@ -37,7 +37,6 @@ namespace gr {
 
       frame_param d_frame;
       ofdm_param d_ofdm;
-      std::vector<int> init_encoding;
       double d_snr;  // dB
       double d_nom_freq;  // nominal frequency, Hz
       double d_freq_offset;  // frequency offset, Hz
@@ -61,6 +60,7 @@ namespace gr {
            gr_vector_const_void_star &input_items,
            gr_vector_void_star &output_items);
 
+      void regroup_symbols();
       void decode();
       void deinterleave();
       void descramble (uint8_t *decoded_bits);

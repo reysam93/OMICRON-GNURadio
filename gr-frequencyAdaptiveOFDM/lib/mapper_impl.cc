@@ -91,8 +91,6 @@ namespace gr {
 
           // ############ INSERT MAC STUFF
           frame_param frame(d_ofdm, psdu_length);
-          std::cout << "MAPPR: frame created:" << std::endl;
-          frame.print();
 
           if(frame.n_sym > MAX_SYM) {
             std::cout << "packet too large, maximum number of symbols is " << MAX_SYM << std::endl;
@@ -123,10 +121,9 @@ namespace gr {
           convolutional_encoding(scrambled_data, encoded_data, frame);
           // puncturing
           //puncturing(encoded_data, punctured_data, frame, d_ofdm);
-          //std::cout << "punctured" << std::endl;
+          
           // interleaving
           interleave(encoded_data, interleaved_data, frame, d_ofdm);
-          //std::cout << "interleaved" << std::endl;
 
           // one byte per symbol
           split_symbols(interleaved_data, symbols, frame, d_ofdm);

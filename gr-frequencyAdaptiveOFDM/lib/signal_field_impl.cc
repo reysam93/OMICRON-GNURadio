@@ -93,6 +93,8 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	}
 	signal_header[21] = sum % 2;
 
+	
+
 	// last 2 bits must be set to 0
 	for (int i = 0; i < 2; i++) {
 		signal_header[22 + i] = 0;

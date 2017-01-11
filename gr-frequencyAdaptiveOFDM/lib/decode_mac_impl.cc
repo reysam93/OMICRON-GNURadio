@@ -46,15 +46,14 @@ namespace gr {
      block("decode_mac",
               gr::io_signature::make(1, 1, 48),
               gr::io_signature::make(0, 0, 0)),
-     d_log(log),
-    d_debug(debug),
-    d_snr(0),
-    d_nom_freq(0.0),
-    d_freq_offset(0.0),
-    init_encoding(4,BPSK_1_2),
-    d_ofdm(init_encoding),
-    d_frame(d_ofdm, 0),
-    d_frame_complete(true)
+      d_log(log),
+      d_debug(debug),
+      d_snr(0),
+      d_nom_freq(0.0),
+      d_freq_offset(0.0),
+      d_ofdm(std::vector<int>(4, 0)),
+      d_frame(d_ofdm, 0),
+      d_frame_complete(true)
     {
       message_port_register_out(pmt::mp("out"));
     }
@@ -81,7 +80,6 @@ namespace gr {
       dout << "Decode MAC: input " << ninput_items[0] << std::endl;
 
       while(i < ninput_items[0]) {
-
         get_tags_in_range(tags, 0, nread + i, nread + i + 1,
                             pmt::string_to_symbol("wifi_start"));
 
@@ -107,13 +105,16 @@ namespace gr {
             d_ofdm = ofdm;
             d_frame = frame;
             copied = 0;
+            std::cout << std::endl;
+
             if (d_debug){
               std::cout << "Decode MAC: frame start -- len " << len_data << std::endl;
               d_frame.print();
               d_ofdm.print();
             }
           } else {
-            dout << "Dropping frame which is too large (symbols or bits)" << std::endl;
+            //Dejar como dout al terminar!
+            std::cout << "Dropping frame which is too large (symbols or bits)" << std::endl;
           }
         }
 
@@ -137,19 +138,13 @@ namespace gr {
       }
 
       consume(0, i);
-
       return 0;
     }
 
 
     void 
     decode_mac_impl::decode(){
-      for(int i = 0; i < d_frame.n_sym * 48; i++) {
-        for(int k = 0; k < d_ofdm.n_bpsc; k++) {
-          d_rx_bits[i*d_ofdm.n_bpsc + k] = !!(d_rx_symbols[i] & (1 << k));
-        }
-      }
-
+      regroup_symbols();      
       deinterleave();
       uint8_t *decoded = d_decoder.decode(&d_ofdm, &d_frame, d_deinterleaved_bits);
       descramble(decoded);
@@ -159,12 +154,10 @@ namespace gr {
       boost::crc_32_type result;
       result.process_bytes(out_bytes + 2, d_frame.psdu_size);
       if(result.checksum() != 558161692) {
-        dout << "checksum wrong -- dropping" << std::endl;
-        return;
+        std::cout << "\nERROR: checksum wrong -- dropping\n" << std::endl;
+        //return;
       }
 
-      std::cout << "DECODE: SENDING OFDM FRAME:\n";
-      d_ofdm.print();
       // create PDU
       pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);
       pmt::pmt_t enc = pmt::init_s32vector(4, d_ofdm.resource_blocks_e);
@@ -179,11 +172,35 @@ namespace gr {
 
 
     void
+    decode_mac_impl::regroup_symbols(){
+      int bpsc;
+      int regrouped = 0;
+
+      for(int i = 0; i < d_frame.n_sym * 48; i++) {
+        if ((i % 48) < 12){
+          bpsc = d_ofdm.n_bpcrb[0];
+        }else if ((i % 48) < 24){
+          bpsc = d_ofdm.n_bpcrb[1];
+        }else if((i % 48) < 36){
+          bpsc = d_ofdm.n_bpcrb[2];
+        }else if((i % 48) < 48){
+          bpsc = d_ofdm.n_bpcrb[3];
+        }
+        for(int k = 0; k < bpsc; k++) {
+          d_rx_bits[regrouped] = !!(d_rx_symbols[i] & (1 << k));
+          regrouped++;
+          //d_rx_bits[i*bpsc + k] = !!(d_rx_symbols[i] & (1 << k));
+        }
+      }
+    }
+
+
+    void
     decode_mac_impl::deinterleave(){
       int n_cbps = d_ofdm.n_cbps;
       int first[n_cbps];
       int second[n_cbps];
-      int s = std::max(d_ofdm.n_bpsc / 2, 1);
+      int s = std::max(int(d_ofdm.n_bpsc) / 2, 1);
 
       for(int j = 0; j < n_cbps; j++) {
         first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
@@ -196,6 +213,7 @@ namespace gr {
       int count = 0;
       for(int i = 0; i < d_frame.n_sym; i++) {
         for(int k = 0; k < n_cbps; k++) {
+          //d_deinterleaved_bits[i*n_cbps + k] = d_rx_bits[i * n_cbps + k];
           d_deinterleaved_bits[i * n_cbps + second[first[k]]] = d_rx_bits[i * n_cbps + k];
         }
       }

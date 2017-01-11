@@ -52,7 +52,6 @@ struct mac_ack_header {
  */
 class ofdm_param {
 public:
-	ofdm_param(int e);
 	ofdm_param(std::vector<int> pilots_enc);
 
 	// data rate
@@ -60,7 +59,7 @@ public:
 	// rate field of the SIGNAL header
 	char     rate_field;
 	// mean number of coded bits per sub carrier
-	int      n_bpsc;
+	float      n_bpsc;
 	// number of coded bits per carrier resource block
 	int	 	 n_bpcrb[4];
 	// number of coded bits per OFDM symbol
@@ -118,4 +117,6 @@ void split_symbols(const char *input, char *out, frame_param &frame, ofdm_param 
 
 void generate_bits(const char *psdu, char *data_bits, frame_param &frame);
 
-#endif /* INCLUDED_IEEE802_11_UTILS_H */
+void print_bytes(std::string tag, char bytes[], int size);
+
+#endif /* INCLUDED_FREQUENCYADAPTIVEOFDM_UTILS_H */
