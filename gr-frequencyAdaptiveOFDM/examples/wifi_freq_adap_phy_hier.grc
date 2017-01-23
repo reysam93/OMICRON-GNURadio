@@ -232,7 +232,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1008, 12)</value>
+      <value>(1024, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1009,11 +1009,11 @@
     </param>
     <param>
       <key>type</key>
-      <value>intx</value>
+      <value></value>
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>[0,0,0,0]</value>
     </param>
   </block>
   <block>
@@ -1158,7 +1158,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(920, 12)</value>
+      <value>(936, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1354,7 +1354,7 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>[1,0,0,1]</value>
+      <value>encoding</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1702,7 +1702,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 12)</value>
+      <value>(840, 12)</value>
     </param>
     <param>
       <key>_rotation</key>

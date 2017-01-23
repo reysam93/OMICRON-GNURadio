@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Wed Jan 11 12:20:00 2017
+# Generated: Mon Jan 23 13:22:07 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -36,8 +36,6 @@ from wifi_freq_adap_phy_hier import wifi_freq_adap_phy_hier  # grc-generated hie
 import adaptiveOFDM
 import foo
 import sip
-import threading
-import time
 from gnuradio import qtgui
 
 
@@ -75,13 +73,12 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.out_buf_size = out_buf_size = 96000
         self.interval = interval = 300
         self.epsilon = epsilon = 0
-        self.encoding = encoding = 0
+        self.encoding = encoding =  [1,2,0,0]
         self.chan_est = chan_est = 0
 
         ##################################################
         # Blocks
         ##################################################
-        self.adaptiveOFDM_mac_and_parse_0 = adaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
         self._snr_range = Range(-15, 30, 0.1, 15, 200)
         self._snr_win = RangeWidget(self._snr_range, self.set_snr, "snr", "counter_slider", float)
         self.top_layout.addWidget(self._snr_win)
@@ -91,19 +88,6 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self._epsilon_range = Range(-20e-6, 20e-6, 1e-6, 0, 200)
         self._epsilon_win = RangeWidget(self._epsilon_range, self.set_epsilon, "epsilon", "counter_slider", float)
         self.top_layout.addWidget(self._epsilon_win)
-        
-        def _encoding_probe():
-            while True:
-                val = self.adaptiveOFDM_mac_and_parse_0.get_encoding()
-                try:
-                    self.set_encoding(val)
-                except AttributeError:
-                    pass
-                time.sleep(1.0 / (1))
-        _encoding_thread = threading.Thread(target=_encoding_probe)
-        _encoding_thread.daemon = True
-        _encoding_thread.start()
-            
         self._chan_est_options = [0,1,3,2]
         self._chan_est_labels = ["LS", "LMS", "STA", "Linear Comb"]
         self._chan_est_group_box = Qt.QGroupBox("chan_est")
@@ -280,6 +264,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'packet_len')
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
         self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, 1000)
+        self.adaptiveOFDM_mac_and_parse_0 = adaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
 
         ##################################################
         # Connections

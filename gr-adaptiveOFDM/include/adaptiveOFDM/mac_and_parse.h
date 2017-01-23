@@ -52,13 +52,13 @@ public:
 
   int get_encoding();
 
-    typedef boost::shared_ptr<mac_and_parse> sptr;
+  typedef boost::shared_ptr<mac_and_parse> sptr;
 
-    static sptr make(std::vector<uint8_t> src_mac,
-                        std::vector<uint8_t> dst_mac,
-                        std::vector<uint8_t> bss_mac,
-                        bool log, 
-                        bool debug);
+   static sptr make(std::vector<uint8_t> src_mac,
+                      std::vector<uint8_t> dst_mac,
+                      std::vector<uint8_t> bss_mac,
+                      bool log, 
+                      bool debug);
 };
 
 }  // namespace adaptiveOFDM

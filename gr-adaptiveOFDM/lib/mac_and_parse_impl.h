@@ -28,9 +28,6 @@ namespace gr {
 
     class mac_and_parse_impl : public mac_and_parse
     {
-     private:
-      // Nothing to declare in this block.
-
      public:
       mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug);
       ~mac_and_parse_impl();

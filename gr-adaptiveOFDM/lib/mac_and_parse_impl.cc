@@ -214,7 +214,7 @@ public:
 
     if (!equal_mac(d_src_mac, h->addr1)){
       dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
-      return;
+      //return;
     }
 
     mylog(boost::format("length: %1%") % data_len );
