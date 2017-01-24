@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Mon Jan 23 13:22:07 2017
+# Generated: Tue Jan 24 09:49:20 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -35,6 +35,7 @@ from optparse import OptionParser
 from wifi_freq_adap_phy_hier import wifi_freq_adap_phy_hier  # grc-generated hier_block
 import adaptiveOFDM
 import foo
+import frequencyAdaptiveOFDM
 import sip
 from gnuradio import qtgui
 
@@ -73,7 +74,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.out_buf_size = out_buf_size = 96000
         self.interval = interval = 300
         self.epsilon = epsilon = 0
-        self.encoding = encoding =  [1,2,0,0]
+        self.encoding = encoding =  [2,2,0,0]
         self.chan_est = chan_est = 0
 
         ##################################################
@@ -244,6 +245,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self._interval_range = Range(10, 1000, 1, 300, 200)
         self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
         self.top_layout.addWidget(self._interval_win)
+        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, False)
         self.foo_packet_pad2_0 = foo.packet_pad2(False, False, 0.001, 500, 0)
         (self.foo_packet_pad2_0).set_min_output_buffer(96000)
         self.channels_channel_model_0 = channels.channel_model(
@@ -264,18 +266,17 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'packet_len')
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
         self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, 1000)
-        self.adaptiveOFDM_mac_and_parse_0 = adaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'fer'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))    
-        self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))    
-        self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))    
-        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.adaptiveOFDM_mac_and_parse_0, 'app in'))    
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.adaptiveOFDM_mac_and_parse_0, 'app in'))    
-        self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.adaptiveOFDM_mac_and_parse_0, 'phy in'))    
+        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))    
+        self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))    
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'fer'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))    
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))    
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))    
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'carrier'), (self.blocks_pdu_to_tagged_stream_0_0, 'pdus'))    
+        self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy in'))    
         self.connect((self.adaptiveOFDM_stream_spacer_0, 0), (self.blocks_tagged_stream_to_pdu_0, 0))    
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.channels_channel_model_0, 0))    
         self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.qtgui_number_sink_0, 0))    

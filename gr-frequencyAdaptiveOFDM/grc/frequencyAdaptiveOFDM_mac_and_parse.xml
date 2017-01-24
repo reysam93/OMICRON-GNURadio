@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <block>
-  <name>mac_and_parse</name>
-  <key>WiFi MAC / Parse MAC</key>
+  <name>WiFi MAC / Parse MAC</name>
+  <key>frequencyAdaptiveOFDM_mac_and_parse</key>
   <category>[frequencyAdaptiveOFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
   <make>frequencyAdaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $log, $debug)</make>
