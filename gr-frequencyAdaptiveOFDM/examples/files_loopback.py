@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Tue Jan 24 09:49:20 2017
+# Generated: Wed Jan 25 13:21:48 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -37,6 +37,8 @@ import adaptiveOFDM
 import foo
 import frequencyAdaptiveOFDM
 import sip
+import threading
+import time
 from gnuradio import qtgui
 
 
@@ -74,12 +76,13 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.out_buf_size = out_buf_size = 96000
         self.interval = interval = 300
         self.epsilon = epsilon = 0
-        self.encoding = encoding =  [2,2,0,0]
+        self.encoding = encoding = [1,2,2,1]
         self.chan_est = chan_est = 0
 
         ##################################################
         # Blocks
         ##################################################
+        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, False)
         self._snr_range = Range(-15, 30, 0.1, 15, 200)
         self._snr_win = RangeWidget(self._snr_range, self.set_snr, "snr", "counter_slider", float)
         self.top_layout.addWidget(self._snr_win)
@@ -89,6 +92,19 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self._epsilon_range = Range(-20e-6, 20e-6, 1e-6, 0, 200)
         self._epsilon_win = RangeWidget(self._epsilon_range, self.set_epsilon, "epsilon", "counter_slider", float)
         self.top_layout.addWidget(self._epsilon_win)
+        
+        def _encoding_probe():
+            while True:
+                val = self.frequencyAdaptiveOFDM_mac_and_parse_0.get_encoding()
+                try:
+                    self.set_encoding(val)
+                except AttributeError:
+                    pass
+                time.sleep(1.0 / (10))
+        _encoding_thread = threading.Thread(target=_encoding_probe)
+        _encoding_thread.daemon = True
+        _encoding_thread.start()
+            
         self._chan_est_options = [0,1,3,2]
         self._chan_est_labels = ["LS", "LMS", "STA", "Linear Comb"]
         self._chan_est_group_box = Qt.QGroupBox("chan_est")
@@ -245,7 +261,6 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self._interval_range = Range(10, 1000, 1, 300, 200)
         self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
         self.top_layout.addWidget(self._interval_win)
-        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, False)
         self.foo_packet_pad2_0 = foo.packet_pad2(False, False, 0.001, 500, 0)
         (self.foo_packet_pad2_0).set_min_output_buffer(96000)
         self.channels_channel_model_0 = channels.channel_model(

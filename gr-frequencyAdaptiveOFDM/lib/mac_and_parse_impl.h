@@ -47,7 +47,7 @@ namespace gr {
       void send_data(char* buf, int length);
       bool check_mac(std::vector<uint8_t> mac);
       void decide_modulation();
-      void set_encoding(int encoding);
+      void set_encoding(std::vector<int> encoding);
 
     private:
       // For MAC

@@ -40,10 +40,10 @@
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
-    int 
+    std::vector<int> 
     mac_and_parse::get_encoding(){
       pthread_mutex_lock(&d_mutex);
-      int tmp = d_encoding;
+      std::vector<int> tmp = d_encoding;
       pthread_mutex_unlock(&d_mutex);
       return tmp;
     }
@@ -81,7 +81,8 @@ namespace gr {
       }
 
       pthread_mutex_init(&d_mutex, NULL);
-      set_encoding(0);
+      std::vector<int> initial_e(4,0);
+      set_encoding(initial_e);
     }
 
     mac_and_parse_impl::~mac_and_parse_impl() {
@@ -131,7 +132,8 @@ namespace gr {
       ack_received = false;
       pthread_mutex_unlock(&d_mutex);
       if (reset_coding){
-        set_encoding(0);
+        std::vector<int> encoding(4,0);
+        set_encoding(encoding);
       } 
     }
 
@@ -568,23 +570,23 @@ namespace gr {
       std::cout << std::endl << "SNR: " << d_snr << std::endl;
       if (d_snr >= MIN_SNR_64QAM) {
         std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
-        set_encoding(QAM64_1_2);
+        //set_encoding(QAM64_1_2);
       } else if (d_snr >= MIN_SNR_16QAM) {
         std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
-        set_encoding(QAM16_1_2);
+        //set_encoding(QAM16_1_2);
       } else if (d_snr >= MIN_SNR_QPSK) {
         std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
-        set_encoding(QPSK_1_2);
+        //set_encoding(QPSK_1_2);
       } else if (d_snr >= MIN_SNR_BPSK) {
         std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
-        set_encoding(BPSK_1_2);
+        //set_encoding(BPSK_1_2);
       } else {
         std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
       }
     }
 
     void 
-    mac_and_parse_impl::set_encoding(int encoding) {
+    mac_and_parse_impl::set_encoding(std::vector<int> encoding) {
       pthread_mutex_lock(&d_mutex);
       d_encoding = encoding;
       pthread_mutex_unlock(&d_mutex);

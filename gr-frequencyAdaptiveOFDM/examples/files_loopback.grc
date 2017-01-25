@@ -224,18 +224,30 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
+    <key>variable_function_probe</key>
+    <param>
+      <key>block_id</key>
+      <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
+    </param>
     <param>
       <key>comment</key>
       <value></value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
+    </param>
+    <param>
+      <key>function_args</key>
+      <value></value>
+    </param>
+    <param>
+      <key>function_name</key>
+      <value>get_encoding</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(376, 76)</value>
+      <value>(368, 48)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -247,7 +259,11 @@
     </param>
     <param>
       <key>value</key>
-      <value> [2,2,0,0]</value>
+      <value>[1,2,2,1]</value>
+    </param>
+    <param>
+      <key>poll_rate</key>
+      <value>10</value>
     </param>
   </block>
   <block>
@@ -1373,7 +1389,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(768, 224)</value>
+      <value>(776, 240)</value>
     </param>
     <param>
       <key>_rotation</key>
