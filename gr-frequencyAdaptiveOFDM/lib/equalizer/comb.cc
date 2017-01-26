@@ -83,3 +83,8 @@ double
 comb::get_snr() {
 	return 42;
 }
+
+std::vector<double>
+resource_blocks_snr() {
+	return std::vector<double>(4,42);
+}

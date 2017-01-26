@@ -29,9 +29,13 @@ class ls: public base {
 public:
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]);
 	virtual double get_snr();
+	std::vector<double> resource_blocks_snr();
+
 private:
 	gr_complex d_H[64];
 	double d_snr;
+	std::vector<double> d_resource_block_snr;
+
 };
 
 } /* namespace channel_estimation */
