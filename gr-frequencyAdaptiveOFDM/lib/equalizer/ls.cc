@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2016 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *						Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +33,7 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 		double rb_signal = 0;
 		double rb_noise = 0;
 		d_resource_block_snr = std::vector<double>(4,0);
-
+		
 		for(int i = 0; i < 64; i++) {
 			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
 			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
@@ -59,7 +60,6 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 		}
 
 		d_snr = 10 * std::log10(signal / noise / 2);
-
 
 	} else {
 

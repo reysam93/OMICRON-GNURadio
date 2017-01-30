@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2015 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *						Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@ public:
 	virtual ~base() {};
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]) = 0;
 	virtual double get_snr() = 0;
-	virtual std::vector<double> resource_blocks_snr();
+	virtual std::vector<double> resource_blocks_snr() = 0;
 
 	static const gr_complex POLARITY[127];
 

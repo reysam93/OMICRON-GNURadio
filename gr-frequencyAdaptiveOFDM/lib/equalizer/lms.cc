@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2015 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *						Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +33,7 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 		double rb_signal = 0;
 		double rb_noise = 0;
 		d_resource_block_snr = std::vector<double>(4,0);
-
+		
 		for(int i = 0; i < 64; i++) {
 			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
 			signal += std::pow(std::abs(d_H[i] + in[i]), 2);

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2015 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *						Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,6 +86,6 @@ comb::get_snr() {
 }
 
 std::vector<double>
-resource_blocks_snr() {
+comb::resource_blocks_snr() {
 	return std::vector<double>(4,42);
 }

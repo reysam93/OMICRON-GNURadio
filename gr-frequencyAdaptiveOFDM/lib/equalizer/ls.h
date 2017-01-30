@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2016 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *						Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +29,8 @@ namespace equalizer {
 class ls: public base {
 public:
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]);
-	virtual double get_snr();
+	double get_snr();
 	std::vector<double> resource_blocks_snr();
-
 private:
 	gr_complex d_H[64];
 	double d_snr;

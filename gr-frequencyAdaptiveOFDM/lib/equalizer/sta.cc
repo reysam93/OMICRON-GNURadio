@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
- *
+ * Copyright (C) 2015 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *						Bastian Bloessl <bloessl@ccs-labs.org>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -36,26 +36,9 @@ void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 		for(int i = 0; i < 64; i++) {
 			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
 			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
-			rb_noise += std::pow(std::abs(d_H[i] - in[i]), 2);
-			rb_signal += std::pow(std::abs(d_H[i] + in[i]), 2);
+
 			d_H[i] += in[i];
 			d_H[i] /= LONG[i] * gr_complex(2, 0);
-
-			switch(i) {
-			case 11:
-				d_resource_block_snr[0] = 10 * std::log10(rb_signal / rb_noise / 2);
-			case 25:
-				d_resource_block_snr[1] = 10 * std::log10(rb_signal / rb_noise / 2);
-			case 39:
-				d_resource_block_snr[2] = 10 * std::log10(rb_signal / rb_noise / 2);
-			case 53:
-				d_resource_block_snr[3] = 10 * std::log10(rb_signal / rb_noise / 2);
-			default:
-				if (i == 11 or i == 25 or i == 39 or i == 53) {
-					rb_signal = 0;
-					rb_noise = 0;
-				}
-			}
 		}
 
 		d_snr = 10 * std::log10(signal / noise / 2);
