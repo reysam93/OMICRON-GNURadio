@@ -48,7 +48,7 @@ namespace gr {
               gr::io_signature::make(0, 0, 0)),
       d_log(log),
       d_debug(debug),
-      d_snr(0),
+      d_snr(std::vector<double>(4,0)),
       d_nom_freq(0.0),
       d_freq_offset(0.0),
       d_ofdm(std::vector<int>(4, 0)),
@@ -93,7 +93,7 @@ namespace gr {
           pmt::pmt_t dict = tags[0].value;
           int len_data = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE+1)));
           std::vector<int> encoding = pmt::s32vector_elements(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
-          d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+          d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
           d_nom_freq = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
           d_freq_offset = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
 
@@ -108,13 +108,12 @@ namespace gr {
             std::cout << std::endl;
 
             if (d_debug){
-              std::cout << "Decode MAC: frame start -- len " << len_data << std::endl;
+              dout << "Decode MAC: frame start -- len " << len_data << std::endl;
               d_frame.print();
               d_ofdm.print();
             }
           } else {
-            //Dejar como dout al terminar!
-            std::cout << "Dropping frame which is too large (symbols or bits)" << std::endl;
+            dout << "Dropping frame which is too large (symbols or bits)" << std::endl;
           }
         }
 
@@ -154,8 +153,8 @@ namespace gr {
       boost::crc_32_type result;
       result.process_bytes(out_bytes + 2, d_frame.psdu_size);
       if(result.checksum() != 558161692) {
-        std::cout << "\nERROR: checksum wrong -- dropping\n" << std::endl;
-        //return;
+        std::cerr << "\nERROR: checksum wrong -- dropping\n" << std::endl;
+        return;
       }
 
       // create PDU
@@ -163,7 +162,7 @@ namespace gr {
       pmt::pmt_t enc = pmt::init_s32vector(4, d_ofdm.resource_blocks_e);
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("encoding"), enc);
-      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
+      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
       dict = pmt::dict_add(dict, pmt::mp("nomfreq"), pmt::from_double(d_nom_freq));
       dict = pmt::dict_add(dict, pmt::mp("freqofs"), pmt::from_double(d_freq_offset));
       dict = pmt::dict_add(dict, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
@@ -213,7 +212,6 @@ namespace gr {
       int count = 0;
       for(int i = 0; i < d_frame.n_sym; i++) {
         for(int k = 0; k < n_cbps; k++) {
-          //d_deinterleaved_bits[i*n_cbps + k] = d_rx_bits[i * n_cbps + k];
           d_deinterleaved_bits[i * n_cbps + second[first[k]]] = d_rx_bits[i * n_cbps + k];
         }
       }

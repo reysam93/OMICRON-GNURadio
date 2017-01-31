@@ -1354,7 +1354,7 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>[2,0,0,2]</value>
+      <value>encoding</value>
     </param>
     <param>
       <key>_coordinate</key>

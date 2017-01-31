@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2016 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +38,7 @@ namespace gr {
 
       frame_param d_frame;
       ofdm_param d_ofdm;
-      double d_snr;  // dB
+      std::vector<double> d_snr;  // dB
       double d_nom_freq;  // nominal frequency, Hz
       double d_freq_offset;  // frequency offset, Hz
       viterbi_decoder d_decoder;

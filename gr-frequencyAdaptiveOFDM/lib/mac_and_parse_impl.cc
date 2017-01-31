@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2017 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +60,7 @@ namespace gr {
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(0, 0, 0)),
         d_seq_nr(0), d_last_seq_no(-1),
-        d_debug(debug), d_log(log), d_snr(0) {
+        d_debug(debug), d_log(log), d_snr(std::vector<double>(4,0)) {
 
       ack_received = false;
       message_port_register_out(pmt::mp("phy out"));
@@ -227,7 +228,7 @@ namespace gr {
       }
 
       pmt::pmt_t dict = pmt::car(msg);
-      d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+      d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
       decide_modulation();
       msg = pmt::cdr(msg);
 
@@ -236,7 +237,7 @@ namespace gr {
 
       if (!equal_mac(d_src_mac, h->addr1)){
         dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
-        //return;
+        return;
       }
 
       mylog(boost::format("length: %1%") % data_len );
@@ -567,22 +568,28 @@ namespace gr {
 
     void
     mac_and_parse_impl::decide_modulation(){
-      std::cout << std::endl << "SNR: " << d_snr << std::endl;
-      if (d_snr >= MIN_SNR_64QAM) {
-        std::cout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
-        //set_encoding(QAM64_1_2);
-      } else if (d_snr >= MIN_SNR_16QAM) {
-        std::cout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
-        //set_encoding(QAM16_1_2);
-      } else if (d_snr >= MIN_SNR_QPSK) {
-        std::cout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
-        //set_encoding(QPSK_1_2);
-      } else if (d_snr >= MIN_SNR_BPSK) {
-        std::cout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
-        //set_encoding(BPSK_1_2);
-      } else {
-        std::cout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+      std::vector<int> encoding(4,0);
+
+      for (int i = 0; i < 4; i++) {
+        dout << std::endl << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
+        if (d_snr[i] >= MIN_SNR_64QAM) {
+          dout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
+          encoding[i] = QAM64_1_2;
+        } else if (d_snr[i] >= MIN_SNR_16QAM) {
+          dout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
+          encoding[i] = QAM16_1_2;
+        } else if (d_snr[i] >= MIN_SNR_QPSK) {
+          dout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
+          encoding[i] = QPSK_1_2;
+        } else if (d_snr[i] >= MIN_SNR_BPSK) {
+          dout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
+          encoding[i] = BPSK_1_2;
+        } else {
+          dout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+          encoding[i] = BPSK_1_2;
+        }
       }
+      set_encoding(encoding);
     }
 
     void 

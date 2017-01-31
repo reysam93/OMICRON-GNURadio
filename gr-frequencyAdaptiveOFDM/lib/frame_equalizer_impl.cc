@@ -225,7 +225,7 @@ namespace gr {
             pmt::pmt_t dict = pmt::make_dict();
             dict = pmt::dict_add(dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
             dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_frame_encoding));
-            dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_equalizer->get_snr()));
+            dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_equalizer->resource_blocks_snr()));
             dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
             dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
             add_item_tag(0, nitems_written(0) + o,
