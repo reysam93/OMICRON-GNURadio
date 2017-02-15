@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Mon Nov 28 11:48:28 2016
+# Generated: Wed Feb 15 13:16:26 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -32,11 +32,12 @@ from gnuradio.filter import firdes
 from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
 from wifi_freq_adap_phy_hier import wifi_freq_adap_phy_hier  # grc-generated hier_block
-import adaptiveOFDM
 import foo
+import frequencyAdaptiveOFDM
 import sip
 import threading
 import time
+from gnuradio import qtgui
 
 
 class top_block(gr.top_block, Qt.QWidget):
@@ -45,6 +46,7 @@ class top_block(gr.top_block, Qt.QWidget):
         gr.top_block.__init__(self, "Top Block")
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Top Block")
+        qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -68,16 +70,17 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 10e6
+        self.pdu_length = pdu_length = 500
         self.lo_offset = lo_offset = 0
         self.gain = gain = 0.75
         self.freq = freq = 5890000000
-        self.encoding = encoding = 0
+        self.encoding = encoding = [0,0,0,0]
         self.chan_est = chan_est = 0
 
         ##################################################
         # Blocks
         ##################################################
-        self.adaptiveOFDM_mac_and_parse_0 = adaptiveOFDM.mac_and_parse(([0x40, 0xe2, 0x30, 0xd6, 0xec, 0x67]), ([0x40, 0xe2, 0x30, 0xd6, 0xe9, 0xdf]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
+        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x23, 0x23, 0x23, 0x23, 0x23, 0x23]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, False)
         self._samp_rate_options = [5e6, 10e6, 20e6]
         self._samp_rate_labels = ["5 MHz", "10 MHz", "20 MHz"]
         self._samp_rate_tool_bar = Qt.QToolBar(self)
@@ -117,10 +120,10 @@ class top_block(gr.top_block, Qt.QWidget):
         self._freq_combo_box.currentIndexChanged.connect(
         	lambda i: self.set_freq(self._freq_options[i]))
         self.top_layout.addWidget(self._freq_tool_bar)
-        
+
         def _encoding_probe():
             while True:
-                val = self.adaptiveOFDM_mac_and_parse_0.get_encoding()
+                val = self.frequencyAdaptiveOFDM_mac_and_parse_0.get_encoding()
                 try:
                     self.set_encoding(val)
                 except AttributeError:
@@ -129,7 +132,7 @@ class top_block(gr.top_block, Qt.QWidget):
         _encoding_thread = threading.Thread(target=_encoding_probe)
         _encoding_thread.daemon = True
         _encoding_thread.start()
-            
+
         self._chan_est_options = 0, 1, 3, 2
         self._chan_est_labels = ["LS", "LMS", "STA", "Linear Comb"]
         self._chan_est_group_box = Qt.QGroupBox("chan_est")
@@ -191,19 +194,19 @@ class top_block(gr.top_block, Qt.QWidget):
         )
         self.qtgui_time_sink_x_0.set_update_time(0.10)
         self.qtgui_time_sink_x_0.set_y_axis(-1, 1)
-        
+
         self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
-        
+
         self.qtgui_time_sink_x_0.enable_tags(-1, True)
         self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
         self.qtgui_time_sink_x_0.enable_autoscale(True)
         self.qtgui_time_sink_x_0.enable_grid(False)
         self.qtgui_time_sink_x_0.enable_axis_labels(True)
         self.qtgui_time_sink_x_0.enable_control_panel(False)
-        
+
         if not True:
           self.qtgui_time_sink_x_0.disable_legend()
-        
+
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
@@ -216,7 +219,7 @@ class top_block(gr.top_block, Qt.QWidget):
                    -1, -1, -1, -1, -1]
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
                   1.0, 1.0, 1.0, 1.0, 1.0]
-        
+
         for i in xrange(1):
             if len(labels[i]) == 0:
                 self.qtgui_time_sink_x_0.set_line_label(i, "Data {0}".format(i))
@@ -227,7 +230,7 @@ class top_block(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_style(i, styles[i])
             self.qtgui_time_sink_x_0.set_line_marker(i, markers[i])
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
-        
+
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_0_win)
         self.qtgui_number_sink_0 = qtgui.number_sink(
@@ -238,7 +241,7 @@ class top_block(gr.top_block, Qt.QWidget):
         )
         self.qtgui_number_sink_0.set_update_time(0.10)
         self.qtgui_number_sink_0.set_title("")
-        
+
         labels = ['Error Rate', '', '', '', '',
                   '', '', '', '', '']
         units = ['Percent', '', '', '', '',
@@ -257,7 +260,7 @@ class top_block(gr.top_block, Qt.QWidget):
                 self.qtgui_number_sink_0.set_label(i, labels[i])
             self.qtgui_number_sink_0.set_unit(i, units[i])
             self.qtgui_number_sink_0.set_factor(i, factor[i])
-        
+
         self.qtgui_number_sink_0.enable_autoscale(False)
         self._qtgui_number_sink_0_win = sip.wrapinstance(self.qtgui_number_sink_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_number_sink_0_win)
@@ -273,10 +276,10 @@ class top_block(gr.top_block, Qt.QWidget):
         self.qtgui_const_sink_x_0.enable_autoscale(False)
         self.qtgui_const_sink_x_0.enable_grid(False)
         self.qtgui_const_sink_x_0.enable_axis_labels(True)
-        
+
         if not True:
           self.qtgui_const_sink_x_0.disable_legend()
-        
+
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
@@ -299,9 +302,12 @@ class top_block(gr.top_block, Qt.QWidget):
             self.qtgui_const_sink_x_0.set_line_style(i, styles[i])
             self.qtgui_const_sink_x_0.set_line_marker(i, markers[i])
             self.qtgui_const_sink_x_0.set_line_alpha(i, alphas[i])
-        
+
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
+        self._pdu_length_range = Range(0, 1500, 1, 500, 200)
+        self._pdu_length_win = RangeWidget(self._pdu_length_range, self.set_pdu_length, "pdu_length", "counter_slider", int)
+        self.top_layout.addWidget(self._pdu_length_win)
         self.foo_packet_pad2_0 = foo.packet_pad2(False, False, 0.001, 10000, 10000)
         (self.foo_packet_pad2_0).set_min_output_buffer(100000)
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
@@ -315,20 +321,20 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'fer'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))    
-        self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))    
-        self.msg_connect((self.adaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))    
-        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.adaptiveOFDM_mac_and_parse_0, 'app in'))    
-        self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.adaptiveOFDM_mac_and_parse_0, 'phy in'))    
-        self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'carrier'), (self.blocks_pdu_to_tagged_stream_0_0, 'pdus'))    
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.foo_packet_pad2_0, 0))    
-        self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.qtgui_number_sink_0, 0))    
-        self.connect((self.blocks_pdu_to_tagged_stream_0_0, 0), (self.qtgui_const_sink_x_0, 0))    
-        self.connect((self.blocks_pdu_to_tagged_stream_0_1, 0), (self.blocks_uchar_to_float_0, 0))    
-        self.connect((self.blocks_uchar_to_float_0, 0), (self.qtgui_time_sink_x_0, 0))    
-        self.connect((self.foo_packet_pad2_0, 0), (self.uhd_usrp_sink_0, 0))    
-        self.connect((self.uhd_usrp_source_0, 0), (self.wifi_freq_adap_phy_hier_0, 0))    
-        self.connect((self.wifi_freq_adap_phy_hier_0, 0), (self.blocks_multiply_const_vxx_0, 0))    
+        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'fer'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))
+        self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'carrier'), (self.blocks_pdu_to_tagged_stream_0_0, 'pdus'))
+        self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy in'))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.foo_packet_pad2_0, 0))
+        self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.qtgui_number_sink_0, 0))
+        self.connect((self.blocks_pdu_to_tagged_stream_0_0, 0), (self.qtgui_const_sink_x_0, 0))
+        self.connect((self.blocks_pdu_to_tagged_stream_0_1, 0), (self.blocks_uchar_to_float_0, 0))
+        self.connect((self.blocks_uchar_to_float_0, 0), (self.qtgui_time_sink_x_0, 0))
+        self.connect((self.foo_packet_pad2_0, 0), (self.uhd_usrp_sink_0, 0))
+        self.connect((self.uhd_usrp_source_0, 0), (self.wifi_freq_adap_phy_hier_0, 0))
+        self.connect((self.wifi_freq_adap_phy_hier_0, 0), (self.blocks_multiply_const_vxx_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
@@ -343,6 +349,12 @@ class top_block(gr.top_block, Qt.QWidget):
         self._samp_rate_callback(self.samp_rate)
         self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
         self.uhd_usrp_sink_0.set_samp_rate(self.samp_rate)
+
+    def get_pdu_length(self):
+        return self.pdu_length
+
+    def set_pdu_length(self, pdu_length):
+        self.pdu_length = pdu_length
 
     def get_lo_offset(self):
         return self.lo_offset
@@ -359,9 +371,9 @@ class top_block(gr.top_block, Qt.QWidget):
     def set_gain(self, gain):
         self.gain = gain
         self.uhd_usrp_source_0.set_normalized_gain(self.gain, 0)
-        	
+
         self.uhd_usrp_sink_0.set_normalized_gain(self.gain, 0)
-        	
+
 
     def get_freq(self):
         return self.freq
