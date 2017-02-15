@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Wed Feb 15 12:43:32 2017
+# Generated: Wed Feb 15 15:46:32 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -76,13 +76,13 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.out_buf_size = out_buf_size = 96000
         self.interval = interval = 300
         self.epsilon = epsilon = 0
-        self.encoding = encoding = [1,2,2,1]
+        self.encoding = encoding = [0,0,0,0]
         self.chan_est = chan_est = 0
 
         ##################################################
         # Blocks
         ##################################################
-        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
+        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, False)
         self._snr_range = Range(-15, 30, 0.1, 15, 200)
         self._snr_win = RangeWidget(self._snr_range, self.set_snr, "snr", "counter_slider", float)
         self.top_layout.addWidget(self._snr_win)

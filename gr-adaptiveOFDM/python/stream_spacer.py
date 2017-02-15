@@ -55,6 +55,7 @@ class stream_spacer(gr.sync_block):
         out = output_items[0]
 
         out[:] = in0
-        time.sleep(self.interval)
+        if self.interval > 0:
+            time.sleep(self.interval)
         return len(output_items[0])
 

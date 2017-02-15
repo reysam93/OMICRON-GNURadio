@@ -74,7 +74,7 @@ namespace gr {
     frame_equalizer_impl::set_algorithm(Equalizer algo) {
       gr::thread::scoped_lock lock(d_mutex);
       delete d_equalizer;
-
+      dout << "FRAME EQ: Algorithm set to: ";
       switch(algo) {
 
       case COMB:
@@ -305,7 +305,7 @@ namespace gr {
         }else if(d_frame_encoding[i] == 3){
           d_frame_mod[i] = d_64qam;
         }else{
-          std::cerr << "FRAME EQUALIZER: wrong modulation found.\n";
+          std::cerr << "ERROR: FRAME EQUALIZER: wrong modulation found.\n";
           return false;
         }
       }
@@ -315,7 +315,7 @@ namespace gr {
       d_frame_symbols = frame_received.n_sym;
 
       if(parity != decoded_bits[21]) {
-        std::cerr << "FRAME EQUALIZER: wrong parity" << std::endl;
+        std::cerr << "ERROR: FRAME EQUALIZER: wrong parity" << std::endl;
         return false;
       }
       return true;

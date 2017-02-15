@@ -81,7 +81,6 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 				c++;
 			}
 		}
-		std::cout << std::endl;
 	}
 }
 

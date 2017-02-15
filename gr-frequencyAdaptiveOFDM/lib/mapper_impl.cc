@@ -94,7 +94,7 @@ namespace gr {
           frame_param frame(d_ofdm, psdu_length);
 
           if(frame.n_sym > MAX_SYM) {
-            std::cout << "packet too large, maximum number of symbols is " << MAX_SYM << std::endl;
+            std::cerr << "ERROR: MAPPER: packet too large, maximum number of symbols is " << MAX_SYM << std::endl;
             return 0;
           }
 
@@ -177,7 +177,7 @@ namespace gr {
     void 
     mapper_impl::set_encoding(std::vector<int> pilots_enc) {
       if (d_debug){
-        std::cout << "MAPPER ENCODDING: ";
+        dout << "MAPPER ENCODDING: ";
         d_ofdm.print();
       }
 

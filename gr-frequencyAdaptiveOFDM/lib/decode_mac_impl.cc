@@ -105,7 +105,6 @@ namespace gr {
             d_ofdm = ofdm;
             d_frame = frame;
             copied = 0;
-            std::cout << std::endl;
 
             if (d_debug){
               dout << "Decode MAC: frame start -- len " << len_data << std::endl;
@@ -153,7 +152,7 @@ namespace gr {
       boost::crc_32_type result;
       result.process_bytes(out_bytes + 2, d_frame.psdu_size);
       if(result.checksum() != 558161692) {
-        std::cerr << "\nERROR: checksum wrong -- dropping\n" << std::endl;
+        std::cerr << "\nERROR: DECODE MAC: checksum wrong -- dropping\n" << std::endl;
         return;
       }
 
@@ -188,7 +187,6 @@ namespace gr {
         for(int k = 0; k < bpsc; k++) {
           d_rx_bits[regrouped] = !!(d_rx_symbols[i] & (1 << k));
           regrouped++;
-          //d_rx_bits[i*bpsc + k] = !!(d_rx_symbols[i] & (1 << k));
         }
       }
     }

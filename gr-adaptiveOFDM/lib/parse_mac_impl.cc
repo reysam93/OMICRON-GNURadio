@@ -350,19 +350,19 @@ public:
       return;
     }
 
-    std::cout << std::setfill('0') << std::hex << std::setw(2);
+    dout << std::setfill('0') << std::hex << std::setw(2);
 
     for(int i = 0; i < 6; i++) {
-      std::cout << (int)addr[i];
+      dout << (int)addr[i];
       if(i != 5) {
-        std::cout << ":";
+        dout << ":";
       }
     }
 
-    std::cout << std::dec;
+    dout << std::dec;
 
     if(new_line) {
-      std::cout << std::endl;
+      dout << std::endl;
     }
   }
 
