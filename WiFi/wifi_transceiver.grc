@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.10'?>
+<?grc format='1' created='3.7.11'?>
 <flow_graph>
   <timestamp>Tue Oct 18 11:17:19 2016</timestamp>
   <block>
@@ -485,6 +485,69 @@
     </param>
   </block>
   <block>
+    <key>variable_qtgui_range</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>500</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1152, 0)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>pdu_length</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>min_len</key>
+      <value>200</value>
+    </param>
+    <param>
+      <key>orient</key>
+      <value>Qt.Horizontal</value>
+    </param>
+    <param>
+      <key>start</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>step</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>stop</key>
+      <value>1500</value>
+    </param>
+    <param>
+      <key>rangeType</key>
+      <value>int</value>
+    </param>
+    <param>
+      <key>widget</key>
+      <value>counter_slider</value>
+    </param>
+  </block>
+  <block>
     <key>variable_qtgui_chooser</key>
     <param>
       <key>comment</key>
@@ -615,7 +678,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 156)</value>
+      <value>(288, 304)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -640,6 +703,53 @@
     <param>
       <key>src_mac</key>
       <value>[0x40, 0xe2, 0x30, 0xd6, 0xec, 0x67]</value>
+    </param>
+  </block>
+  <block>
+    <key>adaptiveOFDM_stream_spacer</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(464, 156)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>adaptiveOFDM_stream_spacer_0</value>
+    </param>
+    <param>
+      <key>interval</key>
+      <value>1000</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>byte</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
     </param>
   </block>
   <block>
@@ -670,7 +780,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(20, 392)</value>
+      <value>(20, 536)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -721,7 +831,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 220)</value>
+      <value>(904, 364)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -768,7 +878,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 396)</value>
+      <value>(456, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -815,7 +925,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 188)</value>
+      <value>(592, 332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -862,7 +972,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(144, 356)</value>
+      <value>(144, 500)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -909,7 +1019,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 140)</value>
+      <value>(592, 284)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -956,7 +1066,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 148)</value>
+      <value>(16, 296)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -996,6 +1106,108 @@
     </param>
   </block>
   <block>
+    <key>blocks_stream_to_tagged_stream</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(232, 156)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_stream_to_tagged_stream_0</value>
+    </param>
+    <param>
+      <key>len_tag_key</key>
+      <value>packet_len</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>packet_len</key>
+      <value>pdu_length</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>byte</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_tagged_stream_to_pdu</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(632, 164)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_tagged_stream_to_pdu_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>byte</value>
+    </param>
+    <param>
+      <key>tag</key>
+      <value>packet_len</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_uchar_to_float</key>
     <param>
       <key>alias</key>
@@ -1015,7 +1227,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(872, 144)</value>
+      <value>(872, 288)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1032,6 +1244,65 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_vector_source_x</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(16, 148)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_vector_source_x_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>byte</value>
+    </param>
+    <param>
+      <key>repeat</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>tags</key>
+      <value>[]</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>vector</key>
+      <value>range(100)</value>
     </param>
   </block>
   <block>
@@ -1066,7 +1337,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 508)</value>
+      <value>(416, 656)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1117,7 +1388,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(40, 276)</value>
+      <value>(40, 420)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1168,7 +1439,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(160, 492)</value>
+      <value>(160, 636)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1515,7 +1786,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 324)</value>
+      <value>(864, 468)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1754,7 +2025,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1048, 124)</value>
+      <value>(1048, 272)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2753,7 +3024,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 476)</value>
+      <value>(608, 624)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4088,7 +4359,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 348)</value>
+      <value>(616, 496)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4263,7 +4534,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 268)</value>
+      <value>(448, 416)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4321,6 +4592,12 @@
     <sink_key>mac_in</sink_key>
   </connection>
   <connection>
+    <source_block_id>adaptiveOFDM_stream_spacer_0</source_block_id>
+    <sink_block_id>blocks_tagged_stream_to_pdu_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
     <sink_block_id>foo_packet_pad2_0</sink_block_id>
     <source_key>0</source_key>
@@ -4357,8 +4634,26 @@
     <sink_key>app in</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
+    <sink_block_id>adaptiveOFDM_stream_spacer_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_tagged_stream_to_pdu_0</source_block_id>
+    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>pdus</source_key>
+    <sink_key>app in</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_uchar_to_float_0</source_block_id>
     <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_vector_source_x_0</source_block_id>
+    <sink_block_id>blocks_stream_to_tagged_stream_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
