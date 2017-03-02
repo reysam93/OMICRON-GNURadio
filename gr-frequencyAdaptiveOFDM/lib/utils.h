@@ -47,6 +47,7 @@ struct mac_ack_header {
 	uint8_t ra[6];
 }__attribute__((packed));
 
+
 /**
  * WIFI parameters
  */

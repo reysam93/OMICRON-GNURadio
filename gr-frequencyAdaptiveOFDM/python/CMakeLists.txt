@@ -31,7 +31,7 @@ endif()
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    DESTINATION ${GR_PYTHON_DIR}/frequencyAdaptiveOFDM
+    rb_const_demux_stream.py DESTINATION ${GR_PYTHON_DIR}/frequencyAdaptiveOFDM
 )
 
 ########################################################################

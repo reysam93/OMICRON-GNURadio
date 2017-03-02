@@ -706,7 +706,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 676)</value>
+      <value>(440, 780)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -766,53 +766,6 @@
     <param>
       <key>type</key>
       <value>float</value>
-    </param>
-    <param>
-      <key>tag</key>
-      <value>packet_len</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_pdu_to_tagged_stream</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(200, 364)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_pdu_to_tagged_stream_0_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
     </param>
     <param>
       <key>tag</key>
@@ -1165,7 +1118,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 648)</value>
+      <value>(616, 752)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1228,7 +1181,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(280, 648)</value>
+      <value>(280, 752)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1279,7 +1232,7 @@
     </param>
     <param>
       <key>debug</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1315,6 +1268,49 @@
     </param>
   </block>
   <block>
+    <key>frequencyAdaptiveOFDM_rb_const_demux_stream</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(224, 352)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_rb_const_demux_stream_0</value>
+    </param>
+    <param>
+      <key>tag</key>
+      <value>packet_len</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
     <key>pfb_arb_resampler_xxx</key>
     <param>
       <key>alias</key>
@@ -1334,7 +1330,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(764, 440)</value>
+      <value>(760, 512)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1401,11 +1397,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(100, 432)</value>
+      <value>(48, 560)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1437,7 +1433,7 @@
     </param>
     <param>
       <key>label1</key>
-      <value></value>
+      <value>RB1</value>
     </param>
     <param>
       <key>marker1</key>
@@ -1485,7 +1481,7 @@
     </param>
     <param>
       <key>label2</key>
-      <value></value>
+      <value>RB2</value>
     </param>
     <param>
       <key>marker2</key>
@@ -1505,11 +1501,11 @@
     </param>
     <param>
       <key>color3</key>
-      <value>"red"</value>
+      <value>"green"</value>
     </param>
     <param>
       <key>label3</key>
-      <value></value>
+      <value>RB3</value>
     </param>
     <param>
       <key>marker3</key>
@@ -1529,11 +1525,11 @@
     </param>
     <param>
       <key>color4</key>
-      <value>"red"</value>
+      <value>"yellow"</value>
     </param>
     <param>
       <key>label4</key>
-      <value></value>
+      <value>RB4</value>
     </param>
     <param>
       <key>marker4</key>
@@ -1673,7 +1669,7 @@
     </param>
     <param>
       <key>nconnections</key>
-      <value>1</value>
+      <value>4</value>
     </param>
     <param>
       <key>size</key>
@@ -2338,7 +2334,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(576, 344)</value>
+      <value>(560, 424)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2398,12 +2394,6 @@
   <connection>
     <source_block_id>blocks_pdu_to_tagged_stream_0</source_block_id>
     <sink_block_id>qtgui_number_sink_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_pdu_to_tagged_stream_0_0</source_block_id>
-    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2480,6 +2470,30 @@
     <sink_key>mac_in</sink_key>
   </connection>
   <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>1</source_key>
+    <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>2</source_key>
+    <sink_key>2</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>3</source_key>
+    <sink_key>3</sink_key>
+  </connection>
+  <connection>
     <source_block_id>pfb_arb_resampler_xxx_0</source_block_id>
     <sink_block_id>wifi_freq_adap_phy_hier_0</sink_block_id>
     <source_key>0</source_key>
@@ -2487,9 +2501,9 @@
   </connection>
   <connection>
     <source_block_id>wifi_freq_adap_phy_hier_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</sink_block_id>
     <source_key>carrier</source_key>
-    <sink_key>pdus</sink_key>
+    <sink_key>symbols_in</sink_key>
   </connection>
   <connection>
     <source_block_id>wifi_freq_adap_phy_hier_0</source_block_id>

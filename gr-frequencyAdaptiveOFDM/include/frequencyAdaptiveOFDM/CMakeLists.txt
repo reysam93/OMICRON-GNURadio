@@ -28,5 +28,6 @@ install(FILES
     constellations.h
     frame_equalizer.h
     decode_mac.h
-    mac_and_parse.h DESTINATION include/frequencyAdaptiveOFDM
+    mac_and_parse.h
+    rb_const_demux.h DESTINATION include/frequencyAdaptiveOFDM
 )

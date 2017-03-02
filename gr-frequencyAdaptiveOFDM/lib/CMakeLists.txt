@@ -53,6 +53,7 @@ list(APPEND frequencyAdaptiveOFDM_sources
     frame_equalizer_impl.cc
     viterbi_decoder/base.cc
     mac_and_parse_impl.cc
+    rb_const_demux_impl.cc
 )
 
 # use SSE2 optimized viterbi implementation if SSE2 is enabled

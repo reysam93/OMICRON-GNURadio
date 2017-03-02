@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<block>
+  <name>RB Consts Demux</name>
+  <key>frequencyAdaptiveOFDM_rb_const_demux</key>
+  <category>[Frequency Adaptive OFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <make>frequencyAdaptiveOFDM.rb_const_demux()</make>
+  <sink>
+    <name>symbols in</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>rb1</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>rb2</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>rb3</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>rb4</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

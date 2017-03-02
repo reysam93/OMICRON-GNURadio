@@ -31,4 +31,5 @@ except ImportError:
 	pass
 
 # import any pure python here
+from rb_const_demux_stream import rb_const_demux_stream
 #

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<block>
+  <name>RB Symbols Demux To Stream</name>
+  <key>frequencyAdaptiveOFDM_rb_const_demux_stream</key>
+  <category>[Frequency Adaptive OFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <make>frequencyAdaptiveOFDM.rb_const_demux_stream($tag)</make>
+
+  <param>
+    <name>Length Tag Name</name>
+    <key>tag</key>
+    <value>packet_len</value>
+    <type>string</type>
+  </param>
+ 
+  <sink>
+    <name>symbols_in</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>rb1</name>
+    <type>complex</type>
+  </source>
+  <source>
+    <name>rb2</name>
+    <type>complex</type>
+  </source>
+  <source>
+    <name>rb3</name>
+    <type>complex</type>
+  </source>
+  <source>
+    <name>rb4</name>
+    <type>complex</type>
+  </source>
+</block>
