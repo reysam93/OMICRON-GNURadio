@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Thu Mar  2 15:04:25 2017
+# Generated: Mon Mar 13 11:43:17 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -74,7 +74,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.snr = snr = 15
         self.pdu_length = pdu_length = 500
         self.out_buf_size = out_buf_size = 96000
-        self.interval = interval = 300
+        self.interval = interval = 500
         self.epsilon = epsilon = 0
         self.encoding = encoding = [0,0,0,0]
         self.chan_est = chan_est = 0
@@ -89,6 +89,9 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self._pdu_length_range = Range(0, 1500, 1, 500, 200)
         self._pdu_length_win = RangeWidget(self._pdu_length_range, self.set_pdu_length, "pdu_length", "counter_slider", int)
         self.top_layout.addWidget(self._pdu_length_win)
+        self._interval_range = Range(10, 1000, 1, 500, 200)
+        self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
+        self.top_layout.addWidget(self._interval_win)
         self._epsilon_range = Range(-20e-6, 20e-6, 1e-6, 0, 200)
         self._epsilon_win = RangeWidget(self._epsilon_range, self.set_epsilon, "epsilon", "counter_slider", float)
         self.top_layout.addWidget(self._epsilon_win)
@@ -258,9 +261,6 @@ class files_loopback(gr.top_block, Qt.QWidget):
         	  flt_size=32)
         self.pfb_arb_resampler_xxx_0.declare_sample_delay(0)
 
-        self._interval_range = Range(10, 1000, 1, 300, 200)
-        self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
-        self.top_layout.addWidget(self._interval_win)
         self.frequencyAdaptiveOFDM_rb_const_demux_stream_0 = frequencyAdaptiveOFDM.rb_const_demux_stream('packet_len')
         self.foo_packet_pad2_0 = foo.packet_pad2(False, False, 0.001, 500, 0)
         (self.foo_packet_pad2_0).set_min_output_buffer(96000)
@@ -280,7 +280,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.blocks_pdu_to_tagged_stream_0_1 = blocks.pdu_to_tagged_stream(blocks.byte_t, 'packet_len')
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'packet_len')
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
-        self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, 1000)
+        self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, interval)
 
         ##################################################
         # Connections

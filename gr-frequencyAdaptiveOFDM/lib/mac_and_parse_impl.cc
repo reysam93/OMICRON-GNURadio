@@ -572,20 +572,17 @@ namespace gr {
 
       for (int i = 0; i < 4; i++) {
         dout << std::endl << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
-        if (d_snr[i] >= MIN_SNR_64QAM) {
-          dout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
+        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {
+          dout << "64QAM 1/2. Min SNR: " << MIN_SNR_64QAM_1_2 << std::endl;
           encoding[i] = QAM64_1_2;
-        } else if (d_snr[i] >= MIN_SNR_16QAM) {
-          dout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
+        } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
+          dout << "16QAM 1/2. Min SNR: " << MIN_SNR_16QAM_1_2 << std::endl;
           encoding[i] = QAM16_1_2;
-        } else if (d_snr[i] >= MIN_SNR_QPSK) {
-          dout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
+        } else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
+          dout << "QPSK 1/2. Min SNR: " << MIN_SNR_QPSK_1_2 << std::endl;
           encoding[i] = QPSK_1_2;
-        } else if (d_snr[i] >= MIN_SNR_BPSK) {
-          dout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
-          encoding[i] = BPSK_1_2;
         } else {
-          dout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+          dout << "BPSK 1/2. Minimun codification." << std::endl;
           encoding[i] = BPSK_1_2;
         }
       }

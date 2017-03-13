@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # 
-# Copyright 2016 <+YOU OR YOUR COMPANY+>.
+# Copyright 2016 Samuel Rey <samuel.rey.escudero@gmail.com>
 # 
 # This is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ class stream_spacer(gr.sync_block):
             in_sig=[dtype],
             out_sig=[dtype])
 
-        self.interval = interval/1000
+        self.interval = interval/1000.0
 
     def getDataType(self, data):
         if data == 0:

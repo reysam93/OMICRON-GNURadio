@@ -620,7 +620,7 @@
     </param>
     <param>
       <key>interval</key>
-      <value>1000</value>
+      <value>interval</value>
     </param>
     <param>
       <key>type</key>

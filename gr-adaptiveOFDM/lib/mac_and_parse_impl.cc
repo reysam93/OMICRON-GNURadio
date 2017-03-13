@@ -536,20 +536,30 @@ public:
 
   void decide_modulation(){
     dout << std::endl << "SNR: " << d_snr << std::endl;
-    if (d_snr >= MIN_SNR_64QAM) {
-      dout << "64QAM. Min SNR: " << MIN_SNR_64QAM << std::endl;
+    if (d_snr >= MIN_SNR_64QAM_3_4) {
+      dout << "64QAM 3/4. Min SNR: " << MIN_SNR_64QAM_3_4 << std::endl;
+      set_encoding(QAM64_3_4);
+    } else if (d_snr >= MIN_SNR_64QAM_2_3) {
+      dout << "64QAM 2/3. Min SNR: " << MIN_SNR_64QAM_2_3 << std::endl;
       set_encoding(QAM64_2_3);
-    } else if (d_snr >= MIN_SNR_16QAM) {
-      dout << "16QAM. Min SNR: " << MIN_SNR_16QAM << std::endl;
+    } else if (d_snr >= MIN_SNR_16QAM_3_4) {
+      dout << "16QAM 3/4. Min SNR: " << MIN_SNR_16QAM_3_4 << std::endl;
+      set_encoding(QAM16_3_4);
+    } else if (d_snr >= MIN_SNR_16QAM_1_2) {
+      dout << "16QAM 1/2. Min SNR: " << MIN_SNR_16QAM_1_2 << std::endl;
       set_encoding(QAM16_1_2);
-    } else if (d_snr >= MIN_SNR_QPSK) {
-      dout << "QPSK. Min SNR: " << MIN_SNR_QPSK << std::endl;
+    } else if (d_snr >= MIN_SNR_QPSK_3_4) {
+      dout << "QPSK 3/4. Min SNR: " << MIN_SNR_QPSK_3_4 << std::endl;
+      set_encoding(QPSK_3_4);
+    } else if (d_snr >= MIN_SNR_QPSK_1_2) {
+      dout << "QPSK 1/2. Min SNR: " << MIN_SNR_QPSK_1_2 << std::endl;
       set_encoding(QPSK_1_2);
-    } else if (d_snr >= MIN_SNR_BPSK) {
-      dout << "BPSK. Min SNR: " << MIN_SNR_BPSK << std::endl;
-      set_encoding(BPSK_1_2);
+    } else if (d_snr >= MIN_SNR_BPSK_3_4) {
+      dout << "BPSK 3/4. Min SNR: " << MIN_SNR_BPSK_3_4 << std::endl;
+      set_encoding(BPSK_3_4);
     } else {
-      dout << "SNR IS TO LOW. SHOWLD NOT TRANSMIT." << std::endl;
+      dout << "BPSK 1/2. Minimun modulation." << std::endl;
+      set_encoding(BPSK_1_2);
     }
   }
 

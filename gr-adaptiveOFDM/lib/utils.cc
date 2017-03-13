@@ -79,7 +79,7 @@ ofdm_param::ofdm_param(Encoding e) {
 			n_dbps = 216;
 			rate_field = 0x03; // 0b00000011
 			break;
-		defaut:
+		default:
 			assert(false);
 			break;
 	}
