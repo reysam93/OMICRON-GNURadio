@@ -38,18 +38,18 @@ public:
    * where M is the bits per simbol in the modulation.
    */
   // static const float MIN_SNR_BPSK = 3.532211577698691;
-  // static const float MIN_SNR_QPSK = 3.532211577698691*3;
-  // static const float MIN_SNR_16QAM = 3.532211577698691*15;
-  // static const float MIN_SNR_64QAM = 3.532211577698691*63;
+  // static const float MIN_SNR_QPSK = 10.596634733096073;
+  // static const float MIN_SNR_16QAM = 52.983173665480365;
+  // static const float MIN_SNR_64QAM = 222.52932939501753;
 
-  // This limits have been seected experimentally
-  static const float MIN_SNR_BPSK_3_4 = 5.0;
-  static const float MIN_SNR_QPSK_1_2 = 6.5;
-  static const float MIN_SNR_QPSK_3_4 = 8.5;
-  static const float MIN_SNR_16QAM_1_2 = 12.5;
-  static const float MIN_SNR_16QAM_3_4 = 15;
-  static const float MIN_SNR_64QAM_2_3 = 19;
-  static const float MIN_SNR_64QAM_3_4 = 21;
+  // This limits have been selected experimentally
+  static const float MIN_SNR_BPSK_3_4 = 6.0;
+  static const float MIN_SNR_QPSK_1_2 = 7.5;
+  static const float MIN_SNR_QPSK_3_4 = 9.5;
+  static const float MIN_SNR_16QAM_1_2 = 13.5;
+  static const float MIN_SNR_16QAM_3_4 = 16;
+  static const float MIN_SNR_64QAM_2_3 = 20;
+  static const float MIN_SNR_64QAM_3_4 = 23;
  
 
   // Time in usecs

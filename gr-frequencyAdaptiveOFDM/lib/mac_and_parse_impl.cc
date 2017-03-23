@@ -229,7 +229,6 @@ namespace gr {
 
       pmt::pmt_t dict = pmt::car(msg);
       d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
-      decide_modulation();
       msg = pmt::cdr(msg);
 
       int data_len = pmt::blob_length(msg);
@@ -239,6 +238,7 @@ namespace gr {
         dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
         return;
       }
+      decide_modulation();
 
       mylog(boost::format("length: %1%") % data_len );
 

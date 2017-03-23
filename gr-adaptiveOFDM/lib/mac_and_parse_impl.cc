@@ -206,7 +206,6 @@ public:
 
     pmt::pmt_t dict = pmt::car(msg);
     d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
-    decide_modulation();
     msg = pmt::cdr(msg);
 
     int data_len = pmt::blob_length(msg);
@@ -214,8 +213,9 @@ public:
 
     if (!equal_mac(d_src_mac, h->addr1)){
       dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
-      //return;
+      return;
     }
+    decide_modulation();
 
     mylog(boost::format("length: %1%") % data_len );
 
