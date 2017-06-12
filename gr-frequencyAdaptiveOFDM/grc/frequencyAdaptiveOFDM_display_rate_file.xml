@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<block>
+  <name>Display Rate (from file)</name>
+  <key>frequencyAdaptiveOFDM_display_rate_file</key>
+  <category>[frequencyAdaptiveOFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <make>frequencyAdaptiveOFDM.display_rate_file($read_file, $display_file, $debug)</make>
+
+
+  <param>
+    <name>Read File</name>
+    <key>read_file</key>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Display File</name>
+    <key>display_file</key>
+    <type>string</type>
+  </param>
+  
+  <param>
+    <name>Debug</name>
+    <key>debug</key>
+    <value>True</value>
+    <type>bool</type>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+</block>

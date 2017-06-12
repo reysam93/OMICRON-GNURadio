@@ -32,4 +32,6 @@ except ImportError:
 
 # import any pure python here
 from rb_const_demux_stream import rb_const_demux_stream
+from display_rate_file import display_rate_file
+
 #

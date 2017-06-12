@@ -569,11 +569,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/OMICRON-GNURadio/resources/prueba_rx.txt</value>
+      <value>/tmp/prueba_rx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -981,11 +981,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1184, 240)</value>
+      <value>(1168, 176)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>270</value>
+      <value>0</value>
     </param>
     <param>
       <key>id</key>
@@ -1182,6 +1182,45 @@
     </param>
   </block>
   <block>
+    <key>frequencyAdaptiveOFDM_display_rate_file</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>display_file</key>
+      <value>/tmp/rate.txt</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1168, 284)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_display_rate_file_0</value>
+    </param>
+    <param>
+      <key>read_file</key>
+      <value>/tmp/prueba_rx.txt</value>
+    </param>
+  </block>
+  <block>
     <key>frequencyAdaptiveOFDM_mac_and_parse</key>
     <param>
       <key>bss_mac</key>
@@ -1205,7 +1244,7 @@
     </param>
     <param>
       <key>debug</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1960,7 +1999,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 420)</value>
+      <value>(1392, 152)</value>
     </param>
     <param>
       <key>gui_hint</key>
