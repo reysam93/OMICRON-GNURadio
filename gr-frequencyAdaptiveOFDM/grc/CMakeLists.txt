@@ -16,7 +16,6 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-
 install(FILES
     frequencyAdaptiveOFDM_mapper.xml
     frequencyAdaptiveOFDM_chunks_to_symbols.xml
@@ -25,5 +24,7 @@ install(FILES
     frequencyAdaptiveOFDM_mac_and_parse.xml
     frequencyAdaptiveOFDM_rb_const_demux.xml
     frequencyAdaptiveOFDM_rb_const_demux_stream.xml
-    frequencyAdaptiveOFDM_display_rate_file.xml DESTINATION share/gnuradio/grc/blocks
+    frequencyAdaptiveOFDM_display_rate_file.xml
+    frequencyAdaptiveOFDM_write_frame_data.xml
+    DESTINATION share/gnuradio/grc/blocks
 )

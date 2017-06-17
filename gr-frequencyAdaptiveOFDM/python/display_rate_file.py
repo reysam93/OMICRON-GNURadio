@@ -29,10 +29,11 @@ import sys
 
 class display_rate_file:
     """
-    This block calculate the received data rate.
+    This block calculates the received data rate.
     The received data must be stored in the file "read_file".
-    This script check its size every second, being the rate the different
-    between the file's size.
+    This script check its size every second and calculates the rate as de difference
+    of the file's size  in the previous second.
+
     Parameters:
         - read_file: path to the file where the data is stored
         - display_file: if different than "", it will be he path for saving 

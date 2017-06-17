@@ -38,6 +38,7 @@ namespace gr {
       void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
       void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);
       void phy_in (pmt::pmt_t msg);
+      void send_frame_data();
       void parse_management(char *buf, int length);
       void parse_data(char *buf, int length);
       void parse_control(char *buf, int length);

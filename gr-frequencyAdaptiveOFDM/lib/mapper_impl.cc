@@ -93,6 +93,11 @@ namespace gr {
           // ############ INSERT MAC STUFF
           frame_param frame(d_ofdm, psdu_length);
 
+          if (d_debug){
+            dout << "MAPPER: frame: ";
+            frame.print();
+          }
+
           if(frame.n_sym > MAX_SYM) {
             std::cerr << "ERROR: MAPPER: packet too large, maximum number of symbols is " << MAX_SYM << std::endl;
             return 0;

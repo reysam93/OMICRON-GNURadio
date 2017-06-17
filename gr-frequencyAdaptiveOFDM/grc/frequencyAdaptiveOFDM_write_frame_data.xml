@@ -1,24 +1,23 @@
 <?xml version="1.0"?>
 <block>
-  <name>Display Rate (from file)</name>
-  <key>frequencyAdaptiveOFDM_display_rate_file</key>
+  <name>Write Frame Data</name>
+  <key>frequencyAdaptiveOFDM_write_frame_data</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.display_rate_file($read_file, $display_file, $debug)</make>
-
-
-  <param>
-    <name>Read File</name>
-    <key>read_file</key>
-    <type>string</type>
-  </param>
+  <make>frequencyAdaptiveOFDM.write_frame_data($snr_file, $enc_file, $debug)</make>
 
   <param>
-    <name>Display File</name>
-    <key>display_file</key>
+    <name>SNR File</name>
+    <key>snr_file</key>
+    <value>/tmp/snr.csv</value>
     <type>string</type>
   </param>
-  
+  <param>
+    <name>Encoding File</name>
+    <key>enc_file</key>
+    <value>/tmp/encoding.csv</value>
+    <type>string</type>
+  </param>
   <param>
     <name>Debug</name>
     <key>debug</key>
@@ -33,4 +32,9 @@
       <key>False</key>
     </option>
   </param>
+
+  <sink>
+    <name>frame data</name>
+    <type>message</type>
+  </sink>
 </block>

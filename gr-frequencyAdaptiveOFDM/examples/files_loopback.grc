@@ -679,7 +679,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 780)</value>
+      <value>(440, 740)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -726,7 +726,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1020, 312)</value>
+      <value>(1084, 320)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1091,7 +1091,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 752)</value>
+      <value>(616, 712)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1154,7 +1154,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(280, 752)</value>
+      <value>(280, 712)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1205,7 +1205,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1168, 284)</value>
+      <value>(1200, 308)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1320,6 +1320,49 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>frequencyAdaptiveOFDM_write_frame_data</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>enc_file</key>
+      <value>/tmp/encoding.csv</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1144, 716)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_write_frame_data_1</value>
+    </param>
+    <param>
+      <key>snr_file</key>
+      <value>/tmp/snr.csv</value>
     </param>
   </block>
   <block>
@@ -1760,7 +1803,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(920, 596)</value>
+      <value>(1144, 540)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2474,6 +2517,12 @@
     <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
     <source_key>fer</source_key>
     <sink_key>pdus</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_write_frame_data_1</sink_block_id>
+    <source_key>frame data</source_key>
+    <sink_key>frame data</sink_key>
   </connection>
   <connection>
     <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>

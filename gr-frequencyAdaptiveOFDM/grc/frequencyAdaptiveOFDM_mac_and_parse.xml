@@ -90,6 +90,12 @@
   </source>
 
   <source>
+    <name>frame data</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+
+  <source>
     <name>phy out</name>
     <type>message</type>
     <optional>1</optional>

@@ -65,6 +65,7 @@ namespace gr {
       ack_received = false;
       message_port_register_out(pmt::mp("phy out"));
       message_port_register_out(pmt::mp("fer"));
+      message_port_register_out(pmt::mp("frame data"));
       message_port_register_out(pmt::mp("app out"));
       message_port_register_in(pmt::mp("app in"));
       message_port_register_in(pmt::mp("phy in"));
@@ -239,6 +240,7 @@ namespace gr {
         return;
       }
       decide_modulation();
+      send_frame_data();
 
       mylog(boost::format("length: %1%") % data_len );
 
@@ -274,6 +276,14 @@ namespace gr {
           dout << " (unknown)" << std::endl;
           break;
       }
+    }
+
+    void
+    mac_and_parse_impl::send_frame_data() {
+      pmt::pmt_t dict = pmt::make_dict();
+      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
+      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_encoding));
+      message_port_pub(pmt::mp("frame data"), dict);
     }
 
     void

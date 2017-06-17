@@ -32,7 +32,9 @@ GR_PYTHON_INSTALL(
     FILES
     __init__.py
     rb_const_demux_stream.py
-    display_rate_file.py DESTINATION ${GR_PYTHON_DIR}/frequencyAdaptiveOFDM
+    display_rate_file.py
+    write_frame_data.py
+    DESTINATION ${GR_PYTHON_DIR}/frequencyAdaptiveOFDM
 )
 
 ########################################################################
@@ -49,3 +51,4 @@ GR_ADD_TEST(qa_frame_equalizer ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/
 GR_ADD_TEST(qa_decode_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_decode_mac.py)
 GR_ADD_TEST(qa_decode_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_decode_mac.py)
 GR_ADD_TEST(qa_display_rate_file ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_display_rate_file.py)
+GR_ADD_TEST(qa_write_frame_data ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_write_frame_data.py)
