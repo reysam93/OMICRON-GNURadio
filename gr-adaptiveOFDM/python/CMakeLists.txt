@@ -33,7 +33,8 @@ GR_PYTHON_INSTALL(
     __init__.py
     adaptive_ofdm_tx_bc.py
     adaptive_ofdm_rx_cb.py
-    stream_spacer.py DESTINATION ${GR_PYTHON_DIR}/adaptiveOFDM
+    stream_spacer.py
+    write_frame_data.py DESTINATION ${GR_PYTHON_DIR}/adaptiveOFDM
 )
 
 ########################################################################
@@ -49,3 +50,4 @@ GR_ADD_TEST(qa_parse_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_par
 GR_ADD_TEST(qa_stream_spacer ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_stream_spacer.py)
 GR_ADD_TEST(qa_mac ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mac.py)
 GR_ADD_TEST(qa_mac_and_parse ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mac_and_parse.py)
+GR_ADD_TEST(qa_write_frame_data ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_write_frame_data.py)
