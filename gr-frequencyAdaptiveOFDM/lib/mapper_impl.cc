@@ -85,6 +85,7 @@ namespace gr {
 
         if(pmt::is_pair(msg)) {
           dout << "MAPPER: received new message" << std::endl;
+          gr::thread::scoped_lock lock(d_mutex);
 
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
@@ -183,6 +184,7 @@ namespace gr {
         dout << "MAPPER ENCODDING: ";
         d_ofdm.print();
       }
+      gr::thread::scoped_lock lock(d_mutex);
       d_ofdm = ofdm_param(pilots_enc);
     }
 
