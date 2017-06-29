@@ -48,7 +48,7 @@ namespace gr {
           gr::io_signature::make(1, 1, 48)),
       d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
       d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
-      d_freq_offset_from_synclong(0.0), d_frame_encoding(4,0) {
+      d_freq_offset_from_synclong(0.0), d_frame_enc(4,0) {
 
       message_port_register_out(pmt::mp("symbols"));
 
@@ -224,7 +224,7 @@ namespace gr {
           if(decode_signal_field(out + o * 48)) {
             pmt::pmt_t dict = pmt::make_dict();
             dict = pmt::dict_add(dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
-            dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_frame_encoding));
+            dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_frame_enc));
             dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_equalizer->resource_blocks_snr()));
             dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
             dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
@@ -258,7 +258,6 @@ namespace gr {
 
       deinterleave(rx_bits);
       uint8_t *decoded_bits = d_decoder.decode(&ofdm, &frame, d_deinterleaved);
-
       return parse_signal(decoded_bits);
     }
 
@@ -272,7 +271,7 @@ namespace gr {
     bool
     frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
       for (int i = 0; i < 4; i++){
-        d_frame_encoding[i] = 0;
+        d_frame_enc[i] = 0;
       }
 
       d_frame_bytes = 0;
@@ -281,13 +280,13 @@ namespace gr {
         parity ^= decoded_bits[i];
 
         if((i < 2) && decoded_bits[i]) {
-          d_frame_encoding[0] = d_frame_encoding[0] | (1 << i);
+          d_frame_enc[0] = d_frame_enc[0] | (1 << i);
         }else if(i < 4 && decoded_bits[i]){
-          d_frame_encoding[1] = d_frame_encoding[1] | (1 << (i-2));
+          d_frame_enc[1] = d_frame_enc[1] | (1 << (i-2));
         }else if(i < 6 && decoded_bits[i]){
-          d_frame_encoding[2] = d_frame_encoding[2] | (1 << (i-4));
+          d_frame_enc[2] = d_frame_enc[2] | (1 << (i-4));
         }else if(i < 8 && decoded_bits[i]){
-          d_frame_encoding[3] = d_frame_encoding[3] | (1 << (i-6));
+          d_frame_enc[3] = d_frame_enc[3] | (1 << (i-6));
         }
 
         if(decoded_bits[i] && (i > 8) && (i < 21)) {
@@ -296,13 +295,13 @@ namespace gr {
       }
 
       for(int i = 0; i < 4; i++){
-        if(d_frame_encoding[i] == 0){
+        if(d_frame_enc[i] == BPSK_1_2 || d_frame_enc[i] == BPSK_3_4){
           d_frame_mod[i] = d_bpsk;
-        }else if(d_frame_encoding[i] == 1){
+        }else if(d_frame_enc[i] == QPSK_1_2 || d_frame_enc[i] == QPSK_3_4){
           d_frame_mod[i] = d_qpsk;
-        }else if(d_frame_encoding[i] == 2){
+        }else if(d_frame_enc[i] == QAM16_1_2 || d_frame_enc[i] == QAM16_1_2){
           d_frame_mod[i] = d_16qam;
-        }else if(d_frame_encoding[i] == 3){
+        }else if(d_frame_enc[i] == QAM64_1_2 || d_frame_enc[i] == QAM64_3_4){
           d_frame_mod[i] = d_64qam;
         }else{
           std::cerr << "ERROR: FRAME EQUALIZER: wrong modulation found.\n";
@@ -310,7 +309,7 @@ namespace gr {
         }
       }
 
-      ofdm_param ofdm_received(d_frame_encoding);
+      ofdm_param ofdm_received(d_frame_enc);
       frame_param frame_received(ofdm_received, d_frame_bytes);
       d_frame_symbols = frame_received.n_sym;
 

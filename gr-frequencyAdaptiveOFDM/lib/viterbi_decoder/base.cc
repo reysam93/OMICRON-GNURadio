@@ -30,7 +30,6 @@ base::~base() {
 
 uint8_t*
 base::depuncture(uint8_t *in) {
-
 	int count;
 	int n_cbps = d_ofdm->n_cbps;
 	uint8_t *depunctured;
@@ -38,7 +37,6 @@ base::depuncture(uint8_t *in) {
 	if (d_ntraceback == 5) {
 		count = d_frame->n_sym * n_cbps;
 		depunctured = in;
-
 	} else {
 		depunctured = d_depunctured;
 		count = 0;
@@ -60,7 +58,6 @@ base::depuncture(uint8_t *in) {
 			}
 		}
 	}
-
 	return depunctured;
 }
 

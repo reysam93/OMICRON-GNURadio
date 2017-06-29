@@ -174,17 +174,14 @@ namespace gr {
     decode_mac_impl::regroup_symbols(){
       int bpsc;
       int regrouped = 0;
+      int rb_index;
 
       for(int i = 0; i < d_frame.n_sym * 48; i++) {
-        if ((i % 48) < 12){
-          bpsc = d_ofdm.n_bpcrb[0];
-        }else if ((i % 48) < 24){
-          bpsc = d_ofdm.n_bpcrb[1];
-        }else if((i % 48) < 36){
-          bpsc = d_ofdm.n_bpcrb[2];
-        }else if((i % 48) < 48){
-          bpsc = d_ofdm.n_bpcrb[3];
-        }
+        rb_index = d_ofdm.rb_index_from_symbols(i);
+        if (rb_index < 0)
+          throw std::invalid_argument("DECODE_MAC: wrong rb index");
+        
+        bpsc = d_ofdm.n_bpcrb[rb_index];
         for(int k = 0; k < bpsc; k++) {
           d_rx_bits[regrouped] = !!(d_rx_symbols[i] & (1 << k));
           regrouped++;

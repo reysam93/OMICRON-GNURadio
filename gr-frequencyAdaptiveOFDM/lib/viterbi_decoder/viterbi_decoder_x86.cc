@@ -245,19 +245,15 @@ viterbi_decoder::viterbi_get_output_sse2(__m128i *mm0, __m128i *pp0,
 
 uint8_t*
 viterbi_decoder::decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) {
-
 	d_ofdm = ofdm;
 	d_frame = frame;
-
 	reset();
 	uint8_t *depunctured = depuncture(in);
 
 	int in_count = 0;
 	int out_count = 0;
 	int n_decoded = 0;
-
 	while(n_decoded < d_frame->n_data_bits) {
-
 		if ((in_count % 4) == 0) { //0 or 3
 			viterbi_butterfly2_sse2(&depunctured[in_count & 0xfffffffc], d_metric0, d_metric1, d_path0, d_path1);
 
@@ -277,17 +273,32 @@ viterbi_decoder::decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) {
 		}
 		in_count++;
 	}
-
 	return d_decoded;
 }
 
 void
 viterbi_decoder::reset() {
-
 	viterbi_chunks_init_sse2();
-	d_ntraceback = 5;
-	d_depuncture_pattern = PUNCTURE_1_2;
-	d_k = 1;
+	
+	// bit for puncturing??
+	switch(d_ofdm->resource_blocks_e[0]) {
+	case BPSK_1_2:
+	case QPSK_1_2:
+	case QAM16_1_2:
+	case QAM64_1_2:	
+		d_ntraceback = 5;
+		d_depuncture_pattern = PUNCTURE_1_2;
+		d_k = 1;
+		break;
+	case BPSK_3_4:
+	case QPSK_3_4:
+	case QAM16_3_4:
+	case QAM64_3_4:
+		d_ntraceback = 10;
+		d_depuncture_pattern = PUNCTURE_3_4;
+		d_k = 3;
+		break;
+	}
 }
 
 // Initialize starting metrics to prefer 0 state

@@ -60,9 +60,6 @@ namespace gr {
         static const unsigned int SLOT_TIME = 9;
         static const unsigned int TIME_OUT = 50;
 
-        std::vector<int> d_encoding;
-        pthread_mutex_t d_mutex;
-
         std::vector<int> get_encoding();
 
         typedef boost::shared_ptr<mac_and_parse> sptr;
@@ -72,6 +69,9 @@ namespace gr {
                           std::vector<uint8_t> bss_mac,
                           bool log, 
                           bool debug);
+      
+        std::vector<int> d_encoding;
+        pthread_mutex_t d_mutex;
       };
 
   } // namespace frequencyAdaptiveOFDM

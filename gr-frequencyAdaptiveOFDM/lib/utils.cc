@@ -35,38 +35,111 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
 		switch(pilots_enc[i]) {
 		case BPSK_1_2:
 			n_bpcrb[i] = 1; 
+			n_dbprb[i] = 12 / 2;
+			n_dbps += 12 / 2;
+			n_bpsc += 1;
+			n_cbps += 12;
+			break;
+		case BPSK_3_4:
+			n_bpcrb[i] = 1; 
+			n_dbprb[i] = 12 * 3 / 4;
+			n_dbps += 12 * 3 / 4;
 			n_bpsc += 1;
 			n_cbps += 12;
 			break;
 		case QPSK_1_2:
 			n_bpcrb[i] = 2;
+			n_dbprb[i] = 2 * 12 / 2;
+			n_dbps += 2 * 12 / 2;
 			n_bpsc += 2;
 			n_cbps += (12*2);
 			break;
-
+		case QPSK_3_4:
+			n_bpcrb[i] = 2;
+			n_dbprb[i] = 2 * 12 * 3 / 4;
+			n_dbps += 2 * 12 * 3 / 4;
+			n_bpsc += 2;
+			n_cbps += (12*2);
+			break;
 		case QAM16_1_2:
 			n_bpcrb[i] = 4;
+			n_dbprb[i] = 4 * 12 / 2;
+			n_dbps += 4 * 12 / 2;
 			n_bpsc += 4;
 			n_cbps += (12*4);
 			break;
-
+		case QAM16_3_4:
+			n_bpcrb[i] = 4;
+			n_dbprb[i] = 4 * 12 * 3 / 4;
+			n_dbps += 4 * 12 * 3 / 4;
+			n_bpsc += 4;
+			n_cbps += (12*4);
+			break;
 		case QAM64_1_2:
 			n_bpcrb[i] = 6;
+			n_dbprb[i] = 6 * 12 / 2;
+			n_dbps += 6 * 12 / 2;
+			n_bpsc += 6;
+			n_cbps += (12*6);
+			break;
+		case QAM64_3_4:
+			n_bpcrb[i] = 6;
+			n_dbprb[i] = 6 * 12 * 3 / 4;
+			n_dbps += 6 * 12 * 3 / 4;
 			n_bpsc += 6;
 			n_cbps += (12*6);
 			break;
 		default:
-			assert(false);
+			throw std::invalid_argument("OFDM_PARAM: wrong encoding");
 			break;
 		}
 	}
 	// Mean of the four resource blocks
 	n_bpsc = n_bpsc / 4;
-
-	// All posible coding schemes uses a 1/2 channel coding.
-	n_dbps = n_cbps / 2;
 }
 
+int
+ofdm_param::rb_index_from_symbols(int n_symb) {
+	if ((n_symb % 48) < 12){
+			return 0;
+		}else if ((n_symb % 48) < 24){
+			return 1;
+		}else if((n_symb % 48) < 36){
+			return 2;
+		}else if((n_symb % 48) < 48){
+			return 3;
+		}else{
+			return -1;
+		}
+}
+
+/*turn 3;
+	} else {
+		return -1;
+	}
+}
+
+int
+ofdm_param::rb_index_from_data_bits(int n_bit) {
+	int bits_limit_rb1 = n_dbprb[0];
+	int bits_limit_rb2 = n_dbprb[1] + bits_limit_rb1;
+	int bits_limit_rb3 = n_dbprb[2] + bits_limit_rb2;
+	int bits_limit_rb4 = n_dbprb[3] + bits_limit_rb3;
+
+	//std::cerr << "RB INDEX: n_dbps: " <<  n_dbps << "\n";
+	//std::cerr << "RB INDEX: _bit: " << n_bit << " mod: " <<  n_bit % n_dbps << "\n";
+	if ((n_bit % n_dbps) < bits_limit_rb1) {
+		return 0;
+	} else if ((n_bit % n_dbps) < bits_limit_rb2) {
+		return 1;
+	} else if ((n_bit % n_dbps) < bits_limit_rb3) {
+		return 2;
+	} else if ((n_bit % n_dbps) < bits_limit_rb4) {
+		return 3;
+	} else {
+		return -1;
+	}
+}*/
 
 void
 ofdm_param::print() {
@@ -150,11 +223,10 @@ void convolutional_encoding(const char *in, char *out, frame_param &frame) {
 
 
 void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm) {
-
 	int mod;
 
 	for (int i = 0; i < frame.n_data_bits * 2; i++) {
-		/*switch(ofdm.encoding) {
+		switch(ofdm.resource_blocks_e[0]) {
 			case BPSK_1_2:
 			case QPSK_1_2:
 			case QAM16_1_2:
@@ -162,13 +234,20 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 				*out = in[i];
 				out++;
 				break;
-
-			defaut:
-				assert(false);
+			case BPSK_3_4:
+			case QPSK_3_4:
+			case QAM16_3_4:
+			case QAM64_3_4:
+				mod = i % 6;
+				if (!(mod == 3 || mod == 4)) {
+					*out = in[i];
+					out++;
+				}
 				break;
-		}*/
-		*out = in[i];
-		out++;
+			default:
+				throw std::invalid_argument("PUNCTURING: wrong modulation");
+				break;
+		}
 	}
 }
 
@@ -202,20 +281,13 @@ void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm,
 void split_symbols(const char *in, char *out, frame_param &frame, ofdm_param &ofdm) {
 	int symbols = frame.n_sym * 48;
 	int bpsc;
+	int rb_index;
 
 	for (int i = 0; i < symbols; i++) {
-		if ((i % 48) < 12){
-			bpsc = ofdm.n_bpcrb[0];
-		}else if ((i % 48) < 24){
-			bpsc = ofdm.n_bpcrb[1];
-		}else if((i % 48) < 36){
-			bpsc = ofdm.n_bpcrb[2];
-		}else if((i % 48) < 48){
-			bpsc = ofdm.n_bpcrb[3];
-		}else{
-			assert(false);
-		}
-
+		rb_index = ofdm.rb_index_from_symbols(i);
+		if (rb_index < 0)
+			throw std::invalid_argument("SPLIT_SYMBS: wrong rb index");
+		bpsc = ofdm.n_bpcrb[rb_index];
 		out[i] = 0;
 		for(int k = 0; k < bpsc; k++) {
 			assert(*in == 1 || *in == 0);

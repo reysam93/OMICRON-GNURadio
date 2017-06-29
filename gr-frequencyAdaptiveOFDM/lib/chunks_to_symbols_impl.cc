@@ -78,44 +78,36 @@ namespace gr {
       for (int i = 0; i < 4; i++){
         switch (encoding[i]) {
         case BPSK_1_2:
+        case BPSK_3_4:
           d_mapping[i] = d_bpsk;
           break;
-
         case QPSK_1_2:
+        case QPSK_3_4:
           d_mapping[i] = d_qpsk;
           break;
-
         case QAM16_1_2:
+        case QAM16_3_4:
           d_mapping[i] = d_16qam;
           break;
-
         case QAM64_1_2:
+        case QAM64_3_4:
           d_mapping[i] = d_64qam;
           break;
-
         default:
           throw std::invalid_argument("wrong encoding");
           break;
         }
       }
         
-
-      int j;
+      int rb_index;
+      ofdm_param ofdm(encoding);
       boost::shared_ptr<gr::digital::constellation> mapping;
       for(int i = 0; i < ninput_items[0]; i++) {
-        if ((i % 48) < 12){
-          mapping = d_mapping[0];
-        }else if ((i % 48) < 24){
-          mapping = d_mapping[1];
-        }else if((i % 48) < 36){
-          mapping = d_mapping[2];
-        }else if((i % 48) < 48){
-          mapping = d_mapping[3];
-        }else{
-          assert(false);
-        }
+        rb_index = ofdm.rb_index_from_symbols(i);
+        if (rb_index < 0)
+          throw std::invalid_argument("CHUNKS_TO_SYMBS: wrong rb index");
+        mapping = d_mapping[rb_index];
         mapping->map_to_points(in[i], out + i);
-        j = i;
       }
 
       return ninput_items[0];

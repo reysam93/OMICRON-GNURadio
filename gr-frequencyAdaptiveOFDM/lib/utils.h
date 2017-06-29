@@ -55,19 +55,37 @@ class ofdm_param {
 public:
 	ofdm_param(std::vector<int> pilots_enc);
 
-	// data rate
+	// resource block encoding
 	std::vector<int> resource_blocks_e;
-	// rate field of the SIGNAL header
-	char     rate_field;
+
 	// mean number of coded bits per sub carrier
 	float      n_bpsc;
 	// number of coded bits per carrier resource block
 	int	 	 n_bpcrb[4];
+	// number of data bits per resource block
+	int 	 n_dbprb[4];
 	// number of coded bits per OFDM symbol
 	int      n_cbps;
 	// number of data bits per OFDM symbol
 	int      n_dbps;
 
+	/** Return the index of the resource block in which is allocated
+	 *	the argumment passed to the function:
+	 *		-	rb_index_from_symbols: receives a symbol position inside the frame
+	 *			data and considers only the used carriers kown the symbol
+	 *			location
+	 *
+	 *		-	rb_index_from_coded_bits: receives a bit position inside the frame
+	 *			data and considers all coded bits extrated from the demodulation
+	 *			of the OFDM frame
+	 *
+	 *		-	rb_index_from_data_bits: like rb_index_from_coded_bits but 
+	 *			consders only the data bit, ignoring the coded bits.
+	 */
+	int rb_index_from_symbols(int n_symb);
+	//int rb_index_from_coded_bits(int n_bit);
+	//int rb_index_from_data_bits(int n_bit);
+	
 	void print();
 };
 

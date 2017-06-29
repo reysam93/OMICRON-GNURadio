@@ -37,8 +37,6 @@ namespace gr {
       int d_symbols_offset;
       int d_symbols_len;
       ofdm_param d_ofdm;
-      gr::thread::mutex d_mutex;
-
 
     public:
       mapper_impl(std::vector<int> pilots_enc, bool debug);

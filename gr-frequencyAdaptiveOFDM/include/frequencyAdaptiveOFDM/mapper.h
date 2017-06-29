@@ -32,6 +32,11 @@ enum Encoding {
   QPSK_1_2  = 1,
   QAM16_1_2  = 2,
   QAM64_1_2 = 3,
+
+  BPSK_3_4 = 4,
+  QPSK_3_4 = 5,
+  QAM16_3_4 = 6,
+  QAM64_3_4 = 7,
 };
 
 

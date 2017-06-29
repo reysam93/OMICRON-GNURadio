@@ -85,12 +85,12 @@ namespace gr {
 
         if(pmt::is_pair(msg)) {
           dout << "MAPPER: received new message" << std::endl;
-          gr::thread::scoped_lock lock(d_mutex);
 
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
 
           // ############ INSERT MAC STUFF
+          ofdm_param ofdm = d_ofdm;
           frame_param frame(d_ofdm, psdu_length);
 
           if (d_debug){
@@ -126,10 +126,10 @@ namespace gr {
           // encoding
           convolutional_encoding(scrambled_data, encoded_data, frame);
           // puncturing
-          //puncturing(encoded_data, punctured_data, frame, d_ofdm);
+          puncturing(encoded_data, punctured_data, frame, d_ofdm);
           
           // interleaving
-          interleave(encoded_data, interleaved_data, frame, d_ofdm);
+          interleave(punctured_data, interleaved_data, frame, d_ofdm);
 
           // one byte per symbol
           split_symbols(interleaved_data, symbols, frame, d_ofdm);
@@ -154,14 +154,12 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
               encoding, srcid);
 
-
           free(data_bits);
           free(scrambled_data);
           free(encoded_data);
           free(punctured_data);
           free(interleaved_data);
           free(symbols);
-
           break;
         }
       }
@@ -185,8 +183,6 @@ namespace gr {
         dout << "MAPPER ENCODDING: ";
         d_ofdm.print();
       }
-
-      gr::thread::scoped_lock lock(d_mutex);
       d_ofdm = ofdm_param(pilots_enc);
     }
 
