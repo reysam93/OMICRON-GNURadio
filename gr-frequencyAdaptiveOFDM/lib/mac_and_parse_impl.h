@@ -34,22 +34,8 @@ namespace gr {
       mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug);
       ~mac_and_parse_impl();
       void app_in (pmt::pmt_t msg);
-      void send_message(int psdu_length);
-      void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
-      void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);
       void phy_in (pmt::pmt_t msg);
-      void send_frame_data();
-      void parse_management(char *buf, int length);
-      void parse_data(char *buf, int length);
-      void parse_control(char *buf, int length);
-      void parse_body(char* frame, mac_header *h, int data_len);
-      void print_mac_address(uint8_t *addr, bool new_line = false);
-      bool equal_mac(uint8_t *addr1, uint8_t *addr2);
-      void print_ascii(char* buf, int length);
-      void send_data(char* buf, int length);
-      bool check_mac(std::vector<uint8_t> mac);
-      void decide_modulation();
-      void set_encoding(std::vector<int> encoding);
+      
 
     private:
       // For MAC
@@ -60,11 +46,28 @@ namespace gr {
       uint8_t d_psdu[1528];
       bool ack_received;
 
+      void send_message(int psdu_length);
+      void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
+      void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);
+      void send_frame_data();
+      void send_data(char* buf, int length);
+      
       // For Parse 
       std::vector<double> d_snr;
       bool d_log;
       bool d_debug;
       int d_last_seq_no;
+
+      void parse_management(char *buf, int length);
+      void parse_data(char *buf, int length);
+      void parse_control(char *buf, int length);
+      void parse_body(char* frame, mac_header *h, int data_len);
+      void print_mac_address(uint8_t *addr, bool new_line = false);
+      bool equal_mac(uint8_t *addr1, uint8_t *addr2);
+      void print_ascii(char* buf, int length);
+      bool check_mac(std::vector<uint8_t> mac);
+      void decide_modulation();
+      void set_encoding(std::vector<int> encoding, int punct);
     };
 
   } // namespace frequencyAdaptiveOFDM

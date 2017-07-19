@@ -52,7 +52,7 @@ namespace gr {
       d_snr(std::vector<double>(4,0)),
       d_nom_freq(0.0),
       d_freq_offset(0.0),
-      d_ofdm(std::vector<int>(4, 0)),
+      d_ofdm(std::vector<int>(4, BPSK), P_1_2),
       d_frame(d_ofdm, 0),
       d_frame_complete(true)
     {
@@ -78,7 +78,7 @@ namespace gr {
       std::vector<gr::tag_t> tags;
       const uint64_t nread = this->nitems_read(0);
 
-      dout << "Decode MAC: input " << ninput_items[0] << std::endl;
+      //dout << "Decode MAC: input " << ninput_items[0] << std::endl;
 
       while(i < ninput_items[0]) {
         get_tags_in_range(tags, 0, nread + i, nread + i + 1,
@@ -94,11 +94,12 @@ namespace gr {
           pmt::pmt_t dict = tags[0].value;
           int len_data = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE+1)));
           std::vector<int> encoding = pmt::s32vector_elements(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
+          int puncturing = pmt::to_long(pmt::dict_ref(dict, pmt::mp("puncturing"), pmt::from_long(-1)));
           d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
           d_nom_freq = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
           d_freq_offset = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
 
-          ofdm_param ofdm = ofdm_param(encoding);
+          ofdm_param ofdm = ofdm_param(encoding, puncturing);
           frame_param frame = frame_param(ofdm, len_data);
 
           // check for maximum frame size
@@ -118,7 +119,6 @@ namespace gr {
         }
 
         if(copied < d_frame.n_sym) {
-          dout << "copy one symbol, copied " << copied << " out of " << d_frame.n_sym << std::endl;
           std::memcpy(d_rx_symbols + (copied * 48), in, 48);
           copied++;
 
@@ -147,7 +147,7 @@ namespace gr {
       deinterleave();
       uint8_t *decoded = d_decoder.decode(&d_ofdm, &d_frame, d_deinterleaved_bits);
       descramble(decoded);
-      print_output();
+      //print_output();
 
       // skip service field
       boost::crc_32_type result;
@@ -160,8 +160,10 @@ namespace gr {
       // create PDU
       pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);
       pmt::pmt_t enc = pmt::init_s32vector(4, d_ofdm.resource_blocks_e);
+      pmt::pmt_t punct = pmt::from_long(d_ofdm.punct);
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("encoding"), enc);
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), punct);
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
       dict = pmt::dict_add(dict, pmt::mp("nomfreq"), pmt::from_double(d_nom_freq));
       dict = pmt::dict_add(dict, pmt::mp("freqofs"), pmt::from_double(d_freq_offset));

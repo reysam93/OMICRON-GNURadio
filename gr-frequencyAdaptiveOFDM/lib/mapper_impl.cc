@@ -44,7 +44,7 @@ namespace gr {
           d_symbols_offset(0),
           d_symbols(NULL),
           d_debug(debug),
-          d_ofdm(pilots_enc)
+          d_ofdm(pilots_enc, P_1_2)
     {
       message_port_register_in(pmt::mp("in"));
       set_encoding(pilots_enc);
@@ -95,8 +95,9 @@ namespace gr {
           frame_param frame(d_ofdm, psdu_length);
 
           if (d_debug){
-            dout << "MAPPER: frame: ";
+            dout << "MAPPER: frame and coding:";
             frame.print();
+            ofdm.print();
           }
 
           if(frame.n_sym > MAX_SYM) {
@@ -110,8 +111,9 @@ namespace gr {
           char *encoded_data     = (char*)calloc(frame.n_data_bits * 2, sizeof(char));
           char *punctured_data   = (char*)calloc(frame.n_encoded_bits, sizeof(char));
           char *interleaved_data = (char*)calloc(frame.n_encoded_bits, sizeof(char));
-          char *symbols          = (char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
+          char *symbols          = (char*)calloc((frame.n_encoded_bits / ofdm.n_bpsc), sizeof(char));
 
+          
           //generate the WIFI data field, adding service field and pad bits
           generate_bits(psdu, data_bits, frame);
 
@@ -127,19 +129,18 @@ namespace gr {
           // encoding
           convolutional_encoding(scrambled_data, encoded_data, frame);
           // puncturing
-          puncturing(encoded_data, punctured_data, frame, d_ofdm);
+          puncturing(encoded_data, punctured_data, frame, ofdm);
           
           // interleaving
-          interleave(punctured_data, interleaved_data, frame, d_ofdm);
+          interleave(punctured_data, interleaved_data, frame, ofdm);
 
           // one byte per symbol
-          split_symbols(interleaved_data, symbols, frame, d_ofdm);
+          split_symbols(interleaved_data, symbols, frame, ofdm);
 
           d_symbols_len = frame.n_sym * 48;
 
           d_symbols = (char*)calloc(d_symbols_len, 1);
           std::memcpy(d_symbols, symbols, d_symbols_len);
-
 
           // add tags
           pmt::pmt_t key = pmt::string_to_symbol("packet_len");
@@ -151,9 +152,13 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("psdu_len"),
               psdu_bytes, srcid);
 
-          pmt::pmt_t encoding = pmt::init_s32vector(4, d_ofdm.resource_blocks_e);
+          pmt::pmt_t encoding = pmt::init_s32vector(4, ofdm.resource_blocks_e);
           add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
               encoding, srcid);
+
+          pmt::pmt_t punct = pmt::from_long(ofdm.punct);
+          add_item_tag(0, nitems_written(0), pmt::mp("puncturing"),
+              punct, srcid);
 
           free(data_bits);
           free(scrambled_data);
@@ -173,19 +178,27 @@ namespace gr {
         d_symbols_offset = 0;
         free(d_symbols);
         d_symbols = 0;
-      }
 
+        dout << "MAPPER: symbols mapped\n";
+      }
       return i;
     }
 
     void 
     mapper_impl::set_encoding(std::vector<int> pilots_enc) {
+      std::vector<int> enc;
+      int punct;
+
+      punct = pilots_enc[pilots_enc.size()-1];
+      pilots_enc.pop_back();
+      enc = pilots_enc;
+      gr::thread::scoped_lock lock(d_mutex);
+      d_ofdm = ofdm_param(enc, punct);
+    
       if (d_debug){
         dout << "MAPPER ENCODDING: ";
-        d_ofdm.print();
+        d_ofdm.print_encoding();
       }
-      gr::thread::scoped_lock lock(d_mutex);
-      d_ofdm = ofdm_param(pilots_enc);
     }
 
   } /* namespace frequencyAdaptiveOFDM */

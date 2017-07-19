@@ -67,30 +67,40 @@ namespace gr {
       gr_complex *out = (gr_complex*)output_items[0];
 
       std::vector<tag_t> tags;
+      bool encoding_found = false;
+      bool punct_found = false;
+      std::vector<int> encoding;
+      int puncturing;
       get_tags_in_range(tags, 0, nitems_read(0),
-          nitems_read(0) + ninput_items[0],
-          pmt::mp("encoding"));
-      if(tags.size() != 1) {
-        throw std::runtime_error("no encoding in input stream");
+          nitems_read(0) + ninput_items[0]);
+
+      for (int i = 0; i < tags.size(); i++){
+        if(pmt::eq(tags[i].key, pmt::mp("encoding"))) {
+          encoding_found = true;
+          encoding = pmt::s32vector_elements(tags[i].value);
+        } else if(pmt::eq(tags[i].key, pmt::mp("puncturing"))){
+          punct_found = true;
+          puncturing = pmt::to_long(tags[i].value);
+        }
       }
 
-      std::vector<int> encoding = pmt::s32vector_elements(tags[0].value);
+      if (!encoding_found | !punct_found) {
+          std::cerr << "ENC: " << encoding_found << " PUNCT: " << punct_found << "\n";
+          throw std::runtime_error("no encoding or puncturing in input stream");
+      }
+
       for (int i = 0; i < 4; i++){
         switch (encoding[i]) {
-        case BPSK_1_2:
-        case BPSK_3_4:
+        case BPSK:
           d_mapping[i] = d_bpsk;
           break;
-        case QPSK_1_2:
-        case QPSK_3_4:
+        case QPSK:
           d_mapping[i] = d_qpsk;
           break;
-        case QAM16_1_2:
-        case QAM16_3_4:
+        case QAM16:
           d_mapping[i] = d_16qam;
           break;
-        case QAM64_1_2:
-        case QAM64_3_4:
+        case QAM64:
           d_mapping[i] = d_64qam;
           break;
         default:
@@ -100,7 +110,7 @@ namespace gr {
       }
         
       int rb_index;
-      ofdm_param ofdm(encoding);
+      ofdm_param ofdm(encoding, puncturing);
       boost::shared_ptr<gr::digital::constellation> mapping;
       for(int i = 0; i < ninput_items[0]; i++) {
         rb_index = ofdm.rb_index_from_symbols(i);

@@ -68,8 +68,9 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	signal_header[ 6] = get_bit(ofdm.resource_blocks_e[3], 0);
 	signal_header[ 7] = get_bit(ofdm.resource_blocks_e[3], 1);
 	
-	// 8th bit is reserved and must be set to 0
-	signal_header[ 8] = 0;
+	// 9th represent the puncturing used
+	signal_header[ 8] = get_bit(ofdm.punct, 0);
+	
 	// then 12 bits represent the length
 	signal_header[ 9] = get_bit(length,  0);
 	signal_header[10] = get_bit(length,  1);
@@ -84,9 +85,9 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	signal_header[19] = get_bit(length, 10);
 	signal_header[20] = get_bit(length, 11);
 
-	//21-st bit is the parity bit for the first 20 bits
+	//22-st bit is the parity bit for the first 20 bits
 	int sum = 0;
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < 21; i++) {
 		if(signal_header[i]) {
 			sum++;
 		}
@@ -100,8 +101,8 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 		signal_header[22 + i] = 0;
 	}
 
-	std::vector<int> resource_block_e (4, 0);
-	ofdm_param signal_ofdm(resource_block_e);
+	std::vector<int> resource_block_e (4, BPSK);
+	ofdm_param signal_ofdm(resource_block_e, P_1_2);
 	frame_param signal_param(signal_ofdm, 0);
 
 	// convolutional encoding (scrambling is not needed)
@@ -118,8 +119,10 @@ bool signal_field_impl::header_formatter(long packet_len, unsigned char *out, co
 {
 	bool encoding_found = false;
 	bool len_found = false;
+	bool punct_found = false;
 	std::vector<int> encoding;
 	int len = 0;
+	int puncturing;
 
 	// read tags
 	for (int i = 0; i < tags.size(); i++) {
@@ -129,15 +132,18 @@ bool signal_field_impl::header_formatter(long packet_len, unsigned char *out, co
 		} else if(pmt::eq(tags[i].key, pmt::mp("psdu_len"))) {
 			len_found = true;
 			len = pmt::to_long(tags[i].value);
+		} else if(pmt::eq(tags[i].key, pmt::mp("puncturing"))){
+			punct_found = true;
+			puncturing = pmt::to_long(tags[i].value);
 		}
 	}
 
 	// check if all tags are present
-	if( (!encoding_found) || (!len_found)) {
+	if( (!encoding_found) || (!len_found) || !punct_found) {
 		return false;
 	}
 
-	ofdm_param ofdm(encoding);
+	ofdm_param ofdm(encoding, puncturing);
 	frame_param frame(ofdm, len);
 
 	generate_signal_field((char*)out, frame, ofdm);

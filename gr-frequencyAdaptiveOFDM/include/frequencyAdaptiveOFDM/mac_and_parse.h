@@ -71,6 +71,7 @@ namespace gr {
                           bool debug);
       
         std::vector<int> d_encoding;
+        int d_punct;
         pthread_mutex_t d_mutex;
       };
 

@@ -53,11 +53,12 @@ struct mac_ack_header {
  */
 class ofdm_param {
 public:
-	ofdm_param(std::vector<int> pilots_enc);
+	ofdm_param(std::vector<int> pilots_enc, int puncturing);
 
 	// resource block encoding
 	std::vector<int> resource_blocks_e;
-
+	// frame puncturing
+	int punct;
 	// mean number of coded bits per sub carrier
 	float      n_bpsc;
 	// number of coded bits per carrier resource block
@@ -87,6 +88,7 @@ public:
 	//int rb_index_from_data_bits(int n_bit);
 	
 	void print();
+	void print_encoding();
 };
 
 /**

@@ -48,7 +48,7 @@ namespace gr {
           gr::io_signature::make(1, 1, 48)),
       d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
       d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
-      d_freq_offset_from_synclong(0.0), d_frame_enc(4,0) {
+      d_freq_offset_from_synclong(0.0), d_frame_enc(4, BPSK), d_frame_punct(P_1_2) {
 
       message_port_register_out(pmt::mp("symbols"));
 
@@ -131,7 +131,7 @@ namespace gr {
       gr_complex symbols[48];
       gr_complex current_symbol[64];
 
-      dout << "FRAME EQUALIZER: input " << ninput_items[0] << "  output " << noutput_items << std::endl;
+      //dout << "FRAME EQUALIZER: input " << ninput_items[0] << "  output " << noutput_items << std::endl;
 
       while((i < ninput_items[0]) && (o < noutput_items)) {
 
@@ -150,7 +150,7 @@ namespace gr {
           d_epsilon0 = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI * d_freq);
           d_er = 0;
 
-          dout << "epsilon: " << d_epsilon0 << std::endl;
+          dout << "FRAME EQ: new frame. Epsilon: " << d_epsilon0 << std::endl;
         }
 
         // not interesting -> skip
@@ -162,8 +162,8 @@ namespace gr {
         std::memcpy(current_symbol, in + i*64, 64*sizeof(gr_complex));
 
         // compensate sampling offset
-        for(int i = 0; i < 64; i++) {
-          current_symbol[i] *= exp(gr_complex(0, 2*M_PI*d_current_symbol*80*(d_epsilon0 + d_er)*(i-32)/64));
+        for(int j = 0; j < 64; j++) {
+          current_symbol[j] *= exp(gr_complex(0, 2*M_PI*d_current_symbol*80*(d_epsilon0 + d_er)*(j-32)/64));
         }
 
         gr_complex p = equalizer::base::POLARITY[(d_current_symbol - 2) % 127];
@@ -203,8 +203,8 @@ namespace gr {
         d_prev_pilots[3] = current_symbol[53] * -p;
 
         // compensate residual frequency offset
-        for(int i = 0; i < 64; i++) {
-          current_symbol[i] *= exp(gr_complex(0, -beta));
+        for(int j = 0; j < 64; j++) {
+          current_symbol[j] *= exp(gr_complex(0, -beta));
         }
 
         // update estimate of residual frequency offset
@@ -220,11 +220,18 @@ namespace gr {
 
         // signal field
         if(d_current_symbol == 2) {
-
           if(decode_signal_field(out + o * 48)) {
+
+            if (d_debug){
+              dout << "FRAME EQ: frame coding:\n";
+              ofdm_param ofdm(d_frame_enc, d_frame_punct);
+              ofdm.print();
+            }
+
             pmt::pmt_t dict = pmt::make_dict();
             dict = pmt::dict_add(dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
             dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_frame_enc));
+            dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(d_frame_punct));
             dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_equalizer->resource_blocks_snr()));
             dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
             dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
@@ -252,8 +259,8 @@ namespace gr {
     frame_equalizer_impl::decode_signal_field(uint8_t *rx_bits) {
 
 
-      std::vector<int> resource_block_e (4, 0);
-      static ofdm_param ofdm(resource_block_e);
+      std::vector<int> resource_block_e (4, BPSK);
+      static ofdm_param ofdm(resource_block_e, P_1_2);
       static frame_param frame(ofdm, 0);
 
       deinterleave(rx_bits);
@@ -273,6 +280,7 @@ namespace gr {
       for (int i = 0; i < 4; i++){
         d_frame_enc[i] = 0;
       }
+      d_frame_punct = P_1_2;
 
       d_frame_bytes = 0;
       bool parity = false;
@@ -287,6 +295,8 @@ namespace gr {
           d_frame_enc[2] = d_frame_enc[2] | (1 << (i-4));
         }else if(i < 8 && decoded_bits[i]){
           d_frame_enc[3] = d_frame_enc[3] | (1 << (i-6));
+        }else if (i == 8) {
+          d_frame_punct = decoded_bits[i];
         }
 
         if(decoded_bits[i] && (i > 8) && (i < 21)) {
@@ -295,13 +305,13 @@ namespace gr {
       }
 
       for(int i = 0; i < 4; i++){
-        if(d_frame_enc[i] == BPSK_1_2 || d_frame_enc[i] == BPSK_3_4){
+        if(d_frame_enc[i] == BPSK){
           d_frame_mod[i] = d_bpsk;
-        }else if(d_frame_enc[i] == QPSK_1_2 || d_frame_enc[i] == QPSK_3_4){
+        }else if(d_frame_enc[i] == QPSK){
           d_frame_mod[i] = d_qpsk;
-        }else if(d_frame_enc[i] == QAM16_1_2 || d_frame_enc[i] == QAM16_1_2){
+        }else if(d_frame_enc[i] == QAM16){
           d_frame_mod[i] = d_16qam;
-        }else if(d_frame_enc[i] == QAM64_1_2 || d_frame_enc[i] == QAM64_3_4){
+        }else if(d_frame_enc[i] == QAM64){
           d_frame_mod[i] = d_64qam;
         }else{
           std::cerr << "ERROR: FRAME EQUALIZER: wrong modulation found.\n";
@@ -309,14 +319,15 @@ namespace gr {
         }
       }
 
-      ofdm_param ofdm_received(d_frame_enc);
-      frame_param frame_received(ofdm_received, d_frame_bytes);
-      d_frame_symbols = frame_received.n_sym;
-
       if(parity != decoded_bits[21]) {
         std::cerr << "ERROR: FRAME EQUALIZER: wrong parity" << std::endl;
         return false;
       }
+
+      ofdm_param ofdm_received(d_frame_enc, d_frame_punct);
+      frame_param frame_received(ofdm_received, d_frame_bytes);
+      d_frame_symbols = frame_received.n_sym;
+
       return true;
     }
 

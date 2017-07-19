@@ -22,73 +22,76 @@
 #include <math.h>
 
 
-ofdm_param::ofdm_param(std::vector<int> pilots_enc) {
+ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 	resource_blocks_e = pilots_enc;
+	punct = puncturing;
 	n_bpsc = 0;
 	n_cbps = 0;
 	n_dbps = 0;
 
-
+	if (punct != P_1_2 && punct != P_3_4) {
+		throw std::invalid_argument("OFDM_PARAM: wrong puncturing");
+	}
 	// Rate field will not be used. The header sends the codification of each resource blocks directly. 
 	// Each resource block have 12 carriers 
 	for (int i = 0; i < 4; i++) {
 		switch(pilots_enc[i]) {
-		case BPSK_1_2:
-			n_bpcrb[i] = 1; 
-			n_dbprb[i] = 12 / 2;
-			n_dbps += 12 / 2;
+		case BPSK:
+			n_bpcrb[i] = 1;
 			n_bpsc += 1;
 			n_cbps += 12;
+
+			if(punct == P_1_2) {
+				n_dbprb[i] = 6;
+				n_dbps += 6;
+			}else if(punct == P_3_4){
+				n_dbprb[i] = 9;
+				n_dbps += 9;
+			}
 			break;
-		case BPSK_3_4:
-			n_bpcrb[i] = 1; 
-			n_dbprb[i] = 12 * 3 / 4;
-			n_dbps += 12 * 3 / 4;
-			n_bpsc += 1;
-			n_cbps += 12;
-			break;
-		case QPSK_1_2:
+
+		case QPSK:
 			n_bpcrb[i] = 2;
-			n_dbprb[i] = 2 * 12 / 2;
-			n_dbps += 2 * 12 / 2;
 			n_bpsc += 2;
-			n_cbps += (12*2);
+			n_cbps += 24;
+
+			if(punct == P_1_2) {
+				n_dbprb[i] = 12;
+				n_dbps += 12;
+			}else if(punct == P_3_4){
+				n_dbprb[i] = 18;
+				n_dbps += 18;
+			}
 			break;
-		case QPSK_3_4:
-			n_bpcrb[i] = 2;
-			n_dbprb[i] = 2 * 12 * 3 / 4;
-			n_dbps += 2 * 12 * 3 / 4;
-			n_bpsc += 2;
-			n_cbps += (12*2);
-			break;
-		case QAM16_1_2:
+
+		case QAM16:
 			n_bpcrb[i] = 4;
-			n_dbprb[i] = 4 * 12 / 2;
-			n_dbps += 4 * 12 / 2;
 			n_bpsc += 4;
-			n_cbps += (12*4);
+			n_cbps += 48;
+
+			if(punct == P_1_2) {
+				n_dbprb[i] = 24;
+				n_dbps += 24;
+			}else if(punct == P_3_4){
+				n_dbprb[i] = 36;
+				n_dbps += 36;
+			}
 			break;
-		case QAM16_3_4:
-			n_bpcrb[i] = 4;
-			n_dbprb[i] = 4 * 12 * 3 / 4;
-			n_dbps += 4 * 12 * 3 / 4;
-			n_bpsc += 4;
-			n_cbps += (12*4);
-			break;
-		case QAM64_1_2:
+
+		case QAM64:
 			n_bpcrb[i] = 6;
-			n_dbprb[i] = 6 * 12 / 2;
-			n_dbps += 6 * 12 / 2;
 			n_bpsc += 6;
-			n_cbps += (12*6);
+			n_cbps += 72;
+
+			if(punct == P_1_2) {
+				n_dbprb[i] = 36;
+				n_dbps += 36;
+			}else if(punct == P_3_4){
+				n_dbprb[i] = 54;
+				n_dbps += 54;
+			}
 			break;
-		case QAM64_3_4:
-			n_bpcrb[i] = 6;
-			n_dbprb[i] = 6 * 12 * 3 / 4;
-			n_dbps += 6 * 12 * 3 / 4;
-			n_bpsc += 6;
-			n_cbps += (12*6);
-			break;
+		
 		default:
 			throw std::invalid_argument("OFDM_PARAM: wrong encoding");
 			break;
@@ -113,34 +116,6 @@ ofdm_param::rb_index_from_symbols(int n_symb) {
 		}
 }
 
-/*turn 3;
-	} else {
-		return -1;
-	}
-}
-
-int
-ofdm_param::rb_index_from_data_bits(int n_bit) {
-	int bits_limit_rb1 = n_dbprb[0];
-	int bits_limit_rb2 = n_dbprb[1] + bits_limit_rb1;
-	int bits_limit_rb3 = n_dbprb[2] + bits_limit_rb2;
-	int bits_limit_rb4 = n_dbprb[3] + bits_limit_rb3;
-
-	//std::cerr << "RB INDEX: n_dbps: " <<  n_dbps << "\n";
-	//std::cerr << "RB INDEX: _bit: " << n_bit << " mod: " <<  n_bit % n_dbps << "\n";
-	if ((n_bit % n_dbps) < bits_limit_rb1) {
-		return 0;
-	} else if ((n_bit % n_dbps) < bits_limit_rb2) {
-		return 1;
-	} else if ((n_bit % n_dbps) < bits_limit_rb3) {
-		return 2;
-	} else if ((n_bit % n_dbps) < bits_limit_rb4) {
-		return 3;
-	} else {
-		return -1;
-	}
-}*/
-
 void
 ofdm_param::print() {
 	std::cout << std::endl;
@@ -148,14 +123,49 @@ ofdm_param::print() {
 	std::cout << "n_bpsc: " << n_bpsc << std::endl;
 	std::cout << "n_cbps: " << n_cbps << std::endl;
 	std::cout << "n_dbps: " << n_dbps << std::endl;
-
-	for (int i = 0; i < 4; i++) {
-		std::cout << "Resource block " << i << " encoding: " << resource_blocks_e[i] << std::endl;
-		std::cout << "Resource block " << i << " bits per carrier: " << n_bpcrb[i] << std::endl;
-	}
+	print_encoding();
 	std::cout << std::endl;
 }
 
+void
+ofdm_param::print_encoding() {
+	std::string enc = "";
+	std::string punct_str = "";
+
+	for (int i = 0; i < 4; i++) {
+		switch(resource_blocks_e[i]){
+		case BPSK:
+			enc = "BPSK";
+			break;
+		case QPSK:
+			enc = "QPSK";
+			break;
+		case QAM16:
+			enc = "16QAM";
+			break;
+		case QAM64:
+			enc = "64QAM";
+			break;
+		default:
+			enc = "Unknown modulation.";
+			break;
+		}
+		std::cout << "Encoding Resource Block " << i << ": " << enc << " (" << n_bpcrb[i] << " bpcrb)\n";
+	}
+	switch (punct){
+	case P_1_2:
+		punct_str = "1/2";
+		break;
+	case P_3_4:
+		punct_str = "3/4";
+		break;
+	default:
+		punct_str = "Unknown puncturing.";
+		break;
+	}
+	std::cout << "Frame Puncturing: " << punct_str << std::endl;
+	std::cout << std::endl;
+}
 
 frame_param::frame_param(ofdm_param &ofdm, int psdu_length) {
 	psdu_size = psdu_length;
@@ -226,18 +236,12 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 	int mod;
 
 	for (int i = 0; i < frame.n_data_bits * 2; i++) {
-		switch(ofdm.resource_blocks_e[0]) {
-			case BPSK_1_2:
-			case QPSK_1_2:
-			case QAM16_1_2:
-			case QAM64_1_2:
+		switch(ofdm.punct) {
+			case P_1_2:
 				*out = in[i];
 				out++;
 				break;
-			case BPSK_3_4:
-			case QPSK_3_4:
-			case QAM16_3_4:
-			case QAM64_3_4:
+			case P_3_4:
 				mod = i % 6;
 				if (!(mod == 3 || mod == 4)) {
 					*out = in[i];

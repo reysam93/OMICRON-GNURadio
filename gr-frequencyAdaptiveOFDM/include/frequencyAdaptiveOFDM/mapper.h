@@ -28,15 +28,15 @@
 
 
 enum Encoding {
-  BPSK_1_2  = 0,
-  QPSK_1_2  = 1,
-  QAM16_1_2  = 2,
-  QAM64_1_2 = 3,
+  BPSK  = 0,
+  QPSK  = 1,
+  QAM16  = 2,
+  QAM64= 3,
+};
 
-  BPSK_3_4 = 4,
-  QPSK_3_4 = 5,
-  QAM16_3_4 = 6,
-  QAM64_3_4 = 7,
+enum Puncturing {
+  P_1_2 = 0,
+  P_3_4 = 1,
 };
 
 

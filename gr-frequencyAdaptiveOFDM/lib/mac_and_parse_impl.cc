@@ -45,6 +45,7 @@ namespace gr {
     mac_and_parse::get_encoding(){
       pthread_mutex_lock(&d_mutex);
       std::vector<int> tmp = d_encoding;
+      tmp.push_back(d_punct);
       pthread_mutex_unlock(&d_mutex);
       return tmp;
     }
@@ -83,8 +84,8 @@ namespace gr {
       }
 
       pthread_mutex_init(&d_mutex, NULL);
-      std::vector<int> initial_e(4,0);
-      set_encoding(initial_e);
+      std::vector<int> initial_e(4, BPSK);
+      set_encoding(initial_e, P_1_2);
     }
 
     mac_and_parse_impl::~mac_and_parse_impl() {
@@ -134,8 +135,8 @@ namespace gr {
       ack_received = false;
       pthread_mutex_unlock(&d_mutex);
       if (reset_coding){
-        std::vector<int> encoding(4,0);
-        set_encoding(encoding);
+        std::vector<int> encoding(4, BPSK);
+        set_encoding(encoding, P_1_2);
       } 
     }
 
@@ -283,6 +284,7 @@ namespace gr {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_encoding));
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(d_punct));
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
@@ -578,31 +580,33 @@ namespace gr {
 
     void
     mac_and_parse_impl::decide_modulation(){
-      std::vector<int> encoding(4,0);
+      std::vector<int> encoding(4, BPSK);
+      int puncturing = P_1_2;
 
       for (int i = 0; i < 4; i++) {
         dout << std::endl << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
         if (d_snr[i] >= MIN_SNR_64QAM_1_2) {
           dout << "64QAM 1/2. Min SNR: " << MIN_SNR_64QAM_1_2 << std::endl;
-          encoding[i] = QAM64_1_2;
+          encoding[i] = QAM64;
         } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
           dout << "16QAM 1/2. Min SNR: " << MIN_SNR_16QAM_1_2 << std::endl;
-          encoding[i] = QAM16_1_2;
+          encoding[i] = QAM16;
         } else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
           dout << "QPSK 1/2. Min SNR: " << MIN_SNR_QPSK_1_2 << std::endl;
-          encoding[i] = QPSK_1_2;
+          encoding[i] = QPSK;
         } else {
           dout << "BPSK 1/2. Minimun codification." << std::endl;
-          encoding[i] = BPSK_1_2;
+          encoding[i] = BPSK;
         }
       }
-      set_encoding(encoding);
+      set_encoding(encoding, puncturing);
     }
 
     void 
-    mac_and_parse_impl::set_encoding(std::vector<int> encoding) {
+    mac_and_parse_impl::set_encoding(std::vector<int> encoding, int punct) {
       pthread_mutex_lock(&d_mutex);
       d_encoding = encoding;
+      d_punct = punct;
       pthread_mutex_unlock(&d_mutex);
     }
 

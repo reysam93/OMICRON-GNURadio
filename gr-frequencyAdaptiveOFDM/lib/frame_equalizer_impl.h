@@ -70,6 +70,7 @@ namespace gr {
       int  d_frame_bytes;
       int  d_frame_symbols;
       std::vector<int>  d_frame_enc;
+      int d_frame_punct;
 
       uint8_t d_deinterleaved[48];
       gr_complex symbols[48];

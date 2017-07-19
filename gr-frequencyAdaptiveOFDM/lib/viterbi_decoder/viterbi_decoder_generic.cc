@@ -375,19 +375,13 @@ viterbi_decoder::decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) {
 void
 viterbi_decoder::reset() {
 	viterbi_chunks_init_generic();
-	switch(d_ofdm->resource_blocks_e[0]) {
-	case BPSK_1_2:
-	case QPSK_1_2:
-	case QAM16_1_2:
-	case QAM64_1_2:
+	switch(d_ofdm->punct) {
+	case P_1_2:
 		d_ntraceback = 5;
 		d_depuncture_pattern = PUNCTURE_1_2;
 		d_k = 1;
 		break;
-	case BPSK_3_4:
-	case QPSK_3_4:
-	case QAM16_3_4:
-	case QAM64_3_4:
+	case P_3_4:
 		d_ntraceback = 10;
 		d_depuncture_pattern = PUNCTURE_3_4;
 		d_k = 3;

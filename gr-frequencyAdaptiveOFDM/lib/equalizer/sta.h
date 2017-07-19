@@ -37,8 +37,8 @@ private:
 	double d_snr;
 	std::vector<double> d_resource_block_snr;
 
-	const double alpha = 0.5;
-	const int beta = 2;
+	static const double alpha = 0.5;
+	static const int beta = 2;
 };
 
 } /* namespace channel_estimation */
