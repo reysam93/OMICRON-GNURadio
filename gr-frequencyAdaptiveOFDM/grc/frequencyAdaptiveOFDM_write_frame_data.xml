@@ -4,7 +4,7 @@
   <key>frequencyAdaptiveOFDM_write_frame_data</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.write_frame_data($snr_file, $enc_file, $debug)</make>
+  <make>frequencyAdaptiveOFDM.write_frame_data($snr_file, $enc_file, $delay_file, $debug)</make>
 
   <param>
     <name>SNR File</name>
@@ -16,6 +16,12 @@
     <name>Encoding File</name>
     <key>enc_file</key>
     <value>/tmp/encoding.csv</value>
+    <type>string</type>
+  </param>
+  <param>
+    <name>Frame Delay File</name>
+    <key>delay_file</key>
+    <value>/tmp/wifi_frame_delay.csv</value>
     <type>string</type>
   </param>
   <param>
