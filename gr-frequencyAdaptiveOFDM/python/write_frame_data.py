@@ -56,15 +56,19 @@ class write_frame_data(gr.sync_block):
                                     pmt.make_vector(0, pmt.from_long(0))))
         encoding = pmt.s32vector_elements(pmt.dict_ref(msg, pmt.intern("encoding"),
                                     pmt.make_vector(0, pmt.from_long(0))))
+        puncturing = pmt.to_long(pmt.dict_ref(msg, pmt.intern("puncturing"),
+                                    pmt.from_long(-1)))
+
 
         snr_str = ""
         enc_str = ""
         for i in range(len(snr)):
             snr_str += str(snr[i])
-            enc_str += str(encoding[i])
+            enc_str += str(encoding[i]) + ", "
             if i != len(snr) - 1:
                 snr_str += ", "
-                enc_str += ", "
+                
+        enc_str += str(puncturing)
 
         f_snr = open(self.snr_file, 'a')
         f_enc = open(self.enc_file, 'a')
@@ -74,5 +78,5 @@ class write_frame_data(gr.sync_block):
         f_enc.close()
 
         if self.debug:
-            print("SNR:", snr_str)
-            print("Encoding:", enc_str)
+            print("SNR: " + snr_str)
+            print("Encoding: " + enc_str)
