@@ -986,7 +986,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>[0,0,0,0]</value>
+      <value>[0,0,0,0,0]</value>
     </param>
   </block>
   <block>
@@ -1269,6 +1269,10 @@
     <param>
       <key>debug</key>
       <value>False</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>/tmp/symbols_delay.csv</value>
     </param>
     <param>
       <key>_enabled</key>
