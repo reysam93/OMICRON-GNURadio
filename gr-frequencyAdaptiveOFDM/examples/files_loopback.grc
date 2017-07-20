@@ -216,11 +216,11 @@
     </param>
     <param>
       <key>value</key>
-      <value>[0,0,0,0]</value>
+      <value>[0,0,0,0,0]</value>
     </param>
     <param>
       <key>poll_rate</key>
-      <value>10</value>
+      <value>1000</value>
     </param>
   </block>
   <block>

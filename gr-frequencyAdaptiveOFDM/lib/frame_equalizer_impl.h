@@ -26,6 +26,8 @@
 #include <frequencyAdaptiveOFDM/constellations.h>
 #include "equalizer/base.h"
 #include "viterbi_decoder/viterbi_decoder.h"
+#include <sys/time.h>
+#include <fstream>
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -33,7 +35,7 @@ namespace gr {
     class frame_equalizer_impl : public frame_equalizer
     {
      public:
-      frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug);
+      frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug, char* delay_file);
       ~frame_equalizer_impl();
 
       void set_algorithm(Equalizer algo);
@@ -80,6 +82,9 @@ namespace gr {
       constellation_qpsk::sptr d_qpsk;
       constellation_16qam::sptr d_16qam;
       constellation_64qam::sptr d_64qam;
+
+      timeval last_time; 
+      std::ofstream delay_fstream;
 
       static int interleaver_pattern[48];
     };

@@ -4,7 +4,7 @@
   <key>frequencyAdaptiveOFDM_frame_equalizer</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.frame_equalizer($algo, $freq, $bw, $log, $debug)</make>
+  <make>frequencyAdaptiveOFDM.frame_equalizer($algo, $freq, $bw, $log, $debug, $delay_file)</make>
   <callback>set_algorithm($algo)</callback>
   <callback>set_frequency($freq)</callback>
   <callback>set_bandwidth($bw)</callback>
@@ -77,6 +77,13 @@
       <name>Disable</name>
       <key>False</key>
     </option>
+  </param>
+
+  <param>
+    <name>Delay File</name>
+    <key>delay_file</key>
+    <value>/tmp/symbols_delay.csv</value>
+    <type>string</type>
   </param>
 
   <sink>

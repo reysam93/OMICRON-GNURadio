@@ -36,13 +36,13 @@ namespace gr {
   namespace frequencyAdaptiveOFDM {
 
     frame_equalizer::sptr
-    frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool debug) {
+    frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool debug, char* delay_file) {
       return gnuradio::get_initial_sptr
-        (new frame_equalizer_impl(algo, freq, bw, log, debug));
+        (new frame_equalizer_impl(algo, freq, bw, log, debug, delay_file));
     }
 
 
-    frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug) :
+    frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug, char* delay_file) :
       gr::block("frame_equalizer",
           gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
           gr::io_signature::make(1, 1, 48)),
@@ -64,9 +64,17 @@ namespace gr {
 
       set_tag_propagation_policy(block::TPP_DONT);
       set_algorithm(algo);
+
+      gettimeofday(&last_time, NULL);
+      if(delay_file != ""){
+        delay_fstream.open(delay_file, std::ofstream::out);
+      }
     }
 
     frame_equalizer_impl::~frame_equalizer_impl() {
+      if (delay_fstream.is_open()) {
+        delay_fstream.close();
+      }
     }
 
 
@@ -133,7 +141,11 @@ namespace gr {
 
       //dout << "FRAME EQUALIZER: input " << ninput_items[0] << "  output " << noutput_items << std::endl;
 
-      while((i < ninput_items[0]) && (o < noutput_items)) {
+      while((i < ninput_items[0]) && (o < noutput_items)) {        
+        // delay in ms
+        float delay;
+        timeval time_now;
+        bool new_frame = false;
 
         get_tags_in_window(tags, 0, i, i + 1, pmt::string_to_symbol("wifi_start"));
 
@@ -149,6 +161,7 @@ namespace gr {
           d_freq_offset_from_synclong = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI);
           d_epsilon0 = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI * d_freq);
           d_er = 0;
+          new_frame = true;
 
           dout << "FRAME EQ: new frame. Epsilon: " << d_epsilon0 << std::endl;
         }
@@ -157,6 +170,16 @@ namespace gr {
         if(d_current_symbol > (d_frame_symbols + 2)) {
           i++;
           continue;
+        }
+
+        gettimeofday(&time_now, NULL);
+        delay = (time_now.tv_sec - last_time.tv_sec)*1000.0 + (time_now.tv_usec - last_time.tv_usec)/1000.0;
+        last_time = time_now;
+        if(delay_fstream.is_open()){
+          delay_fstream << d_current_symbol << ", " << delay << ", " << new_frame << "\n";
+        }
+        if(d_log){
+          std::cout << "OFDM symbol " << d_current_symbol << " delay: " << delay << " ms. New frame: " << new_frame << "\n"; 
         }
 
         std::memcpy(current_symbol, in + i*64, 64*sizeof(gr_complex));
