@@ -66,7 +66,7 @@ namespace gr {
       bool equal_mac(uint8_t *addr1, uint8_t *addr2);
       void print_ascii(char* buf, int length);
       bool check_mac(std::vector<uint8_t> mac);
-      void decide_modulation();
+      void decide_encoding();
       void set_encoding(std::vector<int> encoding, int punct);
     };
 

@@ -240,7 +240,7 @@ namespace gr {
         dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
         return;
       }
-      decide_modulation();
+      decide_encoding();
       send_frame_data();
 
       mylog(boost::format("length: %1%") % data_len );
@@ -579,26 +579,53 @@ namespace gr {
     }
 
     void
-    mac_and_parse_impl::decide_modulation(){
+    mac_and_parse_impl::decide_encoding(){
       std::vector<int> encoding(4, BPSK);
+      bool punct_3_4 = true;
+      bool same_mod;
       int puncturing = P_1_2;
 
+      dout << std::endl;
       for (int i = 0; i < 4; i++) {
-        dout << std::endl << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
-        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {
-          dout << "64QAM 1/2. Min SNR: " << MIN_SNR_64QAM_1_2 << std::endl;
+        dout << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
+
+        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {      
           encoding[i] = QAM64;
+          if (d_snr[i] < MIN_SNR_64QAM_3_4) {
+            punct_3_4 = false;
+          }
         } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
-          dout << "16QAM 1/2. Min SNR: " << MIN_SNR_16QAM_1_2 << std::endl;
           encoding[i] = QAM16;
-        } else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
-          dout << "QPSK 1/2. Min SNR: " << MIN_SNR_QPSK_1_2 << std::endl;
+          if (d_snr[i] < MIN_SNR_16QAM_3_4) {
+            punct_3_4 = false;
+          }
+        }else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
           encoding[i] = QPSK;
+          if (d_snr[i] < MIN_SNR_QPSK_3_4) {
+            punct_3_4 = false;
+          }
         } else {
-          dout << "BPSK 1/2. Minimun codification." << std::endl;
           encoding[i] = BPSK;
+          if (d_snr[i] < MIN_SNR_BPSK_3_4) {
+            punct_3_4 = false;
+          }
         }
       }
+      dout << std::endl;
+
+      if (punct_3_4) {
+        same_mod = true;
+        for (int i = 1; i < 4; i++) {
+          if (encoding[0] != encoding[i]){
+            same_mod = false;
+            break;
+          }
+        }
+        if (same_mod) {
+          puncturing = punct_3_4;
+        }
+      }
+
       set_encoding(encoding, puncturing);
     }
 
@@ -607,6 +634,10 @@ namespace gr {
       pthread_mutex_lock(&d_mutex);
       d_encoding = encoding;
       d_punct = punct;
+      if (d_debug) {
+        ofdm_param ofdm(encoding, punct);
+        ofdm.print_encoding();
+      }
       pthread_mutex_unlock(&d_mutex);
     }
 
