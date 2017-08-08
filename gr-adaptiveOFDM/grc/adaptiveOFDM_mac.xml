@@ -2,7 +2,7 @@
 <block>
   <name>WiFi MAC (ACKs)</name>
   <key>adaptiveOFDM_mac</key>
-  <category>[adaptiveOFDM]</category>
+  <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
   <make>adaptiveOFDM.mac($src_mac, $dst_mac, $bss_mac)</make>
   

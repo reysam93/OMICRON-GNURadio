@@ -39,7 +39,7 @@ class  ADAPTIVEOFDM_API mapper : virtual public block
 public:
 
 	typedef boost::shared_ptr<mapper> sptr;
-	static sptr make(Encoding mcs, bool debug = false);
+	static sptr make(Encoding mcs, bool debug, bool log);
 	virtual void set_encoding(Encoding mcs) = 0;
 };
 

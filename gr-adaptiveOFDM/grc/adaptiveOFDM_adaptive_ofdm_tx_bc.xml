@@ -2,7 +2,7 @@
 <block>
   <name>Adaptive OFDM Tx</name>
   <key>adaptiveOFDM_adaptive_ofdm_tx_bc</key>
-  <category>[adaptiveOFDM]</category>
+  <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
   <make>adaptiveOFDM.adaptive_ofdm_tx_bc($len_tag_key, $fft_len, $cp_len, $occupied_carriers, $pilot_symbols, $pilot_carriers, $sync_words)</make>
 

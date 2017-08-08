@@ -50,7 +50,6 @@ public:
   static const float MIN_SNR_16QAM_3_4 = 18;
   static const float MIN_SNR_64QAM_2_3 = 25;
   static const float MIN_SNR_64QAM_3_4 = 30;
- 
 
   // Time in usecs
   static const unsigned int SIFS = 10;
@@ -68,7 +67,9 @@ public:
                       std::vector<uint8_t> dst_mac,
                       std::vector<uint8_t> bss_mac,
                       bool log, 
-                      bool debug);
+                      bool debug,
+                      char* tx_packets_f,
+                      char* rx_packets_f);
 };
 
 }  // namespace adaptiveOFDM

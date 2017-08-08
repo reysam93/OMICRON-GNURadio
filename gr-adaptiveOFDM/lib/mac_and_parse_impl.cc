@@ -32,6 +32,7 @@
 
 #include <boost/crc.hpp>
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 
 using namespace gr::adaptiveOFDM;
@@ -39,7 +40,8 @@ using namespace gr::adaptiveOFDM;
 class mac_and_parse_impl : public mac_and_parse {
 
 public:
-  mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug) :
+  mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
+                      bool log, bool debug, char* tx_packets_f, char* rx_packets_f) :
       block("mac_and_parse",
         gr::io_signature::make(0, 0, 0),
         gr::io_signature::make(0, 0, 0)),
@@ -66,12 +68,27 @@ public:
       d_bss_mac[i] = bss_mac[i];
     }
 
+    n_tx_packets = 0;
+    n_rx_packets = 0;
+    if(tx_packets_f != ""){
+      tx_packets_fs.open(tx_packets_f, std::ofstream::out);
+    }
+    if(rx_packets_f != ""){
+      rx_packets_fs.open(rx_packets_f, std::ofstream::out);
+    }
+
     pthread_mutex_init(&d_mutex, NULL);
     set_encoding(0);
   }
 
   ~mac_and_parse_impl() {
     pthread_mutex_destroy(&d_mutex);
+    if (tx_packets_fs.is_open()) {
+      tx_packets_fs.close();
+    }
+    if (rx_packets_fs.is_open()) {
+      rx_packets_fs.close();
+    }
   }
 
   /*** MAC implementation ***/
@@ -105,6 +122,10 @@ public:
     int    psdu_length;
     generate_mac_data_frame(msdu, msg_len, &psdu_length);
     send_message(psdu_length);
+    n_tx_packets++;
+    if (tx_packets_fs.is_open()) {
+      tx_packets_fs << n_tx_packets << std::endl;
+    }
     usleep(TIME_OUT);
 
     bool reset_coding = false;
@@ -246,6 +267,10 @@ public:
         generate_mac_ack_frame(h->addr2, &psdu_length);
         //needs to wait 10 usecs before sending ack.
         usleep(SIFS);
+        n_rx_packets++;
+        if (rx_packets_fs.is_open()) {
+          rx_packets_fs << n_rx_packets << std::endl;
+        }
         send_message(psdu_length);
         break;
 
@@ -259,7 +284,9 @@ public:
   send_frame_data() {
     pmt::pmt_t dict = pmt::make_dict();
     dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
+    pthread_mutex_lock(&d_mutex);
     dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(d_encoding));
+    pthread_mutex_unlock(&d_mutex);
     message_port_pub(pmt::mp("frame data"), dict);
   }
 
@@ -593,6 +620,12 @@ private:
   bool d_log;
   bool d_debug;
   int d_last_seq_no;
+
+  // For meassuring QoS
+  std::ofstream tx_packets_fs;
+  std::ofstream rx_packets_fs;
+  long n_tx_packets;
+  long n_rx_packets;
 };
 
 int 
@@ -604,6 +637,7 @@ mac_and_parse::get_encoding(){
 }
 
 mac_and_parse::sptr
-mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug) {
-  return gnuradio::get_initial_sptr(new mac_and_parse_impl(src_mac, dst_mac, bss_mac, log, debug));
+mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
+                    bool log, bool debug, char* tx_packets_f, char* rx_packets_f) {
+  return gnuradio::get_initial_sptr(new mac_and_parse_impl(src_mac, dst_mac, bss_mac, log, debug, tx_packets_f, rx_packets_f));
 }

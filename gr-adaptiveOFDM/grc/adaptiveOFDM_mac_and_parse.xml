@@ -2,9 +2,9 @@
 <block>
   <name>WiFi MAC / Parse MAC</name>
   <key>adaptiveOFDM_mac_and_parse</key>
-  <category>[adaptiveOFDM]</category>
+  <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $log, $debug)</make>
+  <make>adaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $log, $debug, $tx_packets_f, $rx_packets_f)</make>
 
   <param>
     <name>SRC MAC</name>
@@ -55,6 +55,20 @@
       <name>Disable</name>
       <key>False</key>
     </option>
+  </param>
+
+  <param>
+    <name># Tx Packets File</name>
+    <key>tx_packets_f</key>
+    <value>/tmp/tx_packets.csv</value>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name># Rx Packets File</name>
+    <key>rx_packets_f</key>
+    <value>/tmp/rx_packets.csv</value>
+    <type>string</type>
   </param>
 
   <check>len($src_mac) == 6</check>

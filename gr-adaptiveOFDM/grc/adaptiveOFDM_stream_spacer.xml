@@ -2,7 +2,7 @@
 <block>
   <name>Stream Spacer</name>
   <key>adaptiveOFDM_stream_spacer</key>
-  <category>[adaptiveOFDM]</category>
+  <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
   <import>from gnuradio import blocks</import>
   <make>adaptiveOFDM.stream_spacer($type.tv, $interval)</make>

@@ -2,7 +2,7 @@
 <block>
   <name>WiFi Parse MAC (return Data)</name>
   <key>adaptiveOFDM_parse_mac</key>
-  <category>[adaptiveOFDM]</category>
+  <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
   <make>adaptiveOFDM.parse_mac($mac, $log, $debug)</make>
   
