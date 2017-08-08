@@ -4620,11 +4620,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(488, 464)</value>
+      <value>(472, 456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4632,7 +4632,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>wifi_freq_adap_phy_hier_0</value>
+      <value>wifi_freq_adap_phy_hier_0_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -4649,6 +4649,10 @@
     <param>
       <key>chan_est</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>"/tmp/symbols_delay.csv"</value>
     </param>
     <param>
       <key>encoding</key>
@@ -4755,7 +4759,7 @@
   </connection>
   <connection>
     <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>wifi_freq_adap_phy_hier_0</sink_block_id>
+    <sink_block_id>wifi_freq_adap_phy_hier_0_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
   </connection>
@@ -4785,24 +4789,24 @@
   </connection>
   <connection>
     <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>wifi_freq_adap_phy_hier_0</sink_block_id>
+    <sink_block_id>wifi_freq_adap_phy_hier_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_freq_adap_phy_hier_0</source_block_id>
+    <source_block_id>wifi_freq_adap_phy_hier_0_0</source_block_id>
     <sink_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</sink_block_id>
     <source_key>carrier</source_key>
     <sink_key>symbols_in</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_freq_adap_phy_hier_0</source_block_id>
+    <source_block_id>wifi_freq_adap_phy_hier_0_0</source_block_id>
     <sink_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>phy in</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_freq_adap_phy_hier_0</source_block_id>
+    <source_block_id>wifi_freq_adap_phy_hier_0_0</source_block_id>
     <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>

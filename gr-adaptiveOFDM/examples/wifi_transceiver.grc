@@ -2427,7 +2427,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 456)</value>
+      <value>(440, 456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2435,7 +2435,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>top_block_0</value>
+      <value>top_block_0_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -2451,15 +2451,15 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>0</value>
+      <value>chan_est</value>
     </param>
     <param>
       <key>delay_file</key>
-      <value>""</value>
+      <value>"/tmp/symbols_delay.csv"</value>
     </param>
     <param>
       <key>encoding</key>
-      <value>0</value>
+      <value>encoding</value>
     </param>
     <param>
       <key>frequency</key>
@@ -4652,7 +4652,7 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>top_block_0</sink_block_id>
+    <sink_block_id>top_block_0_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
   </connection>
@@ -4735,26 +4735,26 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
+    <source_block_id>top_block_0_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
     <source_key>carrier</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
+    <source_block_id>top_block_0_0</source_block_id>
     <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>phy in</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
+    <source_block_id>top_block_0_0</source_block_id>
     <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>top_block_0</sink_block_id>
+    <sink_block_id>top_block_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
