@@ -51,12 +51,14 @@ namespace gr {
     }
 
     mac_and_parse::sptr
-    mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug) {
-      return gnuradio::get_initial_sptr(new mac_and_parse_impl(src_mac, dst_mac, bss_mac, log, debug));
+    mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
+                          bool log, bool debug, char* tx_packets_f, char* rx_packets_f) {
+      return gnuradio::get_initial_sptr(new mac_and_parse_impl(src_mac, dst_mac, bss_mac, log, debug, tx_packets_f, rx_packets_f));
     }
 
 
-    mac_and_parse_impl::mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug) :
+    mac_and_parse_impl::mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
+                                            bool log, bool debug, char* tx_packets_f, char* rx_packets_f) :
         block("mac_and_parse",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(0, 0, 0)),
@@ -83,6 +85,15 @@ namespace gr {
         d_bss_mac[i] = bss_mac[i];
       }
 
+      n_tx_packets = 0;
+      n_rx_packets = 0;
+      if(tx_packets_f != ""){
+        tx_packets_fs.open(tx_packets_f, std::ofstream::out);
+      }
+      if(rx_packets_f != ""){
+        rx_packets_fs.open(rx_packets_f, std::ofstream::out);
+      }
+
       pthread_mutex_init(&d_mutex, NULL);
       std::vector<int> initial_e(4, BPSK);
       set_encoding(initial_e, P_1_2);
@@ -90,6 +101,12 @@ namespace gr {
 
     mac_and_parse_impl::~mac_and_parse_impl() {
       pthread_mutex_destroy(&d_mutex);
+      if (tx_packets_fs.is_open()) {
+        tx_packets_fs.close();
+      }
+      if (rx_packets_fs.is_open()) {
+        rx_packets_fs.close();
+      }
     }
 
     /*** MAC implementation ***/
@@ -124,6 +141,10 @@ namespace gr {
       int    psdu_length;
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
       send_message(psdu_length);
+      n_tx_packets++;
+      if (tx_packets_fs.is_open()) {
+        tx_packets_fs << n_tx_packets << std::endl;
+      }
       usleep(TIME_OUT);
 
       bool reset_coding = false;
@@ -240,6 +261,7 @@ namespace gr {
         dout << std::endl << std::endl << "Message not for me. Ignoring it." << std::endl;
         return;
       }
+      
       decide_encoding();
       send_frame_data();
 
@@ -270,6 +292,10 @@ namespace gr {
           generate_mac_ack_frame(h->addr2, &psdu_length);
           //needs to wait 10 usecs before sending ack.
           usleep(SIFS);
+          n_rx_packets++;
+          if (rx_packets_fs.is_open()) {
+            rx_packets_fs << n_rx_packets << std::endl;
+          }
           send_message(psdu_length);
           break;
 
@@ -635,6 +661,7 @@ namespace gr {
       d_encoding = encoding;
       d_punct = punct;
       if (d_debug) {
+        std::cout << "MAC_&_PARSE: set encoding\n";
         ofdm_param ofdm(encoding, punct);
         ofdm.print_encoding();
       }

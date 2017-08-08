@@ -24,6 +24,7 @@
 
 #include <frequencyAdaptiveOFDM/mac_and_parse.h>
 #include "utils.h"
+#include <fstream>
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -31,7 +32,8 @@ namespace gr {
     class mac_and_parse_impl : public mac_and_parse
     {
      public:
-      mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool log, bool debug);
+      mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
+                          bool log, bool debug, char* tx_packets_f, char* rx_packets_f);
       ~mac_and_parse_impl();
       void app_in (pmt::pmt_t msg);
       void phy_in (pmt::pmt_t msg);
@@ -68,6 +70,12 @@ namespace gr {
       bool check_mac(std::vector<uint8_t> mac);
       void decide_encoding();
       void set_encoding(std::vector<int> encoding, int punct);
+    
+      // For meassuring QoS
+      std::ofstream tx_packets_fs;
+      std::ofstream rx_packets_fs;
+      long n_tx_packets;
+      long n_rx_packets;
     };
 
   } // namespace frequencyAdaptiveOFDM

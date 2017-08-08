@@ -68,7 +68,9 @@ namespace gr {
                           std::vector<uint8_t> dst_mac,
                           std::vector<uint8_t> bss_mac,
                           bool log, 
-                          bool debug);
+                          bool debug,
+                          char* tx_packets_f,
+                          char* rx_packets_f);
       
         std::vector<int> d_encoding;
         int d_punct;

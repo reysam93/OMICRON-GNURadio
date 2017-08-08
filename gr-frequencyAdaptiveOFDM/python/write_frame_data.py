@@ -26,7 +26,7 @@ from gnuradio import gr
 
 class write_frame_data(gr.sync_block):
     """
-    Receive the SNR and Encoding used in each frame and stores it in the files given
+    Receive the SNR and Encoding used in each WiFi frame and stores it in the files given
     as arguments. It also stored the delay between Wifi Frames in milliseconds
 
         - snr_file: path for the file for the snr data

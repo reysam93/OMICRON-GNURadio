@@ -33,6 +33,7 @@ namespace gr {
     {
     private:
       bool d_debug;
+      bool d_log;
       char* d_symbols;
       int d_symbols_offset;
       int d_symbols_len;
@@ -40,7 +41,7 @@ namespace gr {
       gr::thread::mutex d_mutex;
 
     public:
-      mapper_impl(std::vector<int> pilots_enc, bool debug);
+      mapper_impl(std::vector<int> pilots_enc, bool debug, bool log);
       ~mapper_impl();
 
       int general_work(int noutput_items,

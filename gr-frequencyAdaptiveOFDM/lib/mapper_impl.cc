@@ -31,19 +31,20 @@ namespace gr {
   namespace frequencyAdaptiveOFDM {
 
     mapper::sptr
-    mapper::make(std::vector<int> pilots_enc, bool debug)
+    mapper::make(std::vector<int> pilots_enc, bool debug, bool log)
     {
       return gnuradio::get_initial_sptr
-        (new mapper_impl(pilots_enc, debug));
+        (new mapper_impl(pilots_enc, debug, log));
     }
 
-    mapper_impl::mapper_impl(std::vector<int> pilots_enc, bool debug)
+    mapper_impl::mapper_impl(std::vector<int> pilots_enc, bool debug, bool log)
       : gr::block("mapper",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(1, 1, sizeof(char))),
           d_symbols_offset(0),
           d_symbols(NULL),
           d_debug(debug),
+          d_log(log),
           d_ofdm(pilots_enc, P_1_2)
     {
       message_port_register_in(pmt::mp("in"));
@@ -116,6 +117,9 @@ namespace gr {
           
           //generate the WIFI data field, adding service field and pad bits
           generate_bits(psdu, data_bits, frame);
+          if (d_log) {
+            print_bytes("MAPPER: data bits:", data_bits, frame.psdu_size*8+16);
+          }
 
           // scrambling
           static uint8_t scrambler = 1;
@@ -126,11 +130,22 @@ namespace gr {
 
           // reset tail bits
           reset_tail_bits(scrambled_data, frame);
+          if (d_log) {
+            print_bytes("MAPPER: scrambled data and reset tail:", scrambled_data, frame.n_data_bits);
+          }
+
           // encoding
           convolutional_encoding(scrambled_data, encoded_data, frame);
+          if (d_log) {
+            print_bytes("MAPPER: encoded data:", encoded_data, frame.n_data_bits*2);
+          }
+
           // puncturing
           puncturing(encoded_data, punctured_data, frame, ofdm);
-          
+          if (d_log) {
+            print_bytes("MAPPER: punctured data:", punctured_data, frame.n_encoded_bits);
+          }
+
           // interleaving
           interleave(punctured_data, interleaved_data, frame, ofdm);
 
@@ -195,10 +210,10 @@ namespace gr {
       gr::thread::scoped_lock lock(d_mutex);
       d_ofdm = ofdm_param(enc, punct);
     
-      if (d_debug){
+      /*if (d_debug){
         dout << "MAPPER ENCODDING: ";
         d_ofdm.print_encoding();
-      }
+      }*/
     }
 
   } /* namespace frequencyAdaptiveOFDM */
