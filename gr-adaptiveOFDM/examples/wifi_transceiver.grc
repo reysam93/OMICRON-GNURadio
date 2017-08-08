@@ -753,6 +753,49 @@
     </param>
   </block>
   <block>
+    <key>adaptiveOFDM_write_frame_data</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>enc_file</key>
+      <value>/tmp/encoding.csv</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(896, 580)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>adaptiveOFDM_write_frame_data_0</value>
+    </param>
+    <param>
+      <key>snr_file</key>
+      <value>/tmp/snr.csv</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_file_sink</key>
     <param>
       <key>append</key>
@@ -780,7 +823,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(20, 536)</value>
+      <value>(20, 600)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -831,7 +874,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 364)</value>
+      <value>(1080, 364)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -878,7 +921,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 540)</value>
+      <value>(456, 604)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -972,7 +1015,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(144, 500)</value>
+      <value>(144, 564)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1227,7 +1270,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(872, 288)</value>
+      <value>(936, 240)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1337,7 +1380,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 656)</value>
+      <value>(416, 824)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1388,7 +1431,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(40, 420)</value>
+      <value>(40, 484)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1439,7 +1482,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(160, 636)</value>
+      <value>(160, 700)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1786,7 +1829,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 468)</value>
+      <value>(1024, 468)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2025,7 +2068,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1048, 272)</value>
+      <value>(1120, 256)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -3024,7 +3067,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 624)</value>
+      <value>(608, 792)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4359,7 +4402,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 496)</value>
+      <value>(632, 648)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4534,7 +4577,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 416)</value>
+      <value>(448, 480)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4584,6 +4627,12 @@
     <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
     <source_key>fer</source_key>
     <sink_key>pdus</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>adaptiveOFDM_write_frame_data_0</sink_block_id>
+    <source_key>frame data</source_key>
+    <sink_key>frame data</sink_key>
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
