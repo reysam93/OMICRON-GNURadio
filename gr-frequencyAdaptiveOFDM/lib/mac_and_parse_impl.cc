@@ -87,12 +87,8 @@ namespace gr {
 
       n_tx_packets = 0;
       n_rx_packets = 0;
-      if(tx_packets_f != ""){
-        tx_packets_fs.open(tx_packets_f, std::ofstream::out);
-      }
-      if(rx_packets_f != ""){
-        rx_packets_fs.open(rx_packets_f, std::ofstream::out);
-      }
+      tx_packets_fn = tx_packets_f;
+      rx_packets_fn = rx_packets_f;
 
       pthread_mutex_init(&d_mutex, NULL);
       std::vector<int> initial_e(4, BPSK);
@@ -101,12 +97,6 @@ namespace gr {
 
     mac_and_parse_impl::~mac_and_parse_impl() {
       pthread_mutex_destroy(&d_mutex);
-      if (tx_packets_fs.is_open()) {
-        tx_packets_fs.close();
-      }
-      if (rx_packets_fs.is_open()) {
-        rx_packets_fs.close();
-      }
     }
 
     /*** MAC implementation ***/
@@ -141,10 +131,14 @@ namespace gr {
       int    psdu_length;
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
       send_message(psdu_length);
-      n_tx_packets++;
-      if (tx_packets_fs.is_open()) {
+
+      if(tx_packets_fn != ""){
+        n_tx_packets++;
+        std::fstream tx_packets_fs(tx_packets_fn, std::ofstream::out);
         tx_packets_fs << n_tx_packets << std::endl;
+        tx_packets_fs.close();
       }
+
       usleep(TIME_OUT);
 
       bool reset_coding = false;
@@ -292,11 +286,15 @@ namespace gr {
           generate_mac_ack_frame(h->addr2, &psdu_length);
           //needs to wait 10 usecs before sending ack.
           usleep(SIFS);
-          n_rx_packets++;
-          if (rx_packets_fs.is_open()) {
-            rx_packets_fs << n_rx_packets << std::endl;
-          }
           send_message(psdu_length);
+
+          if(rx_packets_fn != ""){
+            n_rx_packets++;
+            std::fstream rx_packets_fs(rx_packets_fn, std::ofstream::out);
+            rx_packets_fs << n_rx_packets << std::endl;
+            rx_packets_fs.close();
+          }
+
           break;
 
         default:

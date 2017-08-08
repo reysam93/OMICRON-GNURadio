@@ -72,8 +72,8 @@ namespace gr {
       void set_encoding(std::vector<int> encoding, int punct);
     
       // For meassuring QoS
-      std::ofstream tx_packets_fs;
-      std::ofstream rx_packets_fs;
+      char* tx_packets_fn;
+      char* rx_packets_fn;
       long n_tx_packets;
       long n_rx_packets;
     };
