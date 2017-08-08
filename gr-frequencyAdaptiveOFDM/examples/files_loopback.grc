@@ -294,7 +294,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>500</value>
+      <value>750</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -500,6 +500,33 @@
     <param>
       <key>widget</key>
       <value>counter_slider</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1344, 52)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>variable_0</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>frequencyAdaptiveOFDM.QPSK</value>
     </param>
   </block>
   <block>
@@ -1197,7 +1224,7 @@
     </param>
     <param>
       <key>display_file</key>
-      <value>/tmp/rate.txt</value>
+      <value>/tmp/rate_freq_adap.txt</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1222,6 +1249,14 @@
   </block>
   <block>
     <key>frequencyAdaptiveOFDM_mac_and_parse</key>
+    <param>
+      <key>rx_packets_f</key>
+      <value>/tmp/rx_packets.csv</value>
+    </param>
+    <param>
+      <key>tx_packets_f</key>
+      <value>/tmp/tx_packets.csv</value>
+    </param>
     <param>
       <key>bss_mac</key>
       <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
@@ -1347,6 +1382,10 @@
     <param>
       <key>enc_file</key>
       <value>/tmp/encoding.csv</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>/tmp/wifi_frame_delay.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2414,6 +2453,10 @@
     <param>
       <key>chan_est</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>"/tmp/symbols_delay.csv"</value>
     </param>
     <param>
       <key>encoding</key>

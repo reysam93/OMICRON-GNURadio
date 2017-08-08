@@ -2486,6 +2486,10 @@
       <value>chan_est</value>
     </param>
     <param>
+      <key>delay_file</key>
+      <value>"/tmp/symbols_delay.csv"</value>
+    </param>
+    <param>
       <key>encoding</key>
       <value>encoding</value>
     </param>

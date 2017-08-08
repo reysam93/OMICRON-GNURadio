@@ -649,6 +649,14 @@
   <block>
     <key>adaptiveOFDM_mac_and_parse</key>
     <param>
+      <key>rx_packets_f</key>
+      <value>/tmp/rx_packets.csv</value>
+    </param>
+    <param>
+      <key>tx_packets_f</key>
+      <value>/tmp/tx_packets.csv</value>
+    </param>
+    <param>
       <key>bss_mac</key>
       <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
     </param>
@@ -777,6 +785,10 @@
     <param>
       <key>enc_file</key>
       <value>/tmp/encoding.csv</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>/tmp/wifi_frame_delay.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2393,6 +2405,69 @@
     <param>
       <key>ymin</key>
       <value>-1</value>
+    </param>
+  </block>
+  <block>
+    <key>top_block</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(448, 456)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>top_block_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>bandwidth</key>
+      <value>10e6</value>
+    </param>
+    <param>
+      <key>chan_est</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>frequency</key>
+      <value>5.89e9</value>
+    </param>
+    <param>
+      <key>sensitivity</key>
+      <value>0.56</value>
     </param>
   </block>
   <block>
@@ -4557,65 +4632,6 @@
       <value></value>
     </param>
   </block>
-  <block>
-    <key>wifi_phy_hier</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(448, 480)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>wifi_phy_hier_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>bandwidth</key>
-      <value>10e6</value>
-    </param>
-    <param>
-      <key>chan_est</key>
-      <value>chan_est</value>
-    </param>
-    <param>
-      <key>encoding</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>frequency</key>
-      <value>5.89e9</value>
-    </param>
-    <param>
-      <key>sensitivity</key>
-      <value>0.56</value>
-    </param>
-  </block>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_1</sink_block_id>
@@ -4636,7 +4652,7 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>wifi_phy_hier_0</sink_block_id>
+    <sink_block_id>top_block_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
   </connection>
@@ -4719,32 +4735,26 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>wifi_phy_hier_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>wifi_phy_hier_0</source_block_id>
+    <source_block_id>top_block_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
     <source_key>carrier</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_phy_hier_0</source_block_id>
+    <source_block_id>top_block_0</source_block_id>
     <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>phy in</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>foo_wireshark_connector_0</sink_block_id>
-    <source_key>mac_out</source_key>
-    <sink_key>in</sink_key>
+    <source_block_id>top_block_0</source_block_id>
+    <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
+    <source_block_id>uhd_usrp_source_0</source_block_id>
+    <sink_block_id>top_block_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

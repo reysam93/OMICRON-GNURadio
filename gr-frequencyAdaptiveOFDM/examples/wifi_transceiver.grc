@@ -239,7 +239,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 4)</value>
+      <value>(648, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -691,49 +691,6 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>adaptiveOFDM_write_frame_data</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>enc_file</key>
-      <value>/tmp/encoding.csv</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(920, 500)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>adaptiveOFDM_write_frame_data_0</value>
-    </param>
-    <param>
-      <key>snr_file</key>
-      <value>/tmp/snr.csv</value>
     </param>
   </block>
   <block>
@@ -1390,6 +1347,14 @@
   <block>
     <key>frequencyAdaptiveOFDM_mac_and_parse</key>
     <param>
+      <key>rx_packets_f</key>
+      <value>/tmp/rx_packets.csv</value>
+    </param>
+    <param>
+      <key>tx_packets_f</key>
+      <value>/tmp/tx_packets.csv</value>
+    </param>
+    <param>
       <key>bss_mac</key>
       <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
     </param>
@@ -1487,6 +1452,53 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>frequencyAdaptiveOFDM_write_frame_data</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>enc_file</key>
+      <value>/tmp/encoding.csv</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>/tmp/wifi_frame_delay.csv</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(880, 536)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_write_frame_data_0</value>
+    </param>
+    <param>
+      <key>snr_file</key>
+      <value>/tmp/snr.csv</value>
     </param>
   </block>
   <block>
@@ -4437,7 +4449,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(688, 656)</value>
+      <value>(704, 632)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4737,7 +4749,7 @@
   </connection>
   <connection>
     <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_write_frame_data_0</sink_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_write_frame_data_0</sink_block_id>
     <source_key>frame data</source_key>
     <sink_key>frame data</sink_key>
   </connection>
