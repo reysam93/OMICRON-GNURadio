@@ -153,7 +153,7 @@ namespace gr {
       boost::crc_32_type result;
       result.process_bytes(out_bytes + 2, d_frame.psdu_size);
       if(result.checksum() != 558161692) {
-        std::cerr << "\nERROR: DECODE MAC: checksum wrong -- dropping\n" << std::endl;
+        std::cerr << "ERROR: DECODE MAC: checksum wrong -- dropping\n";
         return;
       }
 
