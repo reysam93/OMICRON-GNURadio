@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>top_block</value>
+      <value>wifi_time_adap_phy_hier</value>
     </param>
     <param>
       <key>max_nouts</key>
