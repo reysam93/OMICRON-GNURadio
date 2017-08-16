@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?grc format='1' created='3.7.11'?>
 <flow_graph>
-  <timestamp>Fri Jul 18 10:38:08 2014</timestamp>
+  <timestamp>Tue Oct 18 11:17:19 2016</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -10,11 +10,11 @@
     </param>
     <param>
       <key>window_size</key>
-      <value>1280, 1024</value>
+      <value></value>
     </param>
     <param>
       <key>category</key>
-      <value>Custom</value>
+      <value>[GRC Hier Blocks]</value>
     </param>
     <param>
       <key>comment</key>
@@ -30,7 +30,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 12)</value>
+      <value>(8, 4)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>wifi_transceiver</value>
+      <value>freq_adapt_tx</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -97,7 +97,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(312, 8)</value>
+      <value>(296, 4)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -165,7 +165,7 @@
     </param>
     <param>
       <key>options</key>
-      <value>[0,1,2,3]</value>
+      <value>0, 1, 3, 2</value>
     </param>
     <param>
       <key>orient</key>
@@ -181,26 +181,30 @@
     </param>
   </block>
   <block>
-    <key>variable_qtgui_chooser</key>
+    <key>variable_function_probe</key>
+    <param>
+      <key>block_id</key>
+      <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
+    </param>
     <param>
       <key>comment</key>
       <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>1</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(488, 8)</value>
+      <key>function_args</key>
+      <value></value>
     </param>
     <param>
-      <key>gui_hint</key>
-      <value></value>
+      <key>function_name</key>
+      <value>get_encoding</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(472, 4)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -211,72 +215,12 @@
       <value>encoding</value>
     </param>
     <param>
-      <key>label0</key>
-      <value></value>
+      <key>value</key>
+      <value>[0,0,0,0,0]</value>
     </param>
     <param>
-      <key>label1</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label2</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label3</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label4</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label</key>
-      <value></value>
-    </param>
-    <param>
-      <key>labels</key>
-      <value>["BPSK 1/2", "BPSK 3/4", "QPSK 1/2", "QPSK 3/4", "16QAM 1/2", "16QAM 3/4", "64QAM 2/3", "64QAM 3/4"]</value>
-    </param>
-    <param>
-      <key>num_opts</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>option0</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>option1</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>option2</key>
-      <value>2</value>
-    </param>
-    <param>
-      <key>option3</key>
-      <value>3</value>
-    </param>
-    <param>
-      <key>option4</key>
-      <value>4</value>
-    </param>
-    <param>
-      <key>options</key>
-      <value>[0, 1, 2, 3, 4, 5, 6, 7]</value>
-    </param>
-    <param>
-      <key>orient</key>
-      <value>Qt.QHBoxLayout</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>int</value>
-    </param>
-    <param>
-      <key>widget</key>
-      <value>radio_buttons</value>
+      <key>poll_rate</key>
+      <value>1000</value>
     </param>
   </block>
   <block>
@@ -295,7 +239,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(664, 8)</value>
+      <value>(648, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -394,7 +338,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1024, 8)</value>
+      <value>(1016, 4)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -457,7 +401,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 8)</value>
+      <value>(176, 4)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -556,7 +500,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1160, 8)</value>
+      <value>(1152, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -619,7 +563,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(840, 8)</value>
+      <value>(832, 4)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -703,73 +647,6 @@
     </param>
   </block>
   <block>
-    <key>adaptiveOFDM_mac_and_parse</key>
-    <param>
-      <key>rx_packets_f</key>
-      <value>/tmp/rx_packets.csv</value>
-    </param>
-    <param>
-      <key>tx_packets_f</key>
-      <value>/tmp/tx_packets.csv</value>
-    </param>
-    <param>
-      <key>bss_mac</key>
-      <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>dst_mac</key>
-      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(624, 384)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>adaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>src_mac</key>
-      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
-    </param>
-  </block>
-  <block>
     <key>adaptiveOFDM_stream_spacer</key>
     <param>
       <key>alias</key>
@@ -789,7 +666,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(544, 204)</value>
+      <value>(504, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -801,7 +678,7 @@
     </param>
     <param>
       <key>interval</key>
-      <value>500</value>
+      <value>300</value>
     </param>
     <param>
       <key>type</key>
@@ -814,53 +691,6 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>adaptiveOFDM_write_frame_data</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>enc_file</key>
-      <value>/tmp/encoding.csv</value>
-    </param>
-    <param>
-      <key>delay_file</key>
-      <value>/tmp/wifi_frame_delay.csv</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(928, 576)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>adaptiveOFDM_write_frame_data_0</value>
-    </param>
-    <param>
-      <key>snr_file</key>
-      <value>/tmp/snr.csv</value>
     </param>
   </block>
   <block>
@@ -887,15 +717,15 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/wifi.pcap</value>
+      <value>/home/investigador/GNURadio/resources/wifi.pcap</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 580)</value>
+      <value>(60, 576)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>180</value>
+      <value>270</value>
     </param>
     <param>
       <key>id</key>
@@ -938,11 +768,11 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/prueba_rx.txt</value>
+      <value>/home/investigador/GNURadio/resources/prueba_rx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 132)</value>
+      <value>(944, 316)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -985,11 +815,11 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/OMICRON-GNURadio/resources/prueba_tx.txt</value>
+      <value>/home/samuel/GNURadio/OMICRON-GNURadio/resources/prueba_tx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 204)</value>
+      <value>(8, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1044,11 +874,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 708)</value>
+      <value>(496, 588)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>180</value>
+      <value>0</value>
     </param>
     <param>
       <key>id</key>
@@ -1087,11 +917,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(872, 412)</value>
+      <value>(632, 284)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1134,58 +964,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(60, 744)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>270</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_pdu_to_tagged_stream_0_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>tag</key>
-      <value>packet_len</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
       <value>0</value>
     </param>
     <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_pdu_to_tagged_stream</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
       <key>_coordinate</key>
-      <value>(880, 348)</value>
+      <value>(632, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1213,6 +996,65 @@
     </param>
   </block>
   <block>
+    <key>blocks_socket_pdu</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(56, 248)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>host</key>
+      <value></value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_socket_pdu_0</value>
+    </param>
+    <param>
+      <key>mtu</key>
+      <value>10000</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>port</key>
+      <value>52001</value>
+    </param>
+    <param>
+      <key>tcp_no_delay</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>"UDP_SERVER"</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_stream_to_tagged_stream</key>
     <param>
       <key>alias</key>
@@ -1232,7 +1074,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(312, 204)</value>
+      <value>(272, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1287,7 +1129,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(712, 212)</value>
+      <value>(672, 140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1330,15 +1172,15 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1176, 256)</value>
+      <value>(912, 240)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>270</value>
+      <value>0</value>
     </param>
     <param>
       <key>id</key>
@@ -1385,7 +1227,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 784)</value>
+      <value>(440, 760)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1436,7 +1278,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 588)</value>
+      <value>(80, 460)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1457,6 +1299,163 @@
     <param>
       <key>tech</key>
       <value>127</value>
+    </param>
+  </block>
+  <block>
+    <key>frequencyAdaptiveOFDM_mac_and_parse</key>
+    <param>
+      <key>rx_packets_f</key>
+      <value></value>
+    </param>
+    <param>
+      <key>tx_packets_f</key>
+      <value>/tmp/freq_tx_packets.csv</value>
+    </param>
+    <param>
+      <key>bss_mac</key>
+      <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>dst_mac</key>
+      <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(328, 256)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
+    </param>
+    <param>
+      <key>log</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>src_mac</key>
+      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
+    </param>
+  </block>
+  <block>
+    <key>frequencyAdaptiveOFDM_rb_const_demux_stream</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(216, 560)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>270</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_rb_const_demux_stream_0</value>
+    </param>
+    <param>
+      <key>tag</key>
+      <value>packet_len</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>frequencyAdaptiveOFDM_write_frame_data</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>enc_file</key>
+      <value>/tmp/freq_encoding_tx.csv</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>/tmp/freq_wifi_frame_delay_tx.csv</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(880, 536)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequencyAdaptiveOFDM_write_frame_data_0</value>
+    </param>
+    <param>
+      <key>snr_file</key>
+      <value>/tmp/freq_snr_tx.csv</value>
     </param>
   </block>
   <block>
@@ -1483,11 +1482,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 916)</value>
+      <value>(400, 896)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1519,7 +1518,7 @@
     </param>
     <param>
       <key>label1</key>
-      <value></value>
+      <value>RB1</value>
     </param>
     <param>
       <key>marker1</key>
@@ -1567,7 +1566,7 @@
     </param>
     <param>
       <key>label2</key>
-      <value></value>
+      <value>RB2</value>
     </param>
     <param>
       <key>marker2</key>
@@ -1587,11 +1586,11 @@
     </param>
     <param>
       <key>color3</key>
-      <value>"red"</value>
+      <value>"green"</value>
     </param>
     <param>
       <key>label3</key>
-      <value></value>
+      <value>RB3</value>
     </param>
     <param>
       <key>marker3</key>
@@ -1611,11 +1610,11 @@
     </param>
     <param>
       <key>color4</key>
-      <value>"red"</value>
+      <value>"yellow"</value>
     </param>
     <param>
       <key>label4</key>
-      <value></value>
+      <value>RB4</value>
     </param>
     <param>
       <key>marker4</key>
@@ -1755,7 +1754,7 @@
     </param>
     <param>
       <key>nconnections</key>
-      <value>1</value>
+      <value>4</value>
     </param>
     <param>
       <key>size</key>
@@ -1814,7 +1813,7 @@
     </param>
     <param>
       <key>avg</key>
-      <value>0.05</value>
+      <value>0</value>
     </param>
     <param>
       <key>alias</key>
@@ -1830,11 +1829,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(928, 476)</value>
+      <value>(904, 420)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1842,7 +1841,7 @@
     </param>
     <param>
       <key>_rotation</key>
-      <value>180</value>
+      <value>0</value>
     </param>
     <param>
       <key>graph_type</key>
@@ -2069,11 +2068,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1152, 456)</value>
+      <value>(1088, 224)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2081,7 +2080,7 @@
     </param>
     <param>
       <key>_rotation</key>
-      <value>270</value>
+      <value>0</value>
     </param>
     <param>
       <key>grid</key>
@@ -2401,69 +2400,6 @@
     </param>
   </block>
   <block>
-    <key>top_block</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(648, 640)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>top_block_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>bandwidth</key>
-      <value>10e6</value>
-    </param>
-    <param>
-      <key>chan_est</key>
-      <value>chan_est</value>
-    </param>
-    <param>
-      <key>delay_file</key>
-      <value>""</value>
-    </param>
-    <param>
-      <key>encoding</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>frequency</key>
-      <value>5.89e9</value>
-    </param>
-    <param>
-      <key>sensitivity</key>
-      <value>0.56</value>
-    </param>
-  </block>
-  <block>
     <key>uhd_usrp_sink</key>
     <param>
       <key>alias</key>
@@ -2471,7 +2407,7 @@
     </param>
     <param>
       <key>ant0</key>
-      <value></value>
+      <value>"TX/RX"</value>
     </param>
     <param>
       <key>bw0</key>
@@ -3135,7 +3071,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 760)</value>
+      <value>(648, 728)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3294,7 +3230,7 @@
     </param>
     <param>
       <key>ant0</key>
-      <value></value>
+      <value>"TX/RX"</value>
     </param>
     <param>
       <key>bw0</key>
@@ -4470,11 +4406,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 792)</value>
+      <value>(704, 600)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -4618,37 +4554,76 @@
     </param>
     <param>
       <key>sync</key>
-      <value></value>
+      <value>pc_clock</value>
     </param>
     <param>
       <key>otw</key>
       <value></value>
     </param>
   </block>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0_1</sink_block_id>
-    <source_key>app out</source_key>
-    <sink_key>pdus</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
-    <source_key>fer</source_key>
-    <sink_key>pdus</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_write_frame_data_0</sink_block_id>
-    <source_key>frame data</source_key>
-    <sink_key>frame data</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>top_block_0</sink_block_id>
-    <source_key>phy out</source_key>
-    <sink_key>mac_in</sink_key>
-  </connection>
+  <block>
+    <key>wifi_freq_adap_phy_hier</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(472, 456)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>wifi_freq_adap_phy_hier_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>bandwidth</key>
+      <value>10e6</value>
+    </param>
+    <param>
+      <key>chan_est</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>frequency</key>
+      <value>5.89e9</value>
+    </param>
+    <param>
+      <key>sensitivity</key>
+      <value>0.56</value>
+    </param>
+  </block>
   <connection>
     <source_block_id>adaptiveOFDM_stream_spacer_0</source_block_id>
     <sink_block_id>blocks_tagged_stream_to_pdu_0</sink_block_id>
@@ -4674,12 +4649,6 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_pdu_to_tagged_stream_0_0</source_block_id>
-    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_pdu_to_tagged_stream_0_1</source_block_id>
     <sink_block_id>blocks_file_sink_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -4692,6 +4661,12 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_socket_pdu_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>pdus</source_key>
+    <sink_key>app in</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_stream_to_tagged_stream_0</source_block_id>
     <sink_block_id>adaptiveOFDM_stream_spacer_0</sink_block_id>
     <source_key>0</source_key>
@@ -4699,7 +4674,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_tagged_stream_to_pdu_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>pdus</source_key>
     <sink_key>app in</sink_key>
   </connection>
@@ -4722,32 +4697,74 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
-    <source_key>carrier</source_key>
+    <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>blocks_pdu_to_tagged_stream_0_1</sink_block_id>
+    <source_key>app out</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
-    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
-    <source_key>mac_out</source_key>
-    <sink_key>phy in</sink_key>
+    <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
+    <source_key>fer</source_key>
+    <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
-    <sink_block_id>foo_wireshark_connector_0</sink_block_id>
-    <source_key>mac_out</source_key>
-    <sink_key>in</sink_key>
+    <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_write_frame_data_0</sink_block_id>
+    <source_key>frame data</source_key>
+    <sink_key>frame data</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
-    <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
+    <source_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>wifi_freq_adap_phy_hier_0_0</sink_block_id>
+    <source_key>phy out</source_key>
+    <sink_key>mac_in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>1</source_key>
+    <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>2</source_key>
+    <sink_key>2</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</source_block_id>
+    <sink_block_id>qtgui_const_sink_x_0</sink_block_id>
+    <source_key>3</source_key>
+    <sink_key>3</sink_key>
+  </connection>
+  <connection>
     <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>top_block_0</sink_block_id>
+    <sink_block_id>wifi_freq_adap_phy_hier_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>wifi_freq_adap_phy_hier_0_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_rb_const_demux_stream_0</sink_block_id>
+    <source_key>carrier</source_key>
+    <sink_key>symbols_in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>wifi_freq_adap_phy_hier_0_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>mac_out</source_key>
+    <sink_key>phy in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>wifi_freq_adap_phy_hier_0_0</source_block_id>
+    <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
