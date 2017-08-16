@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>top_block</value>
+      <value>time_adapt_tx</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -674,7 +674,7 @@
     </param>
     <param>
       <key>dst_mac</key>
-      <value>[0x40, 0xe2, 0x30, 0xd6, 0xe9, 0xdf]</value>
+      <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
     </param>
     <param>
       <key>debug</key>
@@ -710,7 +710,7 @@
     </param>
     <param>
       <key>src_mac</key>
-      <value>[0x40, 0xe2, 0x30, 0xd6, 0xec, 0x67]</value>
+      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
     </param>
   </block>
   <block>
@@ -745,7 +745,7 @@
     </param>
     <param>
       <key>interval</key>
-      <value>1000</value>
+      <value>300</value>
     </param>
     <param>
       <key>type</key>
@@ -780,15 +780,15 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/encoding.csv</value>
+      <value>/tmp/time_encoding.csv</value>
     </param>
     <param>
       <key>delay_file</key>
-      <value>/tmp/wifi_frame_delay.csv</value>
+      <value>/tmp/time_wifi_frame_delay.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -804,58 +804,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>/tmp/snr.csv</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_file_sink</key>
-    <param>
-      <key>append</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>file</key>
-      <value>/home/investigador/GNURadio/resources/wifi.pcap</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(20, 600)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>270</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_file_sink_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>byte</value>
-    </param>
-    <param>
-      <key>unbuffered</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
+      <value>/tmp/time_snr.csv</value>
     </param>
   </block>
   <block>
@@ -929,11 +878,11 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/OMICRON-GNURadio/resources/prueba_tx.txt</value>
+      <value>/home/samuel/GNURadio/OMICRON-GNURadio/resources/prueba_tx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 156)</value>
+      <value>(0, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -941,7 +890,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_file_source_0</value>
+      <value>blocks_file_source_0_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1031,7 +980,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1125,7 +1074,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1172,7 +1121,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1333,7 +1282,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1413,53 +1362,6 @@
     <param>
       <key>pad_tail</key>
       <value>10000</value>
-    </param>
-  </block>
-  <block>
-    <key>foo_wireshark_connector</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(40, 484)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>foo_wireshark_connector_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>tech</key>
-      <value>127</value>
     </param>
   </block>
   <block>
@@ -1833,7 +1735,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2072,7 +1974,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2401,69 +2303,6 @@
     <param>
       <key>ymin</key>
       <value>-1</value>
-    </param>
-  </block>
-  <block>
-    <key>top_block</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(440, 456)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>top_block_0_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>bandwidth</key>
-      <value>10e6</value>
-    </param>
-    <param>
-      <key>chan_est</key>
-      <value>chan_est</value>
-    </param>
-    <param>
-      <key>delay_file</key>
-      <value>""</value>
-    </param>
-    <param>
-      <key>encoding</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>frequency</key>
-      <value>5.89e9</value>
-    </param>
-    <param>
-      <key>sensitivity</key>
-      <value>0.56</value>
     </param>
   </block>
   <block>
@@ -4628,6 +4467,69 @@
       <value></value>
     </param>
   </block>
+  <block>
+    <key>wifi_time_adap_phy_hier</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(448, 464)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>wifi_time_adap_phy_hier_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>bandwidth</key>
+      <value>10e6</value>
+    </param>
+    <param>
+      <key>chan_est</key>
+      <value>chan_est</value>
+    </param>
+    <param>
+      <key>delay_file</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>frequency</key>
+      <value>5.89e9</value>
+    </param>
+    <param>
+      <key>sensitivity</key>
+      <value>0.56</value>
+    </param>
+  </block>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_1</sink_block_id>
@@ -4648,7 +4550,7 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>top_block_0_0</sink_block_id>
+    <sink_block_id>wifi_time_adap_phy_hier_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
   </connection>
@@ -4659,7 +4561,7 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_file_source_0</source_block_id>
+    <source_block_id>blocks_file_source_0_0</source_block_id>
     <sink_block_id>blocks_stream_to_tagged_stream_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -4725,32 +4627,26 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>foo_wireshark_connector_0</source_block_id>
-    <sink_block_id>blocks_file_sink_0</sink_block_id>
+    <source_block_id>uhd_usrp_source_0</source_block_id>
+    <sink_block_id>wifi_time_adap_phy_hier_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0_0</source_block_id>
+    <source_block_id>wifi_time_adap_phy_hier_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
     <source_key>carrier</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0_0</source_block_id>
+    <source_block_id>wifi_time_adap_phy_hier_0</source_block_id>
     <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>phy in</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0_0</source_block_id>
+    <source_block_id>wifi_time_adap_phy_hier_0</source_block_id>
     <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>top_block_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
