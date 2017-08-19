@@ -220,7 +220,7 @@
     </param>
     <param>
       <key>poll_rate</key>
-      <value>1000</value>
+      <value>10000</value>
     </param>
   </block>
   <block>
@@ -294,7 +294,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>750</value>
+      <value>10</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -330,7 +330,7 @@
     </param>
     <param>
       <key>start</key>
-      <value>10</value>
+      <value>1</value>
     </param>
     <param>
       <key>step</key>
@@ -503,68 +503,14 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1360, 180)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>variable_0</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>adaptiveOFDM.frame_equalizer</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1392, 268)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>variable_1</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>adaptiveOFDM.QPSK_1_2</value>
-    </param>
-  </block>
-  <block>
     <key>adaptiveOFDM_mac_and_parse</key>
     <param>
       <key>rx_packets_f</key>
-      <value>/tmp/rx_packets.csv</value>
+      <value>/tmp/time_rx_packets.csv</value>
     </param>
     <param>
       <key>tx_packets_f</key>
-      <value>/tmp/tx_packets.csv</value>
+      <value>/tmp/time_tx_packets.csv</value>
     </param>
     <param>
       <key>bss_mac</key>
@@ -596,7 +542,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(776, 212)</value>
+      <value>(776, 272)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -639,7 +585,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -702,7 +648,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1104, 628)</value>
+      <value>(1104, 688)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -792,7 +738,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(0, 252)</value>
+      <value>(0, 228)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -824,6 +770,53 @@
     </param>
   </block>
   <block>
+    <key>blocks_message_strobe</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(264, 228)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_message_strobe_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>msg</key>
+      <value>pmt.intern("".join("X" for i in range(pdu_length)))</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>period</key>
+      <value>interval</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_multiply_const_vxx</key>
     <param>
       <key>alias</key>
@@ -847,7 +840,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(424, 676)</value>
+      <value>(424, 732)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -894,7 +887,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1124, 304)</value>
+      <value>(1124, 360)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -941,7 +934,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 356)</value>
+      <value>(216, 412)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1035,7 +1028,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 260)</value>
+      <value>(192, 320)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1090,7 +1083,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1145,7 +1138,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1196,7 +1189,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1248, 240)</value>
+      <value>(1248, 296)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1231,7 +1224,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1306,7 +1299,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 648)</value>
+      <value>(616, 704)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1369,7 +1362,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(224, 648)</value>
+      <value>(224, 704)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1455,7 +1448,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(764, 440)</value>
+      <value>(768, 496)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1526,7 +1519,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(100, 432)</value>
+      <value>(100, 488)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1873,7 +1866,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1208, 532)</value>
+      <value>(1208, 588)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2112,7 +2105,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1232, 416)</value>
+      <value>(1232, 472)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2440,7 +2433,7 @@
     </param>
   </block>
   <block>
-    <key>top_block</key>
+    <key>wifi_time_adap_phy_hier</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -2459,7 +2452,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 344)</value>
+      <value>(584, 392)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2467,7 +2460,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>top_block_0</value>
+      <value>wifi_time_adap_phy_hier_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -2487,7 +2480,7 @@
     </param>
     <param>
       <key>delay_file</key>
-      <value>"/tmp/symbols_delay.csv"</value>
+      <value>"/tmp/time_symbol_delay.csv"</value>
     </param>
     <param>
       <key>encoding</key>
@@ -2522,7 +2515,7 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>top_block_0</sink_block_id>
+    <sink_block_id>wifi_time_adap_phy_hier_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
   </connection>
@@ -2537,6 +2530,12 @@
     <sink_block_id>blocks_stream_to_tagged_stream_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_message_strobe_0_0</source_block_id>
+    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>strobe</source_key>
+    <sink_key>app in</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
@@ -2612,24 +2611,24 @@
   </connection>
   <connection>
     <source_block_id>pfb_arb_resampler_xxx_0</source_block_id>
-    <sink_block_id>top_block_0</sink_block_id>
+    <sink_block_id>wifi_time_adap_phy_hier_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
+    <source_block_id>wifi_time_adap_phy_hier_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
     <source_key>carrier</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
+    <source_block_id>wifi_time_adap_phy_hier_0</source_block_id>
     <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>phy in</sink_key>
   </connection>
   <connection>
-    <source_block_id>top_block_0</source_block_id>
+    <source_block_id>wifi_time_adap_phy_hier_0</source_block_id>
     <sink_block_id>foo_packet_pad2_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>

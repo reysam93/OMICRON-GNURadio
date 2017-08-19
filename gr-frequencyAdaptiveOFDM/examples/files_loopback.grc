@@ -89,7 +89,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -220,7 +220,7 @@
     </param>
     <param>
       <key>poll_rate</key>
-      <value>1000</value>
+      <value>10000</value>
     </param>
   </block>
   <block>
@@ -294,7 +294,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>750</value>
+      <value>10</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -330,7 +330,7 @@
     </param>
     <param>
       <key>start</key>
-      <value>10</value>
+      <value>1</value>
     </param>
     <param>
       <key>step</key>
@@ -503,33 +503,6 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1344, 52)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>variable_0</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>frequencyAdaptiveOFDM.QPSK</value>
-    </param>
-  </block>
-  <block>
     <key>adaptiveOFDM_stream_spacer</key>
     <param>
       <key>alias</key>
@@ -545,7 +518,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -561,7 +534,7 @@
     </param>
     <param>
       <key>interval</key>
-      <value>interval</value>
+      <value>interval*3</value>
     </param>
     <param>
       <key>type</key>
@@ -647,7 +620,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/investigador/OMICRON-GNURadio/resources/prueba_tx.txt</value>
+      <value>/home/samuel/GNURadio/OMICRON-GNURadio/resources/prueba_tx2.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -675,11 +648,58 @@
     </param>
     <param>
       <key>repeat</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>vlen</key>
       <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_message_strobe</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(424, 220)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_message_strobe_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>msg</key>
+      <value>pmt.intern("".join("X" for i in range(pdu_length)))</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>period</key>
+      <value>interval</value>
     </param>
   </block>
   <block>
@@ -847,7 +867,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 260)</value>
+      <value>(264, 248)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -902,7 +922,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -957,7 +977,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1043,7 +1063,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1251,11 +1271,11 @@
     <key>frequencyAdaptiveOFDM_mac_and_parse</key>
     <param>
       <key>rx_packets_f</key>
-      <value>/tmp/rx_packets.csv</value>
+      <value>/tmp/freq_rx_packets.csv</value>
     </param>
     <param>
       <key>tx_packets_f</key>
-      <value>/tmp/tx_packets.csv</value>
+      <value>/tmp/freq_tx_packets.csv</value>
     </param>
     <param>
       <key>bss_mac</key>
@@ -1402,6 +1422,37 @@
     <param>
       <key>snr_file</key>
       <value>/tmp/snr.csv</value>
+    </param>
+  </block>
+  <block>
+    <key>import</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1256, 20)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>import_0</value>
+    </param>
+    <param>
+      <key>import</key>
+      <value>import pmt</value>
     </param>
   </block>
   <block>
@@ -2482,6 +2533,12 @@
     <sink_block_id>blocks_stream_to_tagged_stream_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_message_strobe_0_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>strobe</source_key>
+    <sink_key>app in</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>

@@ -89,7 +89,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -686,7 +686,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 304)</value>
+      <value>(288, 408)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -729,7 +729,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -792,7 +792,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(896, 580)</value>
+      <value>(896, 688)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -835,7 +835,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 364)</value>
+      <value>(1080, 468)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -874,7 +874,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>file</key>
@@ -914,6 +914,53 @@
     </param>
   </block>
   <block>
+    <key>blocks_message_strobe</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(24, 244)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_message_strobe_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>msg</key>
+      <value>pmt.intern("".join("X" for i in range(pdu_length)))</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>period</key>
+      <value>10</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_multiply_const_vxx</key>
     <param>
       <key>alias</key>
@@ -937,7 +984,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 604)</value>
+      <value>(456, 708)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -984,7 +1031,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 332)</value>
+      <value>(592, 436)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1031,7 +1078,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(144, 564)</value>
+      <value>(144, 668)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1078,7 +1125,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 284)</value>
+      <value>(592, 388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1125,7 +1172,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 296)</value>
+      <value>(16, 400)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1180,7 +1227,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1235,7 +1282,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1286,7 +1333,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(936, 240)</value>
+      <value>(936, 344)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1337,7 +1384,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 824)</value>
+      <value>(416, 928)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1392,7 +1439,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(160, 700)</value>
+      <value>(160, 804)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1739,7 +1786,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1024, 468)</value>
+      <value>(1024, 572)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1978,7 +2025,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 256)</value>
+      <value>(1120, 360)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2977,7 +3024,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 792)</value>
+      <value>(608, 896)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4312,7 +4359,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 648)</value>
+      <value>(632, 752)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4487,7 +4534,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 464)</value>
+      <value>(448, 568)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4565,6 +4612,12 @@
     <sink_block_id>blocks_stream_to_tagged_stream_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_message_strobe_0_0</source_block_id>
+    <sink_block_id>adaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>strobe</source_key>
+    <sink_key>app in</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>

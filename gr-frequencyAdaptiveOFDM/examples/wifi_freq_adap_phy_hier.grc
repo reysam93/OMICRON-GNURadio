@@ -1243,10 +1243,6 @@
   <block>
     <key>frequencyAdaptiveOFDM_decode_mac</key>
     <param>
-      <key>rx_packets_f</key>
-      <value>/tmp/rx_packets.csv</value>
-    </param>
-    <param>
       <key>alias</key>
       <value></value>
     </param>
@@ -1356,10 +1352,6 @@
   </block>
   <block>
     <key>frequencyAdaptiveOFDM_mapper</key>
-    <param>
-      <key>tx_packets_f</key>
-      <value>/tmp/tx_packets.csv</value>
-    </param>
     <param>
       <key>alias</key>
       <value></value>

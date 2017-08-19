@@ -10,7 +10,7 @@
     </param>
     <param>
       <key>window_size</key>
-      <value></value>
+      <value>1500,1500</value>
     </param>
     <param>
       <key>category</key>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>top_block</value>
+      <value>wifi_transceiver</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -662,7 +662,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -721,7 +721,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(60, 576)</value>
+      <value>(188, 760)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -772,7 +772,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(944, 316)</value>
+      <value>(1072, 500)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -793,6 +793,53 @@
     <param>
       <key>vlen</key>
       <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_message_strobe</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(136, 292)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_message_strobe_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>msg</key>
+      <value>pmt.intern("".join("X" for i in range(pdu_length)))</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>period</key>
+      <value>10</value>
     </param>
   </block>
   <block>
@@ -819,7 +866,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(496, 588)</value>
+      <value>(624, 772)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -866,7 +913,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 284)</value>
+      <value>(760, 468)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -913,7 +960,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 236)</value>
+      <value>(760, 420)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -960,7 +1007,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(56, 248)</value>
+      <value>(184, 432)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1015,7 +1062,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1070,7 +1117,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1121,7 +1168,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(912, 240)</value>
+      <value>(1040, 424)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1156,7 +1203,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1231,7 +1278,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 792)</value>
+      <value>(536, 976)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1282,7 +1329,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(80, 460)</value>
+      <value>(208, 644)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1384,7 +1431,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(328, 256)</value>
+      <value>(456, 440)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1431,7 +1478,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 560)</value>
+      <value>(344, 744)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1486,7 +1533,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(880, 536)</value>
+      <value>(1008, 720)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1499,6 +1546,37 @@
     <param>
       <key>snr_file</key>
       <value>/tmp/snr.csv</value>
+    </param>
+  </block>
+  <block>
+    <key>import</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1280, 4)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>import_0</value>
+    </param>
+    <param>
+      <key>import</key>
+      <value>import pmt</value>
     </param>
   </block>
   <block>
@@ -1529,7 +1607,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(400, 896)</value>
+      <value>(528, 1080)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1876,7 +1954,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 420)</value>
+      <value>(1032, 604)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2115,7 +2193,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 224)</value>
+      <value>(1216, 408)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -3114,7 +3192,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(640, 776)</value>
+      <value>(768, 960)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4449,7 +4527,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 632)</value>
+      <value>(832, 816)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4624,7 +4702,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(472, 456)</value>
+      <value>(600, 640)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4672,6 +4750,12 @@
     <sink_block_id>blocks_tagged_stream_to_pdu_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_message_strobe_0_0</source_block_id>
+    <sink_block_id>frequencyAdaptiveOFDM_mac_and_parse_0</sink_block_id>
+    <source_key>strobe</source_key>
+    <sink_key>app in</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
