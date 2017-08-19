@@ -50,9 +50,9 @@ namespace gr {
         static const float MIN_SNR_BPSK_3_4 = 6.0;
         static const float MIN_SNR_QPSK_1_2 = 7.5;
         static const float MIN_SNR_QPSK_3_4 = 9.5;
-        static const float MIN_SNR_16QAM_1_2 = 15;
-        static const float MIN_SNR_16QAM_3_4 = 18;
-        static const float MIN_SNR_64QAM_1_2 = 25;
+        static const float MIN_SNR_16QAM_1_2 = 16;
+        static const float MIN_SNR_16QAM_3_4 = 19;
+        static const float MIN_SNR_64QAM_1_2 = 26;
         static const float MIN_SNR_64QAM_3_4 = 30;
 
         // Time in usecs
