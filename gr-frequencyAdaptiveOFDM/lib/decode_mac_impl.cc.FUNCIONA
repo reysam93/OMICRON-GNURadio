@@ -219,7 +219,7 @@ namespace gr {
       int second[n_cbps];
       int s = std::max(int(d_ofdm.n_bpsc) / 2, 1);
 
-      for(int j = 0; j < n_cbps; j++) {
+      /*for(int j = 0; j < n_cbps; j++) {
         first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
       }
 
@@ -230,12 +230,12 @@ namespace gr {
       int count = 0;
       for(int i = 0; i < d_frame.n_sym; i++) {
         for(int k = 0; k < n_cbps; k++) {
-          d_deinterleaved_bits[i * n_cbps + second[first[k]]] = d_rx_bits[i * n_cbps + k];
+          //d_deinterleaved_bits[i * n_cbps + second[first[k]]] = d_rx_bits[i * n_cbps + k];
         }
-      }
-      /*for (int i=0; i<d_frame.n_encoded_bits; i++){
-        d_deinterleaved_bits[i] = d_rx_bits[i];
       }*/
+      for (int i=0; i<d_frame.n_encoded_bits; i++){
+        d_deinterleaved_bits[i] = d_rx_bits[i];
+      }
     }
 
 
@@ -244,7 +244,10 @@ namespace gr {
       int state = 0;
       std::memset(out_bytes, 0, d_frame.psdu_size+2);
 
-      for(int i = 0; i < 7; i++) {
+
+for (int i=0; i<d_frame.n_encoded_bits; i++){
+  d_deinterleaved_bits[i] = d_rx_bits[i];
+}      for(int i = 0; i < 7; i++) {
         if(decoded_bits[i]) {
           state |= 1 << (6 - i);
         }
