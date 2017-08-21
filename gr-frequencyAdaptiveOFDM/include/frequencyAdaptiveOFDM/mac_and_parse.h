@@ -60,8 +60,6 @@ namespace gr {
         static const unsigned int SLOT_TIME = 9;
         static const unsigned int TIME_OUT = 50;
 
-        std::vector<int> get_encoding();
-
         typedef boost::shared_ptr<mac_and_parse> sptr;
 
         static sptr make(std::vector<uint8_t> src_mac,
@@ -72,8 +70,6 @@ namespace gr {
                           char* tx_packets_f,
                           char* rx_packets_f);
       
-        std::vector<int> d_encoding;
-        int d_punct;
         pthread_mutex_t d_mutex;
       };
 

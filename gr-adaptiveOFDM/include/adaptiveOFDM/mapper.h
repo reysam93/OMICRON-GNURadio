@@ -40,7 +40,7 @@ public:
 
 	typedef boost::shared_ptr<mapper> sptr;
 	static sptr make(Encoding mcs, bool debug, bool log);
-	virtual void set_encoding(Encoding mcs) = 0;
+	//virtual void set_encoding(Encoding mcs) = 0;
 };
 
 }  // namespace adaptiveOFDM

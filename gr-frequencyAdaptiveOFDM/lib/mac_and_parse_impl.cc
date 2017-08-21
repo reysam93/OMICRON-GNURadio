@@ -41,14 +41,14 @@
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
-    std::vector<int> 
+    /*std::vector<int> 
     mac_and_parse::get_encoding(){
       pthread_mutex_lock(&d_mutex);
-      std::vector<int> tmp = d_encoding;
-      tmp.push_back(d_punct);
+      //std::vector<int> tmp = d_encoding;
+      //tmp.push_back(d_punct);
       pthread_mutex_unlock(&d_mutex);
       return tmp;
-    }
+    }/*/
 
     mac_and_parse::sptr
     mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
@@ -63,6 +63,7 @@ namespace gr {
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(0, 0, 0)),
         d_seq_nr(0), d_last_seq_no(-1),
+        d_ofdm(std::vector<int>(4, BPSK), P_1_2),
         d_debug(debug), d_log(log), d_snr(std::vector<double>(4,0)) {
 
       ack_received = false;
@@ -89,6 +90,8 @@ namespace gr {
       n_rx_packets = 0;
       tx_packets_fn = tx_packets_f;
       rx_packets_fn = rx_packets_f;
+
+      d_ofdm.print();
 
       pthread_mutex_init(&d_mutex, NULL);
       std::vector<int> initial_e(4, BPSK);
@@ -130,7 +133,9 @@ namespace gr {
       // make MAC frame
       int    psdu_length;
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
-      send_message(psdu_length);
+      pthread_mutex_lock(&d_mutex);
+      send_message(psdu_length, d_ofdm);
+      pthread_mutex_unlock(&d_mutex);
 
       if(tx_packets_fn != ""){
         n_tx_packets++;
@@ -152,14 +157,18 @@ namespace gr {
       if (reset_coding){
         std::vector<int> encoding(4, BPSK);
         set_encoding(encoding, P_1_2);
+
       } 
     }
 
     void
-    mac_and_parse_impl::send_message(int psdu_length) {
+    mac_and_parse_impl::send_message(int psdu_length, ofdm_param ofdm) {
       // dict
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
+      pmt::pmt_t encoding = pmt::init_s32vector(4, ofdm.resource_blocks_e);
+      dict = pmt::dict_add(dict, pmt::mp("encoding"), encoding);
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(ofdm.punct));
 
       // blob
       pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
@@ -215,7 +224,6 @@ namespace gr {
       for(int i = 0; i < 6; i++) {
         header.ra[i] = ra[i];
       }
-
       *psdu_size = 10;
       std::memcpy(d_psdu, &header, *psdu_size);
       boost::crc_32_type result;
@@ -286,8 +294,10 @@ namespace gr {
           generate_mac_ack_frame(h->addr2, &psdu_length);
           //needs to wait 10 usecs before sending ack.
           usleep(SIFS);
-          send_message(psdu_length);
-
+          pthread_mutex_lock(&d_mutex);
+          send_message(psdu_length, ofdm_param(std::vector<int>(4, BPSK), P_1_2));
+          pthread_mutex_unlock(&d_mutex);
+          
           if(rx_packets_fn != ""){
             n_rx_packets++;
             std::fstream rx_packets_fs(rx_packets_fn, std::ofstream::out);
@@ -307,8 +317,8 @@ namespace gr {
     mac_and_parse_impl::send_frame_data() {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
-      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_encoding));
-      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(d_punct));
+      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_ofdm.resource_blocks_e));
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(d_ofdm.punct));
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
@@ -656,12 +666,10 @@ namespace gr {
     void 
     mac_and_parse_impl::set_encoding(std::vector<int> encoding, int punct) {
       pthread_mutex_lock(&d_mutex);
-      d_encoding = encoding;
-      d_punct = punct;
+      d_ofdm = ofdm_param(encoding, punct);
       if (d_debug) {
         std::cout << "MAC_&_PARSE: set encoding\n";
-        ofdm_param ofdm(encoding, punct);
-        ofdm.print_encoding();
+        d_ofdm.print_encoding();
       }
       pthread_mutex_unlock(&d_mutex);
     }

@@ -48,7 +48,7 @@ namespace gr {
           d_ofdm(e)
     {
       message_port_register_in(pmt::mp("in"));
-      set_encoding(e);
+      //set_encoding(e);
     }
 
     mapper_impl::~mapper_impl()
@@ -91,14 +91,17 @@ namespace gr {
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
 
+          pmt::pmt_t dict = pmt::car(msg);
+          int enc = pmt::to_long(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::from_long(-1)));
+
           // ############ INSERT MAC STUFF
-          ofdm_param ofdm = d_ofdm;
+          d_ofdm = ofdm_param((Encoding) enc);
           frame_param frame(d_ofdm, psdu_length);
 
           if (d_debug){
             dout << "MAPPER: frame and coding:";
             frame.print();
-            ofdm.print();
+            d_ofdm.print();
           }
 
           if(frame.n_sym > MAX_SYM) {
@@ -112,7 +115,7 @@ namespace gr {
           char *encoded_data     = (char*)calloc(frame.n_data_bits * 2, sizeof(char));
           char *punctured_data   = (char*)calloc(frame.n_encoded_bits, sizeof(char));
           char *interleaved_data = (char*)calloc(frame.n_encoded_bits, sizeof(char));
-          char *symbols          = (char*)calloc((frame.n_encoded_bits / ofdm.n_bpsc), sizeof(char));
+          char *symbols          = (char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
 
           
           //generate the WIFI data field, adding service field and pad bits
@@ -141,16 +144,16 @@ namespace gr {
           }
 
           // puncturing
-          puncturing(encoded_data, punctured_data, frame, ofdm);
+          puncturing(encoded_data, punctured_data, frame, d_ofdm);
           if (d_log) {
 //            print_bytes("MAPPER: punctured data:", punctured_data, frame.n_encoded_bits);
           }
 
           // interleaving
-          interleave(punctured_data, interleaved_data, frame, ofdm);
+          interleave(punctured_data, interleaved_data, frame, d_ofdm);
 
           // one byte per symbol
-          split_symbols(interleaved_data, symbols, frame, ofdm);
+          split_symbols(interleaved_data, symbols, frame, d_ofdm);
 
           d_symbols_len = frame.n_sym * 48;
 
@@ -195,11 +198,11 @@ namespace gr {
       return i;
     }
 
-    void 
+    /*void 
     mapper_impl::set_encoding(Encoding e) {
       gr::thread::scoped_lock lock(d_mutex);
       d_ofdm = ofdm_param(e);
-    }
+    }*/
 
   } /* namespace adaptiveOFDM */
 } /* namespace gr */

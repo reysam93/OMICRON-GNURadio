@@ -50,7 +50,7 @@ namespace gr {
            gr_vector_void_star &output_items);
 
       void print_message(const char *msg, size_t len);
-      void set_encoding(Encoding e);
+      //void set_encoding(Encoding e);
     };
 
 

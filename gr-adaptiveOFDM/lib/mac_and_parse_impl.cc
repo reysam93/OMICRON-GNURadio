@@ -74,7 +74,7 @@ public:
     rx_packets_fn = rx_packets_f;
 
     pthread_mutex_init(&d_mutex, NULL);
-    set_encoding(0);
+    set_encoding(BPSK_1_2);
   }
 
   ~mac_and_parse_impl() {
@@ -111,7 +111,10 @@ public:
     // make MAC frame
     int    psdu_length;
     generate_mac_data_frame(msdu, msg_len, &psdu_length);
-    send_message(psdu_length);
+    pthread_mutex_lock(&d_mutex);
+    send_message(psdu_length, d_encoding);
+    pthread_mutex_unlock(&d_mutex);
+
     if(tx_packets_fn != ""){
       n_tx_packets++;
       std::fstream tx_packets_fs(tx_packets_fn, std::ofstream::out);
@@ -129,15 +132,16 @@ public:
     ack_received = false;
     pthread_mutex_unlock(&d_mutex);
     if (reset_coding){
-      set_encoding(0);
+      set_encoding(BPSK_1_2);
     } 
   }
 
-  void send_message(int psdu_length) {
+  void send_message(int psdu_length, int enc) {
     // dict
     pmt::pmt_t dict = pmt::make_dict();
     dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
-
+    dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(d_encoding));
+    
     // blob
     pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
 
@@ -265,7 +269,9 @@ public:
             rx_packets_fs << n_rx_packets << std::endl;
             rx_packets_fs.close();
           }
-        send_message(psdu_length);
+        pthread_mutex_lock(&d_mutex);
+        send_message(psdu_length, BPSK_1_2);
+        pthread_mutex_unlock(&d_mutex);
         break;
 
       default:
@@ -601,6 +607,8 @@ public:
   }
 
 private:
+  int d_encoding;
+  
   // For MAC
   uint16_t d_seq_nr;
   uint8_t d_src_mac[6];
@@ -622,13 +630,13 @@ private:
   long n_rx_packets;
 };
 
-int 
+/*int 
 mac_and_parse::get_encoding(){
   pthread_mutex_lock(&d_mutex);
   int tmp = d_encoding;
   pthread_mutex_unlock(&d_mutex);
   return tmp;
-}
+}*/
 
 mac_and_parse::sptr
 mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,

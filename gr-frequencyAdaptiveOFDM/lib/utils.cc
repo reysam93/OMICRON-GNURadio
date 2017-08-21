@@ -21,7 +21,6 @@
 #include <cstring>
 #include <math.h>
 
-
 ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 	resource_blocks_e = pilots_enc;
 	punct = puncturing;

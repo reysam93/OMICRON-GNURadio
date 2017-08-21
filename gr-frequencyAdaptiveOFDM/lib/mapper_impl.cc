@@ -48,7 +48,7 @@ namespace gr {
           d_ofdm(pilots_enc, P_1_2)
     {
       message_port_register_in(pmt::mp("in"));
-      set_encoding(pilots_enc);
+      //set_encoding(pilots_enc);
     }
 
     mapper_impl::~mapper_impl()
@@ -91,9 +91,14 @@ namespace gr {
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
 
+          pmt::pmt_t dict = pmt::car(msg);
+          std::vector<int> enc = pmt::s32vector_elements(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
+          int punct = pmt::to_long(pmt::dict_ref(dict, pmt::mp("puncturing"), pmt::from_long(-1)));
+
+
           // ############ INSERT MAC STUFF
-          ofdm_param ofdm = d_ofdm;
-          frame_param frame(d_ofdm, psdu_length);
+          ofdm_param ofdm(enc, punct); //= d_ofdm;
+          frame_param frame(ofdm, psdu_length);
 
           if (d_debug){
             dout << "MAPPER: frame and coding:";
@@ -177,9 +182,9 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
               encoding, srcid);
 
-          pmt::pmt_t punct = pmt::from_long(ofdm.punct);
+          pmt::pmt_t pmt_punct = pmt::from_long(ofdm.punct);
           add_item_tag(0, nitems_written(0), pmt::mp("puncturing"),
-              punct, srcid);
+              pmt_punct, srcid);
 
           free(data_bits);
           free(scrambled_data);
@@ -205,7 +210,7 @@ namespace gr {
       return i;
     }
 
-    void 
+    /*void 
     mapper_impl::set_encoding(std::vector<int> pilots_enc) {
       std::vector<int> enc;
       int punct;
@@ -216,11 +221,11 @@ namespace gr {
       gr::thread::scoped_lock lock(d_mutex);
       d_ofdm = ofdm_param(enc, punct);
     
-      /*if (d_debug){
+      if (d_debug){
         dout << "MAPPER ENCODDING: ";
         d_ofdm.print_encoding();
-      }*/
-    }
+      }
+    }*/
 
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */

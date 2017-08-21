@@ -89,11 +89,41 @@ ofdm_param::ofdm_param(Encoding e) {
 void
 ofdm_param::print() {
 	std::cout << "OFDM Parameters:" << std::endl;
-	std::cout << "endcoding :" << encoding << std::endl;
-	std::cout << "rate_field :" << (int)rate_field << std::endl;
-	std::cout << "n_bpsc :" << n_bpsc << std::endl;
-	std::cout << "n_cbps :" << n_cbps << std::endl;
-	std::cout << "n_dbps :" << n_dbps << std::endl;
+
+	std::string enc_str;
+	switch(encoding) {
+		case BPSK_1_2:
+			enc_str = "BPSK 1/2";
+			break;
+		case BPSK_3_4:
+			enc_str = "BPSK 3/4";
+			break;
+		case QPSK_1_2:
+			enc_str = "QPSK 1/2";
+			break;
+		case QPSK_3_4:
+			enc_str = "QPSK 3/4";
+			break;
+		case QAM16_1_2:
+			enc_str = "QAM16 1/2";
+			break;
+		case QAM16_3_4:
+			enc_str = "QAM16 3/4";
+			break;
+		case QAM64_2_3:
+			enc_str = "QAM64 2/3";
+			break;
+		case QAM64_3_4:
+			enc_str = "QAM64 3/4";
+			break;
+		default:
+			enc_str = "Unknown encoding.";
+	}
+	std::cout << "endcoding:" << enc_str << std::endl;
+	std::cout << "rate_field:" << (int)rate_field << std::endl;
+	std::cout << "n_bpsc: " << n_bpsc << std::endl;
+	std::cout << "n_cbps: " << n_cbps << std::endl;
+	std::cout << "n_dbps: " << n_dbps << std::endl;
 }
 
 

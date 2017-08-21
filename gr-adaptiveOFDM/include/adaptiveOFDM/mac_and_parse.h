@@ -56,10 +56,10 @@ public:
   static const unsigned int SLOT_TIME = 9;
   static const unsigned int TIME_OUT = 50;
 
-  int d_encoding;
+  //int d_encoding;
   pthread_mutex_t d_mutex;
 
-  int get_encoding();
+  //int get_encoding();
 
   typedef boost::shared_ptr<mac_and_parse> sptr;
 

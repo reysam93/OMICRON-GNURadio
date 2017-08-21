@@ -40,6 +40,8 @@ namespace gr {
       
 
     private:
+      ofdm_param d_ofdm;
+      
       // For MAC
       uint16_t d_seq_nr;
       uint8_t d_src_mac[6];
@@ -48,7 +50,7 @@ namespace gr {
       uint8_t d_psdu[1528];
       bool ack_received;
 
-      void send_message(int psdu_length);
+      void send_message(int psdu_length, ofdm_param ofdm);
       void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
       void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);
       void send_frame_data();
