@@ -33,7 +33,7 @@ private:
 	gr_complex d_H[64];
 
 
-	const double alpha = 0.2;
+	static const double alpha = 0.2;
 };
 
 } /* namespace channel_estimation */

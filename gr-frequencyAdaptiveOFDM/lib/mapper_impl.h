@@ -32,16 +32,16 @@ namespace gr {
     class mapper_impl : public mapper
     {
     private:
+      bool d_debug_enc;
       bool d_debug;
       bool d_log;
       char* d_symbols;
       int d_symbols_offset;
       int d_symbols_len;
       ofdm_param d_ofdm;
-      gr::thread::mutex d_mutex;
 
     public:
-      mapper_impl(std::vector<int> pilots_enc, bool debug, bool log);
+      mapper_impl(bool debug_enc, std::vector<int> pilots_enc, bool debug, bool log);
       ~mapper_impl();
 
       int general_work(int noutput_items,
@@ -50,7 +50,6 @@ namespace gr {
            gr_vector_void_star &output_items);
 
       void print_message(const char *msg, size_t len);
-      //void set_encoding(std::vector<int> pilots_enc);
     };
 
 

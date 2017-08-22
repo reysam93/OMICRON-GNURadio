@@ -178,8 +178,8 @@ namespace gr {
         std::memcpy(current_symbol, in + i*64, 64*sizeof(gr_complex));
 
         // compensate sampling offset
-        for(int i = 0; i < 64; i++) {
-          current_symbol[i] *= exp(gr_complex(0, 2*M_PI*d_current_symbol*80*(d_epsilon0 + d_er)*(i-32)/64));
+        for(int j = 0; j < 64; j++) {
+          current_symbol[j] *= exp(gr_complex(0, 2*M_PI*d_current_symbol*80*(d_epsilon0 + d_er)*(j-32)/64));
         }
 
         gr_complex p = equalizer::base::POLARITY[(d_current_symbol - 2) % 127];
@@ -219,8 +219,8 @@ namespace gr {
         d_prev_pilots[3] = current_symbol[53] * -p;
 
         // compensate residual frequency offset
-        for(int i = 0; i < 64; i++) {
-          current_symbol[i] *= exp(gr_complex(0, -beta));
+        for(int j = 0; j < 64; j++) {
+          current_symbol[j] *= exp(gr_complex(0, -beta));
         }
 
         // update estimate of residual frequency offset

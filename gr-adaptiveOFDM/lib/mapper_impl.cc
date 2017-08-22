@@ -31,24 +31,31 @@ namespace gr {
   namespace adaptiveOFDM {
 
     mapper::sptr
-    mapper::make(Encoding e, bool debug, bool log)
+    mapper::make(bool debug_enc, Encoding e, bool debug, bool log)
     {
       return gnuradio::get_initial_sptr
-        (new mapper_impl(e, debug, log));
+        (new mapper_impl(debug_enc, e, debug, log));
     }
 
-    mapper_impl::mapper_impl(Encoding e, bool debug, bool log)
+    mapper_impl::mapper_impl(bool debug_enc, Encoding e, bool debug, bool log)
       : gr::block("mapper",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(1, 1, sizeof(char))),
           d_symbols_offset(0),
           d_symbols(NULL),
           d_debug(debug),
+          d_debug_enc(debug_enc),
           d_log(log),
           d_ofdm(e)
     {
       message_port_register_in(pmt::mp("in"));
-      //set_encoding(e);
+      
+      if (d_debug_enc) {
+        d_ofdm = ofdm_param(e);
+
+        std::cout << "MAPPER: DEBUG Encoding:\n";
+        d_ofdm.print();
+      }
     }
 
     mapper_impl::~mapper_impl()
@@ -86,7 +93,6 @@ namespace gr {
 
         if(pmt::is_pair(msg)) {
           dout << "MAPPER: received new message" << std::endl;
-          gr::thread::scoped_lock lock(d_mutex);
 
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
@@ -95,7 +101,9 @@ namespace gr {
           int enc = pmt::to_long(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::from_long(-1)));
 
           // ############ INSERT MAC STUFF
-          d_ofdm = ofdm_param((Encoding) enc);
+          if (!d_debug_enc) {
+            d_ofdm = ofdm_param((Encoding) enc);
+          }
           frame_param frame(d_ofdm, psdu_length);
 
           if (d_debug){
@@ -197,12 +205,6 @@ namespace gr {
       }
       return i;
     }
-
-    /*void 
-    mapper_impl::set_encoding(Encoding e) {
-      gr::thread::scoped_lock lock(d_mutex);
-      d_ofdm = ofdm_param(e);
-    }*/
 
   } /* namespace adaptiveOFDM */
 } /* namespace gr */

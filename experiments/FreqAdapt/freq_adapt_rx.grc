@@ -181,49 +181,6 @@
     </param>
   </block>
   <block>
-    <key>variable_function_probe</key>
-    <param>
-      <key>block_id</key>
-      <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>function_args</key>
-      <value></value>
-    </param>
-    <param>
-      <key>function_name</key>
-      <value>get_encoding</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(472, 4)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>[0,0,0,0,0]</value>
-    </param>
-    <param>
-      <key>poll_rate</key>
-      <value>1000</value>
-    </param>
-  </block>
-  <block>
     <key>variable_qtgui_chooser</key>
     <param>
       <key>comment</key>
@@ -239,7 +196,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 8)</value>
+      <value>(488, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -338,7 +295,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1016, 4)</value>
+      <value>(856, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -500,7 +457,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1152, 8)</value>
+      <value>(992, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -563,7 +520,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 4)</value>
+      <value>(672, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -674,7 +631,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(944, 316)</value>
+      <value>(944, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -721,7 +678,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(496, 588)</value>
+      <value>(496, 508)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -768,7 +725,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 284)</value>
+      <value>(632, 204)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -815,7 +772,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 236)</value>
+      <value>(632, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -862,7 +819,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(912, 240)</value>
+      <value>(912, 160)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -913,7 +870,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 768)</value>
+      <value>(448, 688)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -964,7 +921,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 236)</value>
+      <value>(24, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1019,7 +976,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(328, 256)</value>
+      <value>(328, 176)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1066,7 +1023,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 560)</value>
+      <value>(216, 480)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1121,7 +1078,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(880, 536)</value>
+      <value>(880, 456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1164,7 +1121,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(400, 896)</value>
+      <value>(400, 816)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1511,7 +1468,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 420)</value>
+      <value>(904, 340)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1750,7 +1707,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 224)</value>
+      <value>(1088, 144)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2749,7 +2706,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 760)</value>
+      <value>(704, 680)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4084,7 +4041,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 632)</value>
+      <value>(704, 552)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4259,7 +4216,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(472, 456)</value>
+      <value>(472, 376)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4286,12 +4243,12 @@
       <value>0</value>
     </param>
     <param>
-      <key>delay_file</key>
-      <value>"/tmp/freq_symb_delay.csv"</value>
+      <key>debug_encoding</key>
+      <value>[0,0,0,0,0]</value>
     </param>
     <param>
-      <key>encoding</key>
-      <value>encoding</value>
+      <key>delay_file</key>
+      <value>"/tmp/freq_symb_delay.csv"</value>
     </param>
     <param>
       <key>frequency</key>

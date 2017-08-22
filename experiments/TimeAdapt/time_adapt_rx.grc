@@ -181,49 +181,6 @@
     </param>
   </block>
   <block>
-    <key>variable_function_probe</key>
-    <param>
-      <key>block_id</key>
-      <value>adaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>function_args</key>
-      <value></value>
-    </param>
-    <param>
-      <key>function_name</key>
-      <value>get_encoding</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(472, 4)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>poll_rate</key>
-      <value>10</value>
-    </param>
-  </block>
-  <block>
     <key>variable_qtgui_chooser</key>
     <param>
       <key>comment</key>
@@ -239,7 +196,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 4)</value>
+      <value>(472, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -338,7 +295,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1016, 4)</value>
+      <value>(832, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -500,7 +457,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1152, 0)</value>
+      <value>(968, 0)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -563,7 +520,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 4)</value>
+      <value>(648, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -686,7 +643,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 304)</value>
+      <value>(240, 192)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -745,7 +702,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(896, 580)</value>
+      <value>(848, 472)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -788,7 +745,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 364)</value>
+      <value>(1032, 252)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -835,7 +792,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 604)</value>
+      <value>(408, 492)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -882,7 +839,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 332)</value>
+      <value>(544, 220)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -929,7 +886,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(144, 564)</value>
+      <value>(96, 452)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -976,7 +933,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 284)</value>
+      <value>(544, 172)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1023,7 +980,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(936, 240)</value>
+      <value>(888, 128)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1074,7 +1031,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 824)</value>
+      <value>(368, 712)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1125,7 +1082,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 204)</value>
+      <value>(16, 148)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1168,7 +1125,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(160, 700)</value>
+      <value>(112, 588)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1515,7 +1472,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1024, 468)</value>
+      <value>(976, 356)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1754,7 +1711,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 256)</value>
+      <value>(1072, 144)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2753,7 +2710,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 792)</value>
+      <value>(560, 680)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4088,7 +4045,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 648)</value>
+      <value>(584, 536)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4263,7 +4220,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 464)</value>
+      <value>(392, 352)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4290,12 +4247,12 @@
       <value>chan_est</value>
     </param>
     <param>
-      <key>delay_file</key>
-      <value>"/tmp/time_symbs_delay.csv"</value>
+      <key>debug_encoding</key>
+      <value>0</value>
     </param>
     <param>
-      <key>encoding</key>
-      <value>encoding</value>
+      <key>delay_file</key>
+      <value>"/tmp/time_symbs_delay.csv"</value>
     </param>
     <param>
       <key>frequency</key>

@@ -181,49 +181,6 @@
     </param>
   </block>
   <block>
-    <key>variable_function_probe</key>
-    <param>
-      <key>block_id</key>
-      <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>function_args</key>
-      <value></value>
-    </param>
-    <param>
-      <key>function_name</key>
-      <value>get_encoding</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(368, 8)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>[0,0,0,0,0]</value>
-    </param>
-    <param>
-      <key>poll_rate</key>
-      <value>10000</value>
-    </param>
-  </block>
-  <block>
     <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
@@ -863,7 +820,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2506,12 +2463,12 @@
       <value>0</value>
     </param>
     <param>
-      <key>delay_file</key>
-      <value>"/tmp/symbols_delay.csv"</value>
+      <key>debug_encoding</key>
+      <value>[0,1,1,0,0]</value>
     </param>
     <param>
-      <key>encoding</key>
-      <value>encoding</value>
+      <key>delay_file</key>
+      <value>"/tmp/symbols_delay.csv"</value>
     </param>
     <param>
       <key>frequency</key>

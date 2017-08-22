@@ -181,49 +181,6 @@
     </param>
   </block>
   <block>
-    <key>variable_function_probe</key>
-    <param>
-      <key>block_id</key>
-      <value>adaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>function_args</key>
-      <value></value>
-    </param>
-    <param>
-      <key>function_name</key>
-      <value>get_encoding</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(472, 4)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>poll_rate</key>
-      <value>10</value>
-    </param>
-  </block>
-  <block>
     <key>variable_qtgui_chooser</key>
     <param>
       <key>comment</key>
@@ -239,7 +196,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 4)</value>
+      <value>(480, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -338,7 +295,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1016, 4)</value>
+      <value>(840, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -500,7 +457,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1152, 0)</value>
+      <value>(976, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -563,7 +520,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 4)</value>
+      <value>(656, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -4663,12 +4620,12 @@
       <value>chan_est</value>
     </param>
     <param>
-      <key>delay_file</key>
-      <value>"/tmp/time_symbol_delay.csv"</value>
+      <key>debug_encoding</key>
+      <value>0</value>
     </param>
     <param>
-      <key>encoding</key>
-      <value>encoding</value>
+      <key>delay_file</key>
+      <value>"/tmp/time_symbol_delay.csv"</value>
     </param>
     <param>
       <key>frequency</key>
