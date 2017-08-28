@@ -21,6 +21,10 @@
 #include <adaptiveOFDM/api.h>
 #include <gnuradio/block.h>
 #include <unistd.h>
+#include <signal.h>
+#include <time.h>
+
+#include "utils.h"
 
 namespace gr {
 namespace adaptiveOFDM {
@@ -52,14 +56,12 @@ public:
   static const float MIN_SNR_64QAM_3_4 = 30;
 
   // Time in usecs
+  // SLOT_TIME value may be 9 or 20 usecs
+  static const unsigned int SLOT_TIME = 20;
   static const unsigned int SIFS = 10;
-  static const unsigned int SLOT_TIME = 9;
-  static const unsigned int TIME_OUT = 50;
+  static const unsigned int TIMEOUT = 50*5600;
 
-  //int d_encoding;
   pthread_mutex_t d_mutex;
-
-  //int get_encoding();
 
   typedef boost::shared_ptr<mac_and_parse> sptr;
 
