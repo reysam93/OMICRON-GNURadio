@@ -59,7 +59,7 @@ public:
   // SLOT_TIME value may be 9 or 20 usecs
   static const unsigned int SLOT_TIME = 20;
   static const unsigned int SIFS = 10;
-  static const unsigned int TIMEOUT = 50*5600;
+  static const unsigned int TIMEOUT = 50*600;
 
   pthread_mutex_t d_mutex;
 

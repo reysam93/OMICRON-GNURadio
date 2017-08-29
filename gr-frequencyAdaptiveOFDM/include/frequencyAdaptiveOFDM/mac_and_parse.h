@@ -46,7 +46,7 @@ namespace gr {
         *
         * where M is the bits per simbol in the modulation.
         */
-        static const float MIN_SNR_BPSK_1_2 = 3.532211577698691;
+        //static const float MIN_SNR_BPSK_1_2 = 3.532211577698691;
         // static const float MIN_SNR_BPSK = 3.532211577698691;
         // static const float MIN_SNR_QPSK = 10.596634733096073;
         // static const float MIN_SNR_16QAM = 52.983173665480365;
@@ -65,7 +65,7 @@ namespace gr {
         // SLOT_TIME value may be 9 or 20 usecs
         static const unsigned int SLOT_TIME = 20;
         static const unsigned int SIFS = 10;
-        static const unsigned int TIMEOUT = 50*5600;
+        static const unsigned int TIMEOUT = 50*600;
 
         typedef boost::shared_ptr<mac_and_parse> sptr;
 

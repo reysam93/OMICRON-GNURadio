@@ -99,7 +99,7 @@ namespace gr {
     void 
     mac_and_parse_impl::ack_timeout(sigval_t sigval) {
       mac_and_parse_impl* self = (mac_and_parse_impl*) sigval.sival_ptr;
-      timer_t* timerid;
+      timer_t timerid = NULL;
 
       pthread_mutex_lock(&self->d_mutex);
       if (!self->d_timerid_queue.empty()) {
@@ -108,38 +108,40 @@ namespace gr {
       }
       pthread_mutex_unlock(&self->d_mutex);
 
+      if (timerid == NULL) {
+        throw std::runtime_error("ack timeout with null timerid");
+      }
+
       if (self->d_debug) 
-        std::cout << "\t\t\tMAC_&_PARSE: TIMEOUT: no ack received.\n" << std::endl;
+        std::cout << "\t\t\tMAC_&_PARSE: TIMEOUT: no ACK received.\n" << std::endl;
       
       std::vector<int> encoding(4, BPSK);
       self->set_encoding(encoding, P_1_2);
-
-      if (*timerid == NULL) {
-        throw std::runtime_error("timeout overrun without a time in the stack");
-      }
-      if (timer_delete(*timerid) < 0) {
+      
+      if (timer_delete(timerid) < 0) {
         throw std::runtime_error("error deleting timer");
       }
-      delete timerid;
     }
 
     void
     mac_and_parse_impl::set_timeout() {
-      timer_t* timerid = new timer_t;;
       struct sigevent sev;
       struct itimerspec its;
 
-      //timerid = new timer_t;
+      d_timerid = malloc(sizeof(timer_t));
+
+      /*if (d_timerid == NULL) {
+        std:: cerr << "MAC_&_PARSE: WARNING: null id before timer_create\n";
+      }*/
 
       // Create timer
       memset(&sev, 0, sizeof (struct sigevent));
       sev.sigev_notify = SIGEV_THREAD;
-      sev.sigev_value.sival_int = 0;
-      sev.sigev_notify_attributes = NULL;
       sev.sigev_notify_function = &mac_and_parse_impl::ack_timeout;
       sev.sigev_value.sival_ptr = (void*) this;
-      //sev.sigev_value.sival_ptr = timerid;
-      if (timer_create(CLOCK_REALTIME, &sev, timerid) < -1) {
+      sev.sigev_signo = 0;
+
+      if (timer_create(CLOCK_REALTIME, &sev, &d_timerid) < 0) {
         throw std::runtime_error("error creating timeout timer");
       }
 
@@ -148,12 +150,16 @@ namespace gr {
       its.it_value.tv_nsec = TIMEOUT * 1000; //TIMEOUT in usec
       its.it_interval.tv_sec = 0;
       its.it_interval.tv_nsec = 0;
-      if (timer_settime(*timerid, 0, &its, NULL) < 0){
+      if (timer_settime(d_timerid, 0, &its, NULL) < 0){
         throw std::runtime_error("error starting timeout timer");
       }
 
+      /*if (d_timerid == NULL) {
+        std:: cerr << "MAC_&_PARSE: WARNING: saving null id\n";
+      }*/
+
       pthread_mutex_lock(&d_mutex);
-      d_timerid_queue.push(timerid);
+      d_timerid_queue.push(d_timerid);
       pthread_mutex_unlock(&d_mutex);
     }
 
@@ -538,7 +544,7 @@ namespace gr {
 
     void
     mac_and_parse_impl::process_ack() {
-      timer_t* timerid;
+      timer_t timerid = NULL;
 
       pthread_mutex_lock(&d_mutex);
       if (!d_timerid_queue.empty()) {
@@ -546,15 +552,16 @@ namespace gr {
         d_timerid_queue.pop();
       }
       pthread_mutex_unlock(&d_mutex);
-      if (*timerid == NULL) {
+
+      if (timerid == NULL) {
         dout << "MAC_&_PARSE: WARNING: ACK received after TIMEOUT\n";
         return;
       }
-      if (timer_delete(*timerid) < 0) {
+
+      if (timer_delete(timerid) < 0) {
         throw std::runtime_error("error deleting timer");
       }
-      delete timerid;
-      dout << ": Timer deleted\n";
+      dout << ": Timer deleted.\n";
     }
 
     void

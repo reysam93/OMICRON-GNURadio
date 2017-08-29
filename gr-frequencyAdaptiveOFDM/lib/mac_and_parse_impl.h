@@ -42,9 +42,11 @@ namespace gr {
       
 
     private:
+      timer_t d_timerid;
+
       // For both
       ofdm_param d_ofdm;
-      std::queue<timer_t*> d_timerid_queue;
+      std::queue<timer_t> d_timerid_queue;
       std::vector<double> d_snr;
       
       void send_message(int psdu_length, ofdm_param ofdm);
