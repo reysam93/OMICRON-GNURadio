@@ -36,19 +36,11 @@
 
 #include <boost/crc.hpp>
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
-
-    /*std::vector<int> 
-    mac_and_parse::get_encoding(){
-      pthread_mutex_lock(&d_mutex);
-      //std::vector<int> tmp = d_encoding;
-      //tmp.push_back(d_punct);
-      pthread_mutex_unlock(&d_mutex);
-      return tmp;
-    }/*/
 
     mac_and_parse::sptr
     mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
@@ -66,7 +58,6 @@ namespace gr {
         d_ofdm(std::vector<int>(4, BPSK), P_1_2),
         d_debug(debug), d_log(log), d_snr(std::vector<double>(4,0)) {
 
-      ack_received = false;
       message_port_register_out(pmt::mp("phy out"));
       message_port_register_out(pmt::mp("fer"));
       message_port_register_out(pmt::mp("frame data"));
@@ -91,7 +82,9 @@ namespace gr {
       tx_packets_fn = tx_packets_f;
       rx_packets_fn = rx_packets_f;
 
-      d_ofdm.print();
+      if (d_debug) {
+        d_ofdm.print();
+      }
 
       pthread_mutex_init(&d_mutex, NULL);
       std::vector<int> initial_e(4, BPSK);
@@ -103,6 +96,66 @@ namespace gr {
     }
 
     /*** MAC implementation ***/
+    void 
+    mac_and_parse_impl::ack_timeout(sigval_t sigval) {
+      mac_and_parse_impl* self = (mac_and_parse_impl*) sigval.sival_ptr;
+      timer_t* timerid;
+
+      pthread_mutex_lock(&self->d_mutex);
+      if (!self->d_timerid_queue.empty()) {
+        timerid = self->d_timerid_queue.front();
+        self->d_timerid_queue.pop();
+      }
+      pthread_mutex_unlock(&self->d_mutex);
+
+      if (self->d_debug) 
+        std::cout << "\t\t\tMAC_&_PARSE: TIMEOUT: no ack received.\n" << std::endl;
+      
+      std::vector<int> encoding(4, BPSK);
+      self->set_encoding(encoding, P_1_2);
+
+      if (*timerid == NULL) {
+        throw std::runtime_error("timeout overrun without a time in the stack");
+      }
+      if (timer_delete(*timerid) < 0) {
+        throw std::runtime_error("error deleting timer");
+      }
+      delete timerid;
+    }
+
+    void
+    mac_and_parse_impl::set_timeout() {
+      timer_t* timerid = new timer_t;;
+      struct sigevent sev;
+      struct itimerspec its;
+
+      //timerid = new timer_t;
+
+      // Create timer
+      memset(&sev, 0, sizeof (struct sigevent));
+      sev.sigev_notify = SIGEV_THREAD;
+      sev.sigev_value.sival_int = 0;
+      sev.sigev_notify_attributes = NULL;
+      sev.sigev_notify_function = &mac_and_parse_impl::ack_timeout;
+      sev.sigev_value.sival_ptr = (void*) this;
+      //sev.sigev_value.sival_ptr = timerid;
+      if (timer_create(CLOCK_REALTIME, &sev, timerid) < -1) {
+        throw std::runtime_error("error creating timeout timer");
+      }
+
+      // start timer
+      its.it_value.tv_sec = 0;
+      its.it_value.tv_nsec = TIMEOUT * 1000; //TIMEOUT in usec
+      its.it_interval.tv_sec = 0;
+      its.it_interval.tv_nsec = 0;
+      if (timer_settime(*timerid, 0, &its, NULL) < 0){
+        throw std::runtime_error("error starting timeout timer");
+      }
+
+      pthread_mutex_lock(&d_mutex);
+      d_timerid_queue.push(timerid);
+      pthread_mutex_unlock(&d_mutex);
+    }
 
     void 
     mac_and_parse_impl::app_in (pmt::pmt_t msg) {
@@ -110,6 +163,7 @@ namespace gr {
       const char   *msdu;
       std::string  str;
 
+      dout << "MAC_&_PARSE: new message in app_in\n";
       if(pmt::is_symbol(msg)) {
 
         str = pmt::symbol_to_string(msg);
@@ -122,12 +176,12 @@ namespace gr {
         msdu = reinterpret_cast<const char *>(pmt::blob_data(pmt::cdr(msg)));
 
       } else {
-        throw std::invalid_argument("MAC expects PDUs or strings");
+        throw std::runtime_error("MAC expects PDUs or strings");
         return;
       }
 
       if(msg_len > MAX_PAYLOAD_SIZE) {
-        throw std::invalid_argument("Frame too large (> 1500)");
+        throw std::runtime_error("Frame too large (> 1500)");
       }
 
       // make MAC frame
@@ -136,6 +190,7 @@ namespace gr {
       pthread_mutex_lock(&d_mutex);
       send_message(psdu_length, d_ofdm);
       pthread_mutex_unlock(&d_mutex);
+      set_timeout();
 
       if(tx_packets_fn != ""){
         n_tx_packets++;
@@ -143,22 +198,6 @@ namespace gr {
         tx_packets_fs << n_tx_packets << std::endl;
         tx_packets_fs.close();
       }
-
-      usleep(TIME_OUT);
-
-      bool reset_coding = false;
-      pthread_mutex_lock(&d_mutex);
-      if (!ack_received){
-        reset_coding = true;
-        dout << "NO ACK RECEIVED. CODING SET TO 0." << std::endl;
-      }
-      ack_received = false;
-      pthread_mutex_unlock(&d_mutex);
-      if (reset_coding){
-        std::vector<int> encoding(4, BPSK);
-        set_encoding(encoding, P_1_2);
-
-      } 
     }
 
     void
@@ -294,9 +333,7 @@ namespace gr {
           generate_mac_ack_frame(h->addr2, &psdu_length);
           //needs to wait 10 usecs before sending ack.
           usleep(SIFS);
-          pthread_mutex_lock(&d_mutex);
           send_message(psdu_length, ofdm_param(std::vector<int>(4, BPSK), P_1_2));
-          pthread_mutex_unlock(&d_mutex);
           
           if(rx_packets_fn != ""){
             n_rx_packets++;
@@ -304,9 +341,7 @@ namespace gr {
             rx_packets_fs << n_rx_packets << std::endl;
             rx_packets_fs.close();
           }
-
           break;
-
         default:
           dout << " (unknown)" << std::endl;
           break;
@@ -317,8 +352,10 @@ namespace gr {
     mac_and_parse_impl::send_frame_data() {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
+      pthread_mutex_lock(&d_mutex);
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(4, d_ofdm.resource_blocks_e));
       dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(d_ofdm.punct));
+      pthread_mutex_unlock(&d_mutex);
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
@@ -500,6 +537,27 @@ namespace gr {
     }
 
     void
+    mac_and_parse_impl::process_ack() {
+      timer_t* timerid;
+
+      pthread_mutex_lock(&d_mutex);
+      if (!d_timerid_queue.empty()) {
+        timerid = d_timerid_queue.front();
+        d_timerid_queue.pop();
+      }
+      pthread_mutex_unlock(&d_mutex);
+      if (*timerid == NULL) {
+        dout << "MAC_&_PARSE: WARNING: ACK received after TIMEOUT\n";
+        return;
+      }
+      if (timer_delete(*timerid) < 0) {
+        throw std::runtime_error("error deleting timer");
+      }
+      delete timerid;
+      dout << ": Timer deleted\n";
+    }
+
+    void
     mac_and_parse_impl::parse_control(char *buf, int length) {
       mac_header* h = (mac_header*)buf;
 
@@ -525,9 +583,7 @@ namespace gr {
           break;
         case 13:
           dout << "ACK";
-          pthread_mutex_lock(&d_mutex);
-          ack_received = true;
-          pthread_mutex_unlock(&d_mutex);
+          process_ack();
           break;
         case 14:
           dout << "CF-End";
@@ -665,12 +721,14 @@ namespace gr {
 
     void 
     mac_and_parse_impl::set_encoding(std::vector<int> encoding, int punct) {
-      pthread_mutex_lock(&d_mutex);
-      d_ofdm = ofdm_param(encoding, punct);
+      ofdm_param ofdm(encoding, punct);
       if (d_debug) {
         std::cout << "MAC_&_PARSE: set encoding\n";
-        d_ofdm.print_encoding();
+        ofdm.print_encoding();
       }
+
+      pthread_mutex_lock(&d_mutex);
+      d_ofdm = ofdm;
       pthread_mutex_unlock(&d_mutex);
     }
 

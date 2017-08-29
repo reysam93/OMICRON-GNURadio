@@ -89,7 +89,7 @@ namespace gr {
     void 
     mac_and_parse_impl::ack_timeout(sigval_t sigval) {
       mac_and_parse_impl* self = (mac_and_parse_impl*) sigval.sival_ptr;
-      timer_t timerid = NULL;
+      timer_t* timerid;
 
       pthread_mutex_lock(&self->d_mutex);
       if (!self->d_timerid_queue.empty()) {
@@ -102,17 +102,18 @@ namespace gr {
         std::cout << "\t\tMAC_&_PARSE: timeout: no ack received.\n" << std::endl;
       
       self->set_encoding(BPSK_1_2);
-      if (timerid == NULL) {
+      if (*timerid == NULL) {
         throw std::invalid_argument("timeout overrun without a time in the stack");
       }
-      if (timer_delete(timerid) < 0) {
+      if (timer_delete(*timerid) < 0) {
         throw std::invalid_argument("error deleting timer");
       }
+      delete timerid;
     }
 
     void
     mac_and_parse_impl::set_timeout() {
-      timer_t timerid;
+      timer_t* timerid = new timer_t;;
       struct sigevent sev;
       struct itimerspec its;
 
@@ -123,9 +124,9 @@ namespace gr {
       sev.sigev_notify_attributes = NULL;
       sev.sigev_notify_function = &mac_and_parse_impl::ack_timeout;
       sev.sigev_value.sival_ptr = (void*) this;
-      //sev.sigev_value.sival_ptr = &timerid;
-      if (timer_create(CLOCK_REALTIME, &sev, &timerid) < -1) {
-        throw std::runtime_error("error creating time out timer");
+      //sev.sigev_value.sival_ptr = timerid;
+      if (timer_create(CLOCK_REALTIME, &sev, timerid) < -1) {
+        throw std::runtime_error("error creating timeout timer");
       }
 
       // start timer
@@ -133,8 +134,8 @@ namespace gr {
       its.it_value.tv_nsec = TIMEOUT * 1000; //TIMEOUT in usec
       its.it_interval.tv_sec = 0;
       its.it_interval.tv_nsec = 0;
-      if (timer_settime(timerid, 0, &its, NULL) < 0){
-        throw std::runtime_error("error starting time out timer");
+      if (timer_settime(*timerid, 0, &its, NULL) < 0){
+        throw std::runtime_error("error starting timeout timer");
       }
 
       pthread_mutex_lock(&d_mutex);
@@ -148,6 +149,7 @@ namespace gr {
       const char   *msdu;
       std::string  str;
 
+      dout << "MAC_&_PARSE: new message in app_in\n";
       if(pmt::is_symbol(msg)) {
         str = pmt::symbol_to_string(msg);
         msg_len = str.length();
@@ -514,7 +516,7 @@ namespace gr {
 
     void
     mac_and_parse_impl::process_ack() {
-      timer_t timerid = NULL;
+      timer_t* timerid;
 
       pthread_mutex_lock(&d_mutex);
       if (!d_timerid_queue.empty()) {
@@ -522,13 +524,14 @@ namespace gr {
         d_timerid_queue.pop();
       }
       pthread_mutex_unlock(&d_mutex);
-      if (timerid == NULL) {
+      if (*timerid == NULL) {
         dout << "MAC_&_PARSE: WARNING: ACK received after TIMEOUT\n";
         return;
       }
-      if (timer_delete(timerid) < 0) {
+      if (timer_delete(*timerid) < 0) {
         throw std::invalid_argument("error deleting timer");
       }
+      delete timerid;
       dout << ": Timer deleted\n";
     }
 

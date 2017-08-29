@@ -49,7 +49,7 @@ namespace gr {
       // For both
       int d_encoding;
       double d_snr;
-      std::queue<timer_t> d_timerid_queue;
+      std::queue<timer_t*> d_timerid_queue;
 
       void send_message(int psdu_length, int enc);
       void print_mac_address(uint8_t *addr, bool new_line);

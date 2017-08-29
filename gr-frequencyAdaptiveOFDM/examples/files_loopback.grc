@@ -656,7 +656,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>interval</value>
+      <value>20</value>
     </param>
   </block>
   <block>
@@ -1256,7 +1256,7 @@
     </param>
     <param>
       <key>debug</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1358,11 +1358,11 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/encoding.csv</value>
+      <value>/tmp/freq_encoding.csv</value>
     </param>
     <param>
       <key>delay_file</key>
-      <value>/tmp/wifi_frame_delay.csv</value>
+      <value>/tmp/freq_wifi_frame_delay.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1378,7 +1378,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>/tmp/snr.csv</value>
+      <value>/tmp/freq_snr.csv</value>
     </param>
   </block>
   <block>
