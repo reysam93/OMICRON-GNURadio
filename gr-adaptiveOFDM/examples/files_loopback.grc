@@ -597,11 +597,11 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/encoding.csv</value>
+      <value>/tmp/time_encoding.csv</value>
     </param>
     <param>
       <key>delay_file</key>
-      <value>/tmp/wifi_frame_delay.csv</value>
+      <value>/tmp/time_wifi_frame_delay.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -617,7 +617,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>/tmp/snr.csv</value>
+      <value>/tmp/time_snr.csv</value>
     </param>
   </block>
   <block>

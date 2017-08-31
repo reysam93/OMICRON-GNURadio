@@ -99,7 +99,9 @@ namespace gr {
       pthread_mutex_unlock(&self->d_mutex);
 
       if (timerid == NULL) {
-        throw std::runtime_error("ack timeout with null timerid");
+        if (self->d_debug)
+          std::cout << "WARNING: MAC_&_PARSE: TIMEOUT with timer id's queue empty.\n";
+        return;
       }
 
       if (self->d_debug) 
@@ -116,11 +118,10 @@ namespace gr {
       struct sigevent sev;
       struct itimerspec its;
 
-      //d_timerid = timer_t();
-
-      /*if (d_timerid == NULL) {
-        std:: cerr << "MAC_&_PARSE: WARNING: null id before timer_create\n";
-      }*/
+      d_timerid = new timer_t;
+      if (d_timerid == NULL) {
+        throw std::runtime_error("error allocating dynamic memory.");
+      }
 
       // Create timer
       memset(&sev, 0, sizeof (struct sigevent));
@@ -142,9 +143,9 @@ namespace gr {
         throw std::runtime_error("error starting timeout timer");
       }
 
-      /*if (d_timerid == NULL) {
-        std:: cerr << "MAC_&_PARSE: WARNING: saving null id\n";
-      }*/
+      if (d_timerid == NULL) {
+        throw std::runtime_error("serving a NULL id for timer");
+      }
 
       pthread_mutex_lock(&d_mutex);
       d_timerid_queue.push(d_timerid);
@@ -532,7 +533,7 @@ namespace gr {
       pthread_mutex_unlock(&d_mutex);
 
       if (timerid == NULL) {
-        dout << "\nMAC_&_PARSE: WARNING: ACK received after TIMEOUT\n";
+        dout << "\nWARNING: MAC_&_PARSE: ACK received after TIMEOUT\n";
         return;
       }
 

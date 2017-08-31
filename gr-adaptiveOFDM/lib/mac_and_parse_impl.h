@@ -46,8 +46,6 @@ namespace gr {
          gr_vector_void_star &output_items);
 
     private:
-      timer_t d_timerid;
-      
       // For both
       int d_encoding;
       double d_snr;
@@ -62,6 +60,7 @@ namespace gr {
 
 
       // For MAC
+      timer_t d_timerid;
       uint16_t d_seq_nr;
       uint8_t d_src_mac[6];
       uint8_t d_dst_mac[6];

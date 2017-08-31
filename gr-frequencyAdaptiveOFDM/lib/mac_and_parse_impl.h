@@ -42,8 +42,6 @@ namespace gr {
       
 
     private:
-      timer_t d_timerid;
-
       // For both
       ofdm_param d_ofdm;
       std::queue<timer_t> d_timerid_queue;
@@ -58,6 +56,7 @@ namespace gr {
 
 
       // For MAC
+      timer_t d_timerid;
       uint16_t d_seq_nr;
       uint8_t d_src_mac[6];
       uint8_t d_dst_mac[6];

@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Files Loopback
-# Generated: Mon Mar 13 11:43:17 2017
+# Generated: Thu Aug 31 21:55:16 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -23,7 +23,6 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 from PyQt4 import Qt
 from PyQt4.QtCore import QObject, pyqtSlot
 from gnuradio import blocks
-from gnuradio import channels
 from gnuradio import eng_notation
 from gnuradio import gr
 from gnuradio import qtgui
@@ -33,12 +32,10 @@ from gnuradio.filter import pfb
 from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
 from wifi_freq_adap_phy_hier import wifi_freq_adap_phy_hier  # grc-generated hier_block
-import adaptiveOFDM
 import foo
 import frequencyAdaptiveOFDM
+import pmt
 import sip
-import threading
-import time
 from gnuradio import qtgui
 
 
@@ -74,40 +71,22 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.snr = snr = 15
         self.pdu_length = pdu_length = 500
         self.out_buf_size = out_buf_size = 96000
-        self.interval = interval = 500
+        self.interval = interval = 10
         self.epsilon = epsilon = 0
-        self.encoding = encoding = [0,0,0,0]
-        self.chan_est = chan_est = 0
+        self.chan_est = chan_est = 1
 
         ##################################################
         # Blocks
         ##################################################
-        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
         self._snr_range = Range(-15, 30, 0.1, 15, 200)
         self._snr_win = RangeWidget(self._snr_range, self.set_snr, "snr", "counter_slider", float)
         self.top_layout.addWidget(self._snr_win)
         self._pdu_length_range = Range(0, 1500, 1, 500, 200)
         self._pdu_length_win = RangeWidget(self._pdu_length_range, self.set_pdu_length, "pdu_length", "counter_slider", int)
         self.top_layout.addWidget(self._pdu_length_win)
-        self._interval_range = Range(10, 1000, 1, 500, 200)
-        self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
-        self.top_layout.addWidget(self._interval_win)
         self._epsilon_range = Range(-20e-6, 20e-6, 1e-6, 0, 200)
         self._epsilon_win = RangeWidget(self._epsilon_range, self.set_epsilon, "epsilon", "counter_slider", float)
         self.top_layout.addWidget(self._epsilon_win)
-
-        def _encoding_probe():
-            while True:
-                val = self.frequencyAdaptiveOFDM_mac_and_parse_0.get_encoding()
-                try:
-                    self.set_encoding(val)
-                except AttributeError:
-                    pass
-                time.sleep(1.0 / (10))
-        _encoding_thread = threading.Thread(target=_encoding_probe)
-        _encoding_thread.daemon = True
-        _encoding_thread.start()
-
         self._chan_est_options = [0,1,3,2]
         self._chan_est_labels = ["LS", "LMS", "STA", "Linear Comb"]
         self._chan_est_group_box = Qt.QGroupBox("chan_est")
@@ -132,7 +111,8 @@ class files_loopback(gr.top_block, Qt.QWidget):
         self.wifi_freq_adap_phy_hier_0 = wifi_freq_adap_phy_hier(
             bandwidth=10e6,
             chan_est=0,
-            encoding=encoding,
+            debug_encoding=[0,1,1,0,0],
+            delay_file="/tmp/symbols_delay.csv",
             frequency=5.89e9,
             sensitivity=0.56,
         )
@@ -261,45 +241,37 @@ class files_loopback(gr.top_block, Qt.QWidget):
         	  flt_size=32)
         self.pfb_arb_resampler_xxx_0.declare_sample_delay(0)
 
+        self._interval_range = Range(1, 1000, 1, 10, 200)
+        self._interval_win = RangeWidget(self._interval_range, self.set_interval, "interval", "counter_slider", int)
+        self.top_layout.addWidget(self._interval_win)
+        self.frequencyAdaptiveOFDM_write_frame_data_1 = frequencyAdaptiveOFDM.write_frame_data('/tmp/freq_snr.csv', '/tmp/freq_encoding.csv', '/tmp/freq_wifi_frame_delay.csv', False)
         self.frequencyAdaptiveOFDM_rb_const_demux_stream_0 = frequencyAdaptiveOFDM.rb_const_demux_stream('packet_len')
+        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, False, '/tmp/freq_tx_packets.csv', '/tmp/freq_rx_packets.csv')
         self.foo_packet_pad2_0 = foo.packet_pad2(False, False, 0.001, 500, 0)
         (self.foo_packet_pad2_0).set_min_output_buffer(96000)
-        self.channels_channel_model_0 = channels.channel_model(
-        	noise_voltage=1,
-        	frequency_offset=epsilon * 5.89e9 / 10e6,
-        	epsilon=1.0,
-        	taps=(1.0, ),
-        	noise_seed=0,
-        	block_tags=False
-        )
-        self.blocks_vector_source_x_0 = blocks.vector_source_b(range(100), True, 1, [])
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
-        self.blocks_tagged_stream_to_pdu_0 = blocks.tagged_stream_to_pdu(blocks.byte_t, 'packet_len')
-        self.blocks_stream_to_tagged_stream_0 = blocks.stream_to_tagged_stream(gr.sizeof_char, 1, pdu_length, 'packet_len')
-        self.blocks_socket_pdu_0 = blocks.socket_pdu("UDP_SERVER", '', '52001', 10000, False)
         self.blocks_pdu_to_tagged_stream_0_1 = blocks.pdu_to_tagged_stream(blocks.byte_t, 'packet_len')
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'packet_len')
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
-        self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, interval)
+        self.blocks_message_strobe_0_0 = blocks.message_strobe(pmt.intern("".join("X" for i in range(pdu_length))), 20)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/tmp/prueba_rx.txt', False)
+        self.blocks_file_sink_0.set_unbuffered(False)
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))
+        self.msg_connect((self.blocks_message_strobe_0_0, 'strobe'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))
         self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'fer'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'frame data'), (self.frequencyAdaptiveOFDM_write_frame_data_1, 'frame data'))
         self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy in'))
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'carrier'), (self.frequencyAdaptiveOFDM_rb_const_demux_stream_0, 'symbols_in'))
-        self.connect((self.adaptiveOFDM_stream_spacer_0, 0), (self.blocks_tagged_stream_to_pdu_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.channels_channel_model_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.pfb_arb_resampler_xxx_0, 0))
         self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.qtgui_number_sink_0, 0))
+        self.connect((self.blocks_pdu_to_tagged_stream_0_1, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.blocks_pdu_to_tagged_stream_0_1, 0), (self.blocks_uchar_to_float_0, 0))
-        self.connect((self.blocks_stream_to_tagged_stream_0, 0), (self.adaptiveOFDM_stream_spacer_0, 0))
         self.connect((self.blocks_uchar_to_float_0, 0), (self.qtgui_time_sink_x_0, 0))
-        self.connect((self.blocks_vector_source_x_0, 0), (self.blocks_stream_to_tagged_stream_0, 0))
-        self.connect((self.channels_channel_model_0, 0), (self.pfb_arb_resampler_xxx_0, 0))
         self.connect((self.foo_packet_pad2_0, 0), (self.blocks_multiply_const_vxx_0, 0))
         self.connect((self.frequencyAdaptiveOFDM_rb_const_demux_stream_0, 0), (self.qtgui_const_sink_x_0, 0))
         self.connect((self.frequencyAdaptiveOFDM_rb_const_demux_stream_0, 1), (self.qtgui_const_sink_x_0, 1))
@@ -325,8 +297,7 @@ class files_loopback(gr.top_block, Qt.QWidget):
 
     def set_pdu_length(self, pdu_length):
         self.pdu_length = pdu_length
-        self.blocks_stream_to_tagged_stream_0.set_packet_len(self.pdu_length)
-        self.blocks_stream_to_tagged_stream_0.set_packet_len_pmt(self.pdu_length)
+        self.blocks_message_strobe_0_0.set_msg(pmt.intern("".join("X" for i in range(self.pdu_length))))
 
     def get_out_buf_size(self):
         return self.out_buf_size
@@ -346,14 +317,6 @@ class files_loopback(gr.top_block, Qt.QWidget):
     def set_epsilon(self, epsilon):
         self.epsilon = epsilon
         self.pfb_arb_resampler_xxx_0.set_rate(1+self.epsilon)
-        self.channels_channel_model_0.set_frequency_offset(self.epsilon * 5.89e9 / 10e6)
-
-    def get_encoding(self):
-        return self.encoding
-
-    def set_encoding(self, encoding):
-        self.encoding = encoding
-        self.wifi_freq_adap_phy_hier_0.set_encoding(self.encoding)
 
     def get_chan_est(self):
         return self.chan_est

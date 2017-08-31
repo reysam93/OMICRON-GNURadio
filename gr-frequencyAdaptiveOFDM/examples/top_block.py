@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Thu Mar  2 15:07:18 2017
+# Generated: Mon Aug  7 12:10:26 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -75,13 +75,13 @@ class top_block(gr.top_block, Qt.QWidget):
         self.lo_offset = lo_offset = 0
         self.gain = gain = 0.75
         self.freq = freq = 5890000000
-        self.encoding = encoding = [0,0,0,0]
+        self.encoding = encoding = [0,0,0,0,0]
         self.chan_est = chan_est = 0
 
         ##################################################
         # Blocks
         ##################################################
-        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x23, 0x23, 0x23, 0x23, 0x23, 0x23]), ([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True)
+        self.frequencyAdaptiveOFDM_mac_and_parse_0 = frequencyAdaptiveOFDM.mac_and_parse(([0x42, 0x42, 0x42, 0x42, 0x42, 0x42]), ([0x23, 0x23, 0x23, 0x23, 0x23, 0x23]), ([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]), False, True, '/tmp/tx_packets.csv', '/tmp/rx_packets.csv')
         self._samp_rate_options = [5e6, 10e6, 20e6]
         self._samp_rate_labels = ["5 MHz", "10 MHz", "20 MHz"]
         self._samp_rate_tool_bar = Qt.QToolBar(self)
@@ -132,7 +132,7 @@ class top_block(gr.top_block, Qt.QWidget):
                     self.set_encoding(val)
                 except AttributeError:
                     pass
-                time.sleep(1.0 / (10))
+                time.sleep(1.0 / (1000))
         _encoding_thread = threading.Thread(target=_encoding_probe)
         _encoding_thread.daemon = True
         _encoding_thread.start()
@@ -309,6 +309,7 @@ class top_block(gr.top_block, Qt.QWidget):
 
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
+        self.frequencyAdaptiveOFDM_write_frame_data_0 = frequencyAdaptiveOFDM.write_frame_data('/tmp/snr.csv', '/tmp/encoding.csv', '/tmp/wifi_frame_delay.csv', True)
         self.frequencyAdaptiveOFDM_rb_const_demux_stream_0 = frequencyAdaptiveOFDM.rb_const_demux_stream('packet_len')
         self.foo_packet_pad2_0 = foo.packet_pad2(False, False, 0.001, 10000, 10000)
         (self.foo_packet_pad2_0).set_min_output_buffer(100000)
@@ -321,7 +322,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'packet_len')
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.6, ))
         (self.blocks_multiply_const_vxx_0).set_min_output_buffer(100000)
-        self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, 0)
+        self.adaptiveOFDM_stream_spacer_0 = adaptiveOFDM.stream_spacer(blocks.byte_t, 500)
 
         ##################################################
         # Connections
@@ -330,6 +331,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app in'))
         self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'fer'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'app out'), (self.blocks_pdu_to_tagged_stream_0_1, 'pdus'))
+        self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'frame data'), (self.frequencyAdaptiveOFDM_write_frame_data_0, 'frame data'))
         self.msg_connect((self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy out'), (self.wifi_freq_adap_phy_hier_0, 'mac_in'))
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'mac_out'), (self.frequencyAdaptiveOFDM_mac_and_parse_0, 'phy in'))
         self.msg_connect((self.wifi_freq_adap_phy_hier_0, 'carrier'), (self.frequencyAdaptiveOFDM_rb_const_demux_stream_0, 'symbols_in'))
