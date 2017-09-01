@@ -28,5 +28,6 @@ install(FILES
     mapper.h
     constellations.h
     mac_and_parse.h
+    decode_mac.h
     frame_equalizer.h DESTINATION include/frequencyAdaptiveOFDM
 )

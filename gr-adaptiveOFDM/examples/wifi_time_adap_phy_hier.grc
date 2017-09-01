@@ -190,6 +190,57 @@
     </param>
   </block>
   <block>
+    <key>adaptiveOFDM_decode_mac</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(504, 924)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>adaptiveOFDM_decode_mac_0</value>
+    </param>
+    <param>
+      <key>log</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>debug_checksum</key>
+      <value>False</value>
+    </param>
+  </block>
+  <block>
     <key>adaptiveOFDM_frame_equalizer</key>
     <param>
       <key>algo</key>
@@ -251,6 +302,10 @@
       <key>minoutbuf</key>
       <value>0</value>
     </param>
+    <param>
+      <key>debug_parity</key>
+      <value>False</value>
+    </param>
   </block>
   <block>
     <key>adaptiveOFDM_mapper</key>
@@ -268,7 +323,7 @@
     </param>
     <param>
       <key>debug_enc</key>
-      <value>False</value>
+      <value>debug_encoding</value>
     </param>
     <param>
       <key>debug</key>
@@ -280,7 +335,7 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>debug_encoding</value>
+      <value>encoding</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -856,7 +911,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(728, 16)</value>
+      <value>(1112, 68)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -876,11 +931,11 @@
     </param>
     <param>
       <key>type</key>
-      <value>intx</value>
+      <value></value>
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>False</value>
     </param>
   </block>
   <block>
@@ -899,7 +954,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(920, 100)</value>
+      <value>(728, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1151,6 +1206,49 @@
     </param>
   </block>
   <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1008, 108)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
     <key>fft_vxx</key>
     <param>
       <key>alias</key>
@@ -1356,53 +1454,6 @@
     <param>
       <key>minoutbuf</key>
       <value>max_symbols * 48 * 8</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_decode_mac</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(512, 928)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_decode_mac_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -1761,7 +1812,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 16)</value>
+      <value>(824, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1895,8 +1946,14 @@
     </param>
   </block>
   <connection>
+    <source_block_id>adaptiveOFDM_decode_mac_0</source_block_id>
+    <sink_block_id>pad_sink_2</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
     <source_block_id>adaptiveOFDM_frame_equalizer_0</source_block_id>
-    <sink_block_id>ieee802_11_decode_mac_0</sink_block_id>
+    <sink_block_id>adaptiveOFDM_decode_mac_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2019,12 +2076,6 @@
     <sink_block_id>blocks_tagged_stream_mux_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_decode_mac_0</source_block_id>
-    <sink_block_id>pad_sink_2</sink_block_id>
-    <source_key>out</source_key>
-    <sink_key>in</sink_key>
   </connection>
   <connection>
     <source_block_id>ieee802_11_moving_average_xx_0</source_block_id>

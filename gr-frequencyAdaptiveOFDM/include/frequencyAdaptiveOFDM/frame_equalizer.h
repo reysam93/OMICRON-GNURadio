@@ -41,7 +41,7 @@ namespace gr {
      public:
       typedef boost::shared_ptr<frame_equalizer> sptr;
       static sptr make(Equalizer algo, double freq, double bw,
-                        bool log, bool debug, char* delay_file);
+                        bool log, bool debug, bool debug_parity, char* delay_file);
       virtual void set_algorithm(Equalizer algo) = 0;
       virtual void set_bandwidth(double bw) = 0;
       virtual void set_frequency(double freq) = 0;

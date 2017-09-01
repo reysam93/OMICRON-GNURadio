@@ -36,7 +36,7 @@ namespace gr {
     {
 
     public:
-      frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug, char* delay_file);
+      frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug, bool debug_parity, char* delay_file);
       ~frame_equalizer_impl();
 
       void set_algorithm(Equalizer algo);
@@ -59,8 +59,6 @@ namespace gr {
       equalizer::base *d_equalizer;
       gr::thread::mutex d_mutex;
       std::vector<gr::tag_t> tags;
-      bool d_debug;
-      bool d_log;
       int  d_current_symbol;
       viterbi_decoder d_decoder;
 
@@ -87,6 +85,11 @@ namespace gr {
 
       timeval last_time; 
       std::ofstream delay_fstream;
+
+      // Debug
+      bool d_debug;
+      bool d_log;
+      bool d_debug_parity;
 
       static int interleaver_pattern[48];
     };

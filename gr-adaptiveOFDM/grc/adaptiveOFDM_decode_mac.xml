@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<block>
+	<name>WiFi Decode MAC</name>
+	<key>adaptiveOFDM_decode_mac</key>
+	<category>[Time Adaptive OFDM]</category>
+	<import>import adaptiveOFDM</import>
+	<make>adaptiveOFDM.decode_mac($log, $debug, $debug_checksum)</make>
+
+	<param>
+		<name>Log</name>
+		<key>log</key>
+		<value>False</value>
+		<type>bool</type>
+
+		<option>
+			<name>Enable</name>
+			<key>True</key>
+		</option>
+		<option>
+			<name>Disable</name>
+			<key>False</key>
+		</option>
+	</param>
+
+	<param>
+		<name>Debug</name>
+		<key>debug</key>
+		<value>False</value>
+		<type>bool</type>
+
+		<option>
+			<name>Enable</name>
+			<key>True</key>
+		</option>
+		<option>
+			<name>Disable</name>
+			<key>False</key>
+		</option>
+	</param>
+
+	<param>
+    <name>Show Checksum Errors</name>
+    <key>debug_checksum</key>
+    <value>False</value>
+    <type>bool</type>
+
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+	<sink>
+		<name>in</name>
+		<type>byte</type>
+		<vlen>48</vlen>
+	</sink>
+
+	<source>
+		<name>out</name>
+		<type>message</type>
+		<optional>1</optional>
+	</source>
+
+</block>
+
+
+

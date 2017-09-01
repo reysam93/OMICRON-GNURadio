@@ -4,7 +4,7 @@
   <key>frequencyAdaptiveOFDM_decode_mac</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.decode_mac($log, $debug)</make>
+  <make>frequencyAdaptiveOFDM.decode_mac($log, $debug, $debug_checksum)</make>
   
   <param>
     <name>Log</name>
@@ -25,6 +25,22 @@
   <param>
     <name>Debug</name>
     <key>debug</key>
+    <value>False</value>
+    <type>bool</type>
+
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Show Checksum Errors</name>
+    <key>debug_checksum</key>
     <value>False</value>
     <type>bool</type>
 

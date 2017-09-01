@@ -35,18 +35,20 @@ namespace gr {
   namespace adaptiveOFDM {
 
     frame_equalizer::sptr
-    frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool debug, char* delay_file) {
+    frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, 
+                          bool debug, bool debug_parity, char* delay_file) {
       return gnuradio::get_initial_sptr
-        (new frame_equalizer_impl(algo, freq, bw, log, debug, delay_file));
+        (new frame_equalizer_impl(algo, freq, bw, log, debug, debug_parity, delay_file));
     }
 
 
-    frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug, char* delay_file) :
+    frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log,
+                                                bool debug, bool debug_parity, char* delay_file) :
       gr::block("frame_equalizer",
           gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
           gr::io_signature::make(1, 1, 48)),
-      d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
-      d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
+      d_current_symbol(0), d_log(log), d_debug(debug), d_debug_parity(debug_parity),
+      d_equalizer(NULL), d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
       d_freq_offset_from_synclong(0.0) {
 
       message_port_register_out(pmt::mp("symbols"));
@@ -304,7 +306,9 @@ namespace gr {
       }
 
       if(parity != decoded_bits[17]) {
-        std::cerr << "SIGNAL: wrong parity" << std::endl;
+        if (d_debug || d_debug_parity){
+          std::cout << "WARNING: FRAME EQUALIZER: wrong parity" << std::endl;
+        }
         return false;
       }
 

@@ -35,6 +35,7 @@ namespace gr {
      private:
       bool d_debug;
       bool d_log;
+      bool d_debug_checksum;
 
       frame_param d_frame;
       ofdm_param d_ofdm;
@@ -52,7 +53,7 @@ namespace gr {
       bool d_frame_complete;
 
      public:
-      decode_mac_impl(bool log, bool debug);
+      decode_mac_impl(bool log, bool debug, bool debug_checksum);
       ~decode_mac_impl();
 
 

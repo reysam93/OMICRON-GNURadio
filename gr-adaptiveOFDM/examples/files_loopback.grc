@@ -2437,11 +2437,15 @@
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>0</value>
+      <value>False</value>
     </param>
     <param>
       <key>delay_file</key>
       <value>"/tmp/time_symbol_delay.csv"</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>0</value>
     </param>
     <param>
       <key>frequency</key>

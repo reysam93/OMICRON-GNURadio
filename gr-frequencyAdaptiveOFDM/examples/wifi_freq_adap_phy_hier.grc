@@ -738,7 +738,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(728, 12)</value>
+      <value>(720, 92)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -762,7 +762,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>[0,0,0,0,0]</value>
+      <value>False</value>
     </param>
   </block>
   <block>
@@ -1033,6 +1033,49 @@
     </param>
   </block>
   <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(728, 12)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[0,0,0,0,0]</value>
+    </param>
+  </block>
+  <block>
     <key>fft_vxx</key>
     <param>
       <key>alias</key>
@@ -1264,7 +1307,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 924)</value>
+      <value>(520, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1285,6 +1328,10 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>debug_checksum</key>
+      <value>False</value>
     </param>
   </block>
   <block>
@@ -1349,6 +1396,10 @@
       <key>minoutbuf</key>
       <value>0</value>
     </param>
+    <param>
+      <key>debug_parity</key>
+      <value>False</value>
+    </param>
   </block>
   <block>
     <key>frequencyAdaptiveOFDM_mapper</key>
@@ -1366,7 +1417,7 @@
     </param>
     <param>
       <key>debug_enc</key>
-      <value>False</value>
+      <value>debug_encoding</value>
     </param>
     <param>
       <key>debug</key>
@@ -1378,7 +1429,7 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>debug_encoding</value>
+      <value>encoding</value>
     </param>
     <param>
       <key>_coordinate</key>

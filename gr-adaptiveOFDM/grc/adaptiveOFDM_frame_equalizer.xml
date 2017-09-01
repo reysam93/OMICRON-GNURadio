@@ -4,7 +4,7 @@
   <key>adaptiveOFDM_frame_equalizer</key>
   <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.frame_equalizer($algo, $freq, $bw, $log, $debug, $delay_file)</make>
+  <make>adaptiveOFDM.frame_equalizer($algo, $freq, $bw, $log, $debug, $debug_parity, $delay_file)</make>
 
   <callback>set_algorithm($algo)</callback>
   <callback>set_frequency($freq)</callback>
@@ -67,6 +67,22 @@
   <param>
     <name>Debug</name>
     <key>debug</key>
+    <value>False</value>
+    <type>bool</type>
+
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Show Parity Errors</name>
+    <key>debug_parity</key>
     <value>False</value>
     <type>bool</type>
 

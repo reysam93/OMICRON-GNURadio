@@ -34,21 +34,22 @@ namespace gr {
   namespace frequencyAdaptiveOFDM {
 
     decode_mac::sptr
-    decode_mac::make(bool log, bool debug)
+    decode_mac::make(bool log, bool debug, bool debug_checksum)
     {
       return gnuradio::get_initial_sptr
-        (new decode_mac_impl(log, debug));
+        (new decode_mac_impl(log, debug, debug_checksum));
     }
 
     /*
      * The private constructor
      */
-    decode_mac_impl::decode_mac_impl(bool log, bool debug):
+    decode_mac_impl::decode_mac_impl(bool log, bool debug, bool debug_checksum):
      block("decode_mac",
               gr::io_signature::make(1, 1, 48),
               gr::io_signature::make(0, 0, 0)),
       d_log(log),
       d_debug(debug),
+      d_debug_checksum(debug_checksum),
       d_snr(std::vector<double>(4,0)),
       d_nom_freq(0.0),
       d_freq_offset(0.0),
@@ -109,7 +110,7 @@ namespace gr {
             copied = 0;
 
             if (d_debug){
-              dout << "Decode MAC: frame start -- len " << len_data << std::endl;
+              std::cout << "Decode MAC: frame start -- len " << len_data << std::endl;
               d_frame.print();
               d_ofdm.print();
             }
@@ -173,7 +174,9 @@ namespace gr {
       boost::crc_32_type result;
       result.process_bytes(out_bytes + 2, d_frame.psdu_size);
       if(result.checksum() != 558161692) {
-        std::cerr << "ERROR: DECODE MAC: checksum wrong -- dropping\n";
+        if (d_debug || d_debug_checksum){
+          std::cout << "WARNING: DECODE MAC: checksum wrong -- dropping\n";
+        }
         return;
       }
 

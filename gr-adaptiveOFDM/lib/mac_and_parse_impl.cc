@@ -144,7 +144,7 @@ namespace gr {
       }
 
       if (d_timerid == NULL) {
-        throw std::runtime_error("serving a NULL id for timer");
+        throw std::runtime_error("saving a NULL id for timer");
       }
 
       pthread_mutex_lock(&d_mutex);

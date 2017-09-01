@@ -14,6 +14,7 @@
 #include "adaptiveOFDM/mac.h"
 #include "adaptiveOFDM/mac_and_parse.h"
 #include "adaptiveOFDM/constellations.h"
+#include "adaptiveOFDM/decode_mac.h"
 #include "adaptiveOFDM/frame_equalizer.h"
 %}
 
@@ -29,12 +30,14 @@
 %include "adaptiveOFDM/mac_and_parse.h"
 %include "adaptiveOFDM/constellations.h"
 %include "adaptiveOFDM/frame_equalizer.h"
+%include "adaptiveOFDM/decode_mac.h"
 
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mapper);
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, parse_mac);
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mac);
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, mac_and_parse);
 GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, frame_equalizer);
+GR_SWIG_BLOCK_MAGIC2(adaptiveOFDM, decode_mac);
 
 %template(constellation_bpsk_sptr) boost::shared_ptr<gr::adaptiveOFDM::constellation_bpsk>;
 %pythoncode %{

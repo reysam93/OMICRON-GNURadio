@@ -40,6 +40,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND adaptiveOFDM_sources
     utils.cc
     constellations_impl.cc
+    decode_mac.cc
     mapper_impl.cc
     equalizer/base.cc
     equalizer/comb.cc

@@ -33,7 +33,7 @@ namespace gr {
     {
      public:
       typedef boost::shared_ptr<decode_mac> sptr;
-      static sptr make(bool log, bool debug);
+      static sptr make(bool log, bool debugbool, bool debug_checksum);
     };
 
   } // namespace frequencyAdaptiveOFDM
