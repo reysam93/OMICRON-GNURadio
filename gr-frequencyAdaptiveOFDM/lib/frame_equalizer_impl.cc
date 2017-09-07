@@ -281,23 +281,13 @@ namespace gr {
 
     bool
     frame_equalizer_impl::decode_signal_field(uint8_t *rx_bits) {
-
-
       std::vector<int> resource_block_e (4, BPSK);
       static ofdm_param ofdm(resource_block_e, P_1_2);
       static frame_param frame(ofdm, 0);
 
-      deinterleave(rx_bits);
+      interleave((char*)rx_bits, (char*)d_deinterleaved, frame, ofdm, true);
       uint8_t *decoded_bits = d_decoder.decode(&ofdm, &frame, d_deinterleaved);
       return parse_signal(decoded_bits);
-    }
-
-    void
-    frame_equalizer_impl::deinterleave(uint8_t *rx_bits) {
-      for(int i = 0; i < 48; i++) {
-        d_deinterleaved[i] = rx_bits[interleaver_pattern[i]];
-        //d_deinterleaved[i] = rx_bits[i];
-      }
     }
 
     bool

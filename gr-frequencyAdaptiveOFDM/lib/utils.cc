@@ -262,11 +262,10 @@ void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm,
 	int s = floor(std::max(int(ofdm.n_bpsc) / 2, 1));
 
 	for(int j = 0; j < n_cbps; j++) {
-		first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
+		first[j] = s * (j / s) + ((j + int(floor(12.0 * j / n_cbps))) % s);
 	}
-
 	for(int i = 0; i < n_cbps; i++) {
-		second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
+		second[i] = 12 * i - (n_cbps - 1) * int(floor(12.0 * i / n_cbps));
 	}
 
 	for(int i = 0; i < frame.n_sym; i++) {
@@ -278,9 +277,6 @@ void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm,
 			}
 		}
 	}
-	/*for (int i=0; i<frame.n_encoded_bits; i++){
-        out[i] = in[i];
-     }*/
 }
 
 

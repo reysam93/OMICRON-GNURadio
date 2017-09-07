@@ -154,7 +154,7 @@ namespace gr {
         print_bytes("DECODE_MAC: interleaved data:", (char*)d_rx_bits, d_frame.n_encoded_bits);
       }
 
-      deinterleave();
+      interleave((char*)d_rx_bits, (char*) d_deinterleaved_bits, d_frame, d_ofdm, true);
       if (d_log) {
         print_bytes("DECODE_MAC: puncttured and coded data:", (char*)d_deinterleaved_bits, d_frame.n_encoded_bits);
       }
@@ -213,34 +213,6 @@ namespace gr {
         }
       }
     }
-
-
-    void
-    decode_mac_impl::deinterleave(){
-      int n_cbps = d_ofdm.n_cbps;
-      int first[n_cbps];
-      int second[n_cbps];
-      int s = std::max(int(d_ofdm.n_bpsc) / 2, 1);
-
-      for(int j = 0; j < n_cbps; j++) {
-        first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
-      }
-
-      for(int i = 0; i < n_cbps; i++) {
-        second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
-      }
-
-      int count = 0;
-      for(int i = 0; i < d_frame.n_sym; i++) {
-        for(int k = 0; k < n_cbps; k++) {
-          d_deinterleaved_bits[i * n_cbps + second[first[k]]] = d_rx_bits[i * n_cbps + k];
-        }
-      }
-      /*for (int i=0; i<d_frame.n_encoded_bits; i++){
-        d_deinterleaved_bits[i] = d_rx_bits[i];
-      }*/
-    }
-
 
     void
     decode_mac_impl::descramble (uint8_t *decoded_bits){

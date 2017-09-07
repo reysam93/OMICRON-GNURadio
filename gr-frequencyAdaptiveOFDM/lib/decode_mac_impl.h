@@ -64,7 +64,6 @@ namespace gr {
 
       void regroup_symbols();
       void decode();
-      void deinterleave();
       void descramble (uint8_t *decoded_bits);
       void print_output();
     };

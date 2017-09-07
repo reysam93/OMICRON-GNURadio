@@ -680,7 +680,7 @@ namespace gr {
     mac_and_parse_impl::decide_encoding(){
       std::vector<int> encoding(4, BPSK);
       bool punct_3_4 = true;
-      bool same_mod;
+      //bool same_mod;
       int puncturing = P_1_2;
 
       dout << std::endl;
@@ -712,16 +712,7 @@ namespace gr {
       dout << std::endl;
 
       if (punct_3_4) {
-        same_mod = true;
-        for (int i = 1; i < 4; i++) {
-          if (encoding[0] != encoding[i]){
-            same_mod = false;
-            break;
-          }
-        }
-        if (same_mod) {
-          puncturing = punct_3_4;
-        }
+        puncturing = punct_3_4;
       }
 
       set_encoding(encoding, puncturing);
