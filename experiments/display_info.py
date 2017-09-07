@@ -103,8 +103,8 @@ if __name__ == "__main__":
 		snr_f = open(sys.argv[5])
 		frame_delay_f = open(sys.argv[6])
 	except IOError as e:
-		print ("I/O error: {1}").format(e.strerror)
-		sys.exit(-1)
+		print ("I/O error: {0}").format(e.strerror)
+#		sys.exit(-1)
 
 	display_rx_data(rx_data_f)
 	display_mean_rate(rate_f)
