@@ -30,13 +30,21 @@ class base {
 public:
 	virtual ~base() {};
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]) = 0;
-	virtual double get_snr() = 0;
-	virtual std::vector<double> resource_blocks_snr() = 0;
+
+	std::vector<double> resource_blocks_snr();
+	std::vector<double> min_rb_snr();
 
 	static const gr_complex POLARITY[127];
 
 protected:
 	static const gr_complex LONG[64];
+	
+	std::vector<double> d_resource_block_snr;
+	std::vector<double> d_min_rb_snr;
+	gr_complex d_H[64];
+
+	int rb_index_from_carrier(int n_carrier);
+	void stimate_channel_state(gr_complex *in);
 };
 
 } /* namespace channel_estimation */

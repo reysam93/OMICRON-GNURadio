@@ -26,41 +26,8 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
-
 	} else if(n == 1) {
-		double signal = 0;
-		double noise = 0;
-		double rb_signal = 0;
-		double rb_noise = 0;
-		d_resource_block_snr = std::vector<double>(4,0);
-		
-		for(int i = 0; i < 64; i++) {
-			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
-			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
-			rb_noise += std::pow(std::abs(d_H[i] - in[i]), 2);
-			rb_signal += std::pow(std::abs(d_H[i] + in[i]), 2);
-			d_H[i] += in[i];
-			d_H[i] /= LONG[i] * gr_complex(2, 0);
-
-			switch(i) {
-			case 11:
-				d_resource_block_snr[0] = 10 * std::log10(rb_signal / rb_noise / 2);
-			case 25:
-				d_resource_block_snr[1] = 10 * std::log10(rb_signal / rb_noise / 2);
-			case 39:
-				d_resource_block_snr[2] = 10 * std::log10(rb_signal / rb_noise / 2);
-			case 53:
-				d_resource_block_snr[3] = 10 * std::log10(rb_signal / rb_noise / 2);
-			default:
-				if (i == 11 or i == 25 or i == 39 or i == 53) {
-					rb_signal = 0;
-					rb_noise = 0;
-				}
-			}
-		}
-
-		d_snr = 10 * std::log10(signal / noise / 2);
-
+		stimate_channel_state(in);
 	} else {
 
 		int c = 0;
@@ -82,13 +49,4 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 			}
 		}
 	}
-}
-
-double ls::get_snr() {
-	return d_snr;
-}
-
-std::vector<double>
-ls::resource_blocks_snr() {
-	return d_resource_block_snr;
 }

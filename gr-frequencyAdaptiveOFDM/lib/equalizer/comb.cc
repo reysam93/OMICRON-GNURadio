@@ -29,6 +29,8 @@ void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, b
 		pilot[1] = -in[25];
 		pilot[2] =  in[39];
 		pilot[3] =  in[53];
+		d_resource_block_snr = std::vector<double>(4,42);
+		d_min_rb_snr = std::vector<double>(4,42);
 	} else {
 		gr_complex p = POLARITY[(n - 2) % 127];
 		pilot[0] = in[11] *  p;
@@ -38,7 +40,7 @@ void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, b
 	}
 
 	gr_complex avg = (pilot[0] + pilot[1] + pilot[2] + pilot[3]) / gr_complex(4, 0);
-
+	int c = 0;
 	for(int i = 0; i < 64; i++) {
 		gr_complex H;
 		if(i <= 11) {
@@ -58,10 +60,7 @@ void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, b
 		} else {
 			d_H[i] = gr_complex(1-alpha, 0) * d_H[i] + gr_complex(alpha, 0) * H;
 		}
-	}
 
-	int c = 0;
-	for(int i = 0; i < 64; i++) {
 		if( (i == 11) || (i == 25) || (i == 32) || (i == 39) || (i == 53) || (i < 6) || ( i > 58)) {
 			continue;
 		} else {
@@ -78,14 +77,4 @@ void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, b
 			c++;
 		}
 	}
-}
-
-double
-comb::get_snr() {
-	return 42;
-}
-
-std::vector<double>
-comb::resource_blocks_snr() {
-	return std::vector<double>(4,42);
 }

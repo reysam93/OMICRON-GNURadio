@@ -27,22 +27,7 @@ void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 
 	} else if(n == 1) {
-		double signal = 0;
-		double noise = 0;
-		double rb_signal = 0;
-		double rb_noise = 0;
-		d_resource_block_snr = std::vector<double>(4,0);
-		
-		for(int i = 0; i < 64; i++) {
-			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
-			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
-
-			d_H[i] += in[i];
-			d_H[i] /= LONG[i] * gr_complex(2, 0);
-		}
-
-		d_snr = 10 * std::log10(signal / noise / 2);
-
+		stimate_channel_state(in);
 	} else {
 
 		gr_complex H_update[64];
@@ -98,14 +83,4 @@ void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 			d_H[i] = gr_complex(1-alpha,0) * d_H[i] + gr_complex(alpha,0) * H_update[i];
 		}
 	}
-}
-
-double
-sta::get_snr() {
-	return d_snr;
-}
-
-std::vector<double>
-sta::resource_blocks_snr() {
-	return d_resource_block_snr;
 }
