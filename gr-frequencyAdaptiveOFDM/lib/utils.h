@@ -84,8 +84,6 @@ public:
 	 *			consders only the data bit, ignoring the coded bits.
 	 */
 	int rb_index_from_symbols(int n_symb);
-	//int rb_index_from_coded_bits(int n_bit);
-	//int rb_index_from_data_bits(int n_bit);
 	
 	void print();
 	void print_encoding();

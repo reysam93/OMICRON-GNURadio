@@ -92,6 +92,7 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 			break;
 		
 		default:
+			std::cerr << "ERROR: encodin: " << pilots_enc[i] << "\n";
 			throw std::invalid_argument("OFDM_PARAM: wrong encoding");
 			break;
 		}

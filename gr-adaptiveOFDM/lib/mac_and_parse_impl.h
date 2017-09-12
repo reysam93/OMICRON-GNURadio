@@ -70,6 +70,7 @@ namespace gr {
       static void ack_timeout(sigval_t sigval);
       void set_timeout();
       void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
+      void reset_encoding(int encoding);
       void app_in (pmt::pmt_t msg);
 
 

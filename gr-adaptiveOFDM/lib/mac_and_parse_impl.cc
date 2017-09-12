@@ -86,12 +86,22 @@ namespace gr {
     }
 
     /*** MAC implementation ***/
+    void
+    mac_and_parse_impl::reset_encoding(int encoding) {
+      if (encoding == BPSK_1_2) {
+        set_encoding(BPSK_1_2);
+      } else {
+        set_encoding(encoding-1);
+      }
+    }
+
     void 
     mac_and_parse_impl::ack_timeout(sigval_t sigval) {
       mac_and_parse_impl* self = (mac_and_parse_impl*) sigval.sival_ptr;
       timer_t timerid = NULL;
 
       pthread_mutex_lock(&self->d_mutex);
+      int encoding = self->d_encoding;
       if (!self->d_timerid_queue.empty()) {
         timerid = self->d_timerid_queue.front();
         self->d_timerid_queue.pop();
@@ -107,7 +117,8 @@ namespace gr {
       if (self->d_debug) 
         std::cout << "\t\t\t\tMAC_&_PARSE: TIMEOUT: no ack received.\n" << std::endl;
       
-      self->set_encoding(BPSK_1_2);
+      self->reset_encoding(encoding);
+
       if (timer_delete(timerid) < 0) {
         throw std::runtime_error("error deleting timer");
       }
@@ -658,28 +669,20 @@ namespace gr {
     mac_and_parse_impl::decide_modulation(){
       dout << std::endl << "SNR: " << d_snr << std::endl;
       if (d_snr >= MIN_SNR_64QAM_3_4) {
-        dout << "64QAM 3/4. Min SNR: " << MIN_SNR_64QAM_3_4 << std::endl;
         set_encoding(QAM64_3_4);
       } else if (d_snr >= MIN_SNR_64QAM_2_3) {
-        dout << "64QAM 2/3. Min SNR: " << MIN_SNR_64QAM_2_3 << std::endl;
         set_encoding(QAM64_2_3);
       } else if (d_snr >= MIN_SNR_16QAM_3_4) {
-        dout << "16QAM 3/4. Min SNR: " << MIN_SNR_16QAM_3_4 << std::endl;
         set_encoding(QAM16_3_4);
       } else if (d_snr >= MIN_SNR_16QAM_1_2) {
-        dout << "16QAM 1/2. Min SNR: " << MIN_SNR_16QAM_1_2 << std::endl;
         set_encoding(QAM16_1_2);
       } else if (d_snr >= MIN_SNR_QPSK_3_4) {
-        dout << "QPSK 3/4. Min SNR: " << MIN_SNR_QPSK_3_4 << std::endl;
         set_encoding(QPSK_3_4);
       } else if (d_snr >= MIN_SNR_QPSK_1_2) {
-        dout << "QPSK 1/2. Min SNR: " << MIN_SNR_QPSK_1_2 << std::endl;
         set_encoding(QPSK_1_2);
       } else if (d_snr >= MIN_SNR_BPSK_3_4) {
-        dout << "BPSK 3/4. Min SNR: " << MIN_SNR_BPSK_3_4 << std::endl;
         set_encoding(BPSK_3_4);
       } else {
-        dout << "BPSK 1/2. Minimun modulation." << std::endl;
         set_encoding(BPSK_1_2);
       }
     }
@@ -689,6 +692,12 @@ namespace gr {
       pthread_mutex_lock(&d_mutex);
       d_encoding = encoding;
       pthread_mutex_unlock(&d_mutex);
+
+      if (d_debug) {
+        ofdm_param ofdm((Encoding) encoding);
+        std::cout << "MAC_&_PARSE: set encoding\n";
+        ofdm.print();
+      }
     }
   }
 }

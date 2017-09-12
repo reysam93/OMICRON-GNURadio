@@ -96,12 +96,34 @@ namespace gr {
     }
 
     /*** MAC implementation ***/
+    void
+    mac_and_parse_impl::reset_encoding(ofdm_param ofdm) {
+      std::vector<int> encoding(4, BPSK);
+      int punct = P_3_4;
+
+      if (ofdm.punct == P_3_4) {
+        set_encoding(ofdm.resource_blocks_e, P_1_2);
+        return;
+      } 
+
+      for (int i = 0; i < ofdm.resource_blocks_e.size(); i++) {
+        if (ofdm.resource_blocks_e[i] == BPSK) {
+          encoding[i] = BPSK;
+          punct = P_1_2;
+        } else {
+          encoding[i] = ofdm.resource_blocks_e[i] - 1;
+        }
+      }
+      set_encoding(encoding, punct);
+    }
+
     void 
     mac_and_parse_impl::ack_timeout(sigval_t sigval) {
       mac_and_parse_impl* self = (mac_and_parse_impl*) sigval.sival_ptr;
       timer_t timerid = NULL;
 
       pthread_mutex_lock(&self->d_mutex);
+      ofdm_param ofdm = self->d_ofdm;
       if (!self->d_timerid_queue.empty()) {
         timerid = self->d_timerid_queue.front();
         self->d_timerid_queue.pop();
@@ -117,12 +139,15 @@ namespace gr {
       if (self->d_debug) 
         std::cout << "\t\t\tMAC_&_PARSE: TIMEOUT: no ACK received.\n" << std::endl;
       
-      std::vector<int> encoding(4, BPSK);
-      self->set_encoding(encoding, P_1_2);
+      self->reset_encoding(ofdm);
       
       if (timer_delete(timerid) < 0) {
         throw std::runtime_error("error deleting timer");
       }
+
+      timeval time_now;
+      gettimeofday(&time_now, NULL);
+//      std::cerr << "\t\t\t\tMAC_&_PARSE: TIMEOUT. ACK NOT RECEIVED: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";
     }
 
     void
@@ -196,6 +221,11 @@ namespace gr {
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
       pthread_mutex_lock(&d_mutex);
       send_message(psdu_length, d_ofdm);
+
+      timeval time_now;
+      gettimeofday(&time_now, NULL);
+//      std::cerr << "MAC_&_PARSE: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";
+
       pthread_mutex_unlock(&d_mutex);
       set_timeout();
 
@@ -340,6 +370,13 @@ namespace gr {
           generate_mac_ack_frame(h->addr2, &psdu_length);
           //needs to wait 10 usecs before sending ack.
           usleep(SIFS);
+
+
+          timeval time_now;
+          gettimeofday(&time_now, NULL);
+//          std::cerr << "\t\tMAC_&_PARSE: data message received and processed: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";
+          
+
           send_message(psdu_length, ofdm_param(std::vector<int>(4, BPSK), P_1_2));
           
           if(rx_packets_fn != ""){
@@ -563,6 +600,11 @@ namespace gr {
         throw std::runtime_error("error deleting timer");
       }
       dout << ": Timer deleted.\n";
+
+      timeval time_now;
+      gettimeofday(&time_now, NULL);
+//      std::cerr << "\t\t\t\tMAC_&_PARSE: ACK RECEIVED: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";
+
     }
 
     void
