@@ -29,9 +29,17 @@ class base {
 public:
 	virtual ~base() {};
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) = 0;
-	virtual double get_snr() = 0;
 
 	static const gr_complex POLARITY[127];
+	bool isPilot(int carrier);
+	void stimate_channel_state(gr_complex *in);
+	double get_snr();
+	double get_snr_min();
+
+
+	gr_complex d_H[64];
+	double d_snr;
+    double d_snr_min;
 
 protected:
 	static const gr_complex LONG[64];

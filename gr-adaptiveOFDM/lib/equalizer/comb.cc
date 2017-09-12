@@ -70,8 +70,3 @@ void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, b
 		}
 	}
 }
-
-double
-comb::get_snr() {
-	return 42;
-}

@@ -27,25 +27,12 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 
 	} else if(n == 1) {
-		double signal = 0;
-		double noise = 0;
-		for(int i = 0; i < 64; i++) {
-			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
-			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
-		}
-
-		d_snr = 10 * std::log10(signal / noise / 2);
-
-		for(int i = 0; i < 64; i++) {
-			d_H[i] += in[i];
-			d_H[i] /= LONG[i] * gr_complex(2, 0);
-		}
-
+		base::stimate_channel_state(in);
 	} else {
 
 		int c = 0;
 		for(int i = 0; i < 64; i++) {
-			if( (i == 11) || (i == 25) || (i == 32) || (i == 39) || (i == 53) || (i < 6) || ( i > 58)) {
+			if(base::isPilot(i)){
 				continue;
 			} else {
 				symbols[c] = in[i] / d_H[i];
@@ -54,8 +41,4 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 			}
 		}
 	}
-}
-
-double ls::get_snr() {
-	return d_snr;
 }
