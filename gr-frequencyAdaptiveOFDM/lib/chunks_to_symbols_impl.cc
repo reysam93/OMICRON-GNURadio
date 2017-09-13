@@ -85,7 +85,6 @@ namespace gr {
       }
 
       if (!encoding_found | !punct_found) {
-          std::cerr << "ENC: " << encoding_found << " PUNCT: " << punct_found << "\n";
           throw std::runtime_error("no encoding or puncturing in input stream");
       }
 

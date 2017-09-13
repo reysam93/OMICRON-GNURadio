@@ -695,8 +695,8 @@ namespace gr {
 
       if (d_debug) {
         ofdm_param ofdm((Encoding) encoding);
-        std::cout << "MAC_&_PARSE: set encoding\n";
-        ofdm.print();
+        std::cout << "MAC_&_PARSE: ";
+        ofdm.print_encoding();
       }
     }
   }

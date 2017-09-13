@@ -66,6 +66,7 @@ public:
 	int      n_dbps;
 
 	void print();
+	void print_encoding();
 };
 
 /**

@@ -27,7 +27,7 @@ void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 
 	} else if(n == 1) {
-		stimate_channel_state(in);
+		estimate_channel_state(in);
 	} else {
 
 		gr_complex H_update[64];

@@ -50,14 +50,18 @@ base::isPilot(int carrier){
 }
 
 void
-base::stimate_channel_state(gr_complex *in){
+base::estimate_channel_state(gr_complex *in){
 	double signal = 0;
 	double noise = 0;
 	double snr_inst = 0;
 	double noise_inst = 0;
 	double signal_inst = 0;
 	d_snr_min = 10000;
+
 	for(int i = 0; i < 64; i++) {
+		if (i == 32 || i < 6 || i > 58) {
+			continue;
+		}
 		noise_inst = std::pow(std::abs(d_H[i] - in[i]), 2);
 		signal_inst = std::pow(std::abs(d_H[i] + in[i]), 2);
 		noise += noise_inst;

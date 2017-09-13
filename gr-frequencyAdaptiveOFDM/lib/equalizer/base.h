@@ -44,7 +44,7 @@ protected:
 	gr_complex d_H[64];
 
 	int rb_index_from_carrier(int n_carrier);
-	void stimate_channel_state(gr_complex *in);
+	void estimate_channel_state(gr_complex *in);
 };
 
 } /* namespace channel_estimation */

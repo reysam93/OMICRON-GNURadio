@@ -27,7 +27,7 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 	} else if(n == 1) {
-		stimate_channel_state(in);
+		estimate_channel_state(in);
 	} else {
 		int c = 0;
 		for(int i = 0; i < 64; i++) {

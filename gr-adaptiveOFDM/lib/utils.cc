@@ -85,11 +85,8 @@ ofdm_param::ofdm_param(Encoding e) {
 	}
 }
 
-
 void
-ofdm_param::print() {
-	std::cout << "OFDM Parameters:" << std::endl;
-
+ofdm_param::print_encoding() {
 	std::string enc_str;
 	switch(encoding) {
 		case BPSK_1_2:
@@ -119,7 +116,13 @@ ofdm_param::print() {
 		default:
 			enc_str = "Unknown encoding.";
 	}
-	std::cout << "endcoding:" << enc_str << std::endl;
+	std::cout << "Endcoding: " << enc_str << std::endl;
+}
+
+void
+ofdm_param::print() {
+	std::cout << "OFDM Parameters:" << std::endl;
+	print_encoding();
 	std::cout << "rate_field:" << (int)rate_field << std::endl;
 	std::cout << "n_bpsc: " << n_bpsc << std::endl;
 	std::cout << "n_cbps: " << n_cbps << std::endl;

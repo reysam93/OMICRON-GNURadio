@@ -32,7 +32,7 @@ public:
 
 	static const gr_complex POLARITY[127];
 	bool isPilot(int carrier);
-	void stimate_channel_state(gr_complex *in);
+	void estimate_channel_state(gr_complex *in);
 	double get_snr();
 	double get_snr_min();
 

@@ -47,7 +47,7 @@ base::rb_index_from_carrier(int n_carrier) {
 }
 
 void
-base::stimate_channel_state(gr_complex *in) {
+base::estimate_channel_state(gr_complex *in) {
 	std::vector<double> rb_signal = std::vector<double>(4,0);
 	std::vector<double> rb_noise = std::vector<double>(4,0);
 	double signal, noise, carrier_snr = 0;
