@@ -1,7 +1,6 @@
 /* -*- c++ -*- */
 /* 
  * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
- *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,21 +23,27 @@
 #define INCLUDED_FREQUENCYADAPTIVEOFDM_MAC_AND_PARSE_H
 
 #include <frequencyAdaptiveOFDM/api.h>
-#include <gnuradio/block.h>
-#include <unistd.h>
-#include <signal.h>
-#include <time.h>
-
+#include <gnuradio/hier_block2.h>
 #include "utils.h"
 
+/*
+  Possible useful debugs:
+    - ACK debug
+    - Delay debug
+
+
+  Current debug (under d_debgug):
+    - Rx message headers
+    - Rx mssage content
+    - Estimated SNR
+    - Encoding used for Tx
+    - ACKs info
+*/
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
-    class FREQUENCYADAPTIVEOFDM_API mac_and_parse : virtual public block
-    {
-     public:
-       /* 
+    /* 
         * Min SNR has been calculated considering a maximum bit error rate probability
         * of 0.001 and using the approximation:
         *
@@ -52,14 +57,23 @@ namespace gr {
         // static const float MIN_SNR_16QAM = 52.983173665480365;
         // static const float MIN_SNR_64QAM = 222.52932939501753;
 
-        // This limits have been selected experimentally
+        /*// This limits have been selected experimentally
         static const float MIN_SNR_BPSK_3_4 = 6.0;
         static const float MIN_SNR_QPSK_1_2 = 7.5;
         static const float MIN_SNR_QPSK_3_4 = 9.5;
         static const float MIN_SNR_16QAM_1_2 = 16;
         static const float MIN_SNR_16QAM_3_4 = 19;
         static const float MIN_SNR_64QAM_1_2 = 26;
-        static const float MIN_SNR_64QAM_3_4 = 30;
+        static const float MIN_SNR_64QAM_3_4 = 30;*/
+
+        // This limits have been selected experimentally for PER < 5%
+        static const float MIN_SNR_BPSK_3_4 = 4.5;
+        static const float MIN_SNR_QPSK_1_2 = 6;
+        static const float MIN_SNR_QPSK_3_4 = 8.75;
+        static const float MIN_SNR_16QAM_1_2 = 13.75;
+        static const float MIN_SNR_16QAM_3_4 = 15.75;
+        static const float MIN_SNR_64QAM_1_2 = 18;
+        static const float MIN_SNR_64QAM_3_4 = 20;
 
         // Time in usecs
         // SLOT_TIME value may be 9 or 20 usecs
@@ -67,18 +81,31 @@ namespace gr {
         static const unsigned int SIFS = 10;
         static const unsigned int TIMEOUT = 50*600;
 
-        typedef boost::shared_ptr<mac_and_parse> sptr;
+        static const int N_RB = 4;
+        
+    class FREQUENCYADAPTIVEOFDM_API mac_and_parse : virtual public gr::hier_block2
+    {
+     public:
+      typedef boost::shared_ptr<mac_and_parse> sptr;
 
-        static sptr make(std::vector<uint8_t> src_mac,
+      static sptr make(std::vector<uint8_t> src_mac,
                           std::vector<uint8_t> dst_mac,
                           std::vector<uint8_t> bss_mac,
-                          bool log, 
                           bool debug,
                           char* tx_packets_f,
                           char* rx_packets_f);
-      
-        pthread_mutex_t d_mutex;
-      };
+
+      virtual std::vector<int> getEncoding() = 0;
+      virtual int getPuncturing() = 0;
+      virtual void setEncoding(std::vector<int> pilots_enc, int puncturing) = 0;
+      virtual bool getAckReceived() = 0;
+      virtual void setAckReceived(bool received) = 0;
+
+      virtual void sendAck(uint8_t ra[], int *psdu_size) = 0;
+      virtual void decrease_encoding() = 0;
+
+      bool check_mac(std::vector<uint8_t> mac);
+    };
 
   } // namespace frequencyAdaptiveOFDM
 } // namespace gr

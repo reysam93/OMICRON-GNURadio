@@ -20,9 +20,9 @@
 install(FILES
     adaptiveOFDM_adaptive_ofdm_tx_bc.xml
     adaptiveOFDM_adaptive_ofdm_rx_cb.xml
-    adaptiveOFDM_parse_mac.xml
+    #adaptiveOFDM_parse_mac.xml
     adaptiveOFDM_stream_spacer.xml
-    adaptiveOFDM_mac.xml
+    #adaptiveOFDM_mac.xml
     adaptiveOFDM_mac_and_parse.xml
     adaptiveOFDM_write_frame_data.xml
     adaptiveOFDM_frame_equalizer.xml 

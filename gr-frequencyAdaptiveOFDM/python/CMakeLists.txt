@@ -33,8 +33,7 @@ GR_PYTHON_INSTALL(
     __init__.py
     rb_const_demux_stream.py
     display_rate_file.py
-    write_frame_data.py
-    DESTINATION ${GR_PYTHON_DIR}/frequencyAdaptiveOFDM
+    write_frame_data.py DESTINATION ${GR_PYTHON_DIR}/frequencyAdaptiveOFDM
 )
 
 ########################################################################

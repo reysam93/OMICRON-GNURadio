@@ -16,8 +16,10 @@
 #include "frequencyAdaptiveOFDM/constellations.h"
 #include "frequencyAdaptiveOFDM/frame_equalizer.h"
 #include "frequencyAdaptiveOFDM/decode_mac.h"
-#include "frequencyAdaptiveOFDM/mac_and_parse.h"
+#include "frequencyAdaptiveOFDM/mac.h"
+#include "frequencyAdaptiveOFDM/parse_mac.h"
 #include "frequencyAdaptiveOFDM/rb_const_demux.h"
+#include "frequencyAdaptiveOFDM/mac_and_parse.h"
 %}
 
 %include "gnuradio/digital/packet_header_default.h"
@@ -51,26 +53,13 @@ constellation_bpsk_sptr.__repr__ = lambda self: "<constellation BPSK>"
 constellation_bpsk = constellation_bpsk.make;
 %}
 
-%template(constellation_qpsk_sptr) boost::shared_ptr<gr::frequencyAdaptiveOFDM::constellation_qpsk>;
-%pythoncode %{
-constellation_qpsk_sptr.__repr__ = lambda self: "<constellation QPSK>"
-constellation_qpsk = constellation_qpsk.make;
-%}
-
-%template(constellation_16qam_sptr) boost::shared_ptr<gr::frequencyAdaptiveOFDM::constellation_16qam>;
-%pythoncode %{
-constellation_16qam_sptr.__repr__ = lambda self: "<constellation 16QAM>"
-constellation_16qam = constellation_16qam.make;
-%}
-
-%template(constellation_64qam_sptr) boost::shared_ptr<gr::frequencyAdaptiveOFDM::constellation_64qam>;
-%pythoncode %{
-constellation_64qam_sptr.__repr__ = lambda self: "<constellation 64QAM>"
-constellation_64qam = constellation_64qam.make;
-%}
 
 
-%include "frequencyAdaptiveOFDM/mac_and_parse.h"
-GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, mac_and_parse);
+%include "frequencyAdaptiveOFDM/mac.h"
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, mac);
+%include "frequencyAdaptiveOFDM/parse_mac.h"
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, parse_mac);
 %include "frequencyAdaptiveOFDM/rb_const_demux.h"
 GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, rb_const_demux);
+%include "frequencyAdaptiveOFDM/mac_and_parse.h"
+GR_SWIG_BLOCK_MAGIC2(frequencyAdaptiveOFDM, mac_and_parse);

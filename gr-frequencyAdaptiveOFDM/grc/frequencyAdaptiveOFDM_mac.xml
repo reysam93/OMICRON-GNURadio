@@ -1,10 +1,16 @@
 <?xml version="1.0"?>
 <block>
-  <name>WiFi MAC / Parse MAC</name>
-  <key>adaptiveOFDM_mac_and_parse</key>
-  <category>[Time Adaptive OFDM]</category>
-  <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f, $rx_packets_f)</make>
+  <name>WiFi MAC</name>
+  <key>frequencyAdaptiveOFDM_mac</key>
+  <category>[Frequency Adaptive OFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <make>frequencyAdaptiveOFDM.mac($m_and_p, $src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f)</make>
+
+  <param>
+    <name>MAC &amp; Parse pointer</name>
+    <key>m_and_p</key>
+    <type>mac_and_parse</type>
+  </param>
 
   <param>
     <name>SRC MAC</name>
@@ -49,13 +55,6 @@
     <type>string</type>
   </param>
 
-  <param>
-    <name># Rx Packets File</name>
-    <key>rx_packets_f</key>
-    <value>/tmp/rx_packets.csv</value>
-    <type>string</type>
-  </param>
-
   <check>len($src_mac) == 6</check>
   <check>len($dst_mac) == 6</check>
   <check>len($bss_mac) == 6</check>
@@ -63,35 +62,12 @@
   <check>all([x >= 0 and 255 >= x for x in $dst_mac])</check>
   <check>all([x >= 0 and 255 >= x for x in $bss_mac])</check>
 
+
   <sink>
     <name>app in</name>
     <type>message</type>
     <optional>1</optional>
   </sink>
-
-  <sink>
-    <name>phy in</name>
-    <type>message</type>
-    <optional>1</optional>
-  </sink>
-
-  <source>
-    <name>app out</name>
-    <type>message</type>
-    <optional>1</optional>
-  </source>
-
-  <source>
-    <name>fer</name>
-    <type>message</type>
-    <optional>1</optional>
-  </source>
-
-  <source>
-    <name>frame data</name>
-    <type>message</type>
-    <optional>1</optional>
-  </source>
 
   <source>
     <name>phy out</name>

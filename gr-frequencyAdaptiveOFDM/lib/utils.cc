@@ -21,6 +21,24 @@
 #include <cstring>
 #include <math.h>
 
+
+/*ofdm_param::ofdm_param() {
+	resource_blocks_e = std::vector<int>(4, BPSK);
+	punct = P_1_2;
+	n_dbps = 0;
+ 
+	for (int i = 0; i < 4; i++) {
+		n_bpcrb[i] = 1;
+		n_bpsc += 1;
+		n_cbps += 12;
+		n_dbprb[i] = 6;
+		n_dbps += 6;		
+	}
+
+	// Mean of the four resource blocks
+	n_bpsc = n_bpsc / 4;
+}*/
+
 ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 	resource_blocks_e = pilots_enc;
 	punct = puncturing;

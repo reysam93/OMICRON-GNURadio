@@ -40,7 +40,7 @@
 #include <stdexcept>
 
 namespace gr {
-  namespace adaptiveOFDM {
+  namespace frequencyAdaptiveOFDM {
 
     mac::sptr
     mac::make(void* m_and_p, std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac,
@@ -75,7 +75,7 @@ namespace gr {
       tx_packets_fn = tx_packets_f;
 
       if (d_debug) {
-        ofdm_param ofdm(d_mac_and_parse->getEncoding());
+        ofdm_param ofdm(d_mac_and_parse->getEncoding(), d_mac_and_parse->getPuncturing());
         ofdm.print();
       }
 
@@ -122,7 +122,8 @@ namespace gr {
       }
       pthread_mutex_lock(&d_mutex);
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
-      send_message(psdu_length, d_mac_and_parse->getEncoding());
+      ofdm_param ofdm(d_mac_and_parse->getEncoding(), d_mac_and_parse->getPuncturing());
+      send_message(psdu_length, ofdm);
       pthread_mutex_unlock(&d_mutex);
 
       // Study delays 
@@ -150,17 +151,19 @@ namespace gr {
     mac_impl::sendAck(uint8_t ra[], int *psdu_size) {
       pthread_mutex_lock(&d_mutex);
       generate_mac_ack_frame(ra, psdu_size);
-      send_message(*psdu_size, BPSK_1_2);
+      send_message(*psdu_size, ofdm_param(std::vector<int>(N_RB, BPSK), P_1_2));
       pthread_mutex_unlock(&d_mutex);
     }
 
     void
-    mac_impl::send_message(int psdu_length, int enc) {
+    mac_impl::send_message(int psdu_length, ofdm_param ofdm) {
       // dict
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
-      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(enc));
-      
+      pmt::pmt_t encoding = pmt::init_s32vector(4, ofdm.resource_blocks_e);
+      dict = pmt::dict_add(dict, pmt::mp("encoding"), encoding);
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(ofdm.punct));
+
       // blob
       pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
 
@@ -225,6 +228,6 @@ namespace gr {
       // Plus 4bytes of FCS
       *psdu_size += 4;
     }
-  } /* namespace adaptiveOFDM */
+  } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
 

@@ -39,8 +39,9 @@
 #include <fstream>
 #include <stdexcept>
 
+
 namespace gr {
-  namespace adaptiveOFDM {
+  namespace frequencyAdaptiveOFDM {
 
     parse_mac::sptr
     parse_mac::make(void*  m_and_p, std::vector<uint8_t> src_mac, bool debug, char* rx_packets_f) {
@@ -88,7 +89,7 @@ namespace gr {
       }
 
       pmt::pmt_t dict = pmt::car(msg);
-      d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+      d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
       msg = pmt::cdr(msg);
 
       int data_len = pmt::blob_length(msg);
@@ -147,10 +148,12 @@ namespace gr {
 
     void
     parse_mac_impl::send_frame_data() {
+      ofdm_param ofdm(d_mac_and_parse->getEncoding(), d_mac_and_parse->getPuncturing());
+
       pmt::pmt_t dict = pmt::make_dict();
-      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
-      int enc = d_mac_and_parse->getEncoding();
-      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(enc));
+      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(N_RB, d_snr));
+      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(N_RB, ofdm.resource_blocks_e));
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(ofdm.punct));
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
@@ -444,26 +447,44 @@ namespace gr {
 
     void
     parse_mac_impl::decide_encoding(){
-      dout << std::endl << "SNR: " << d_snr << std::endl;
-      
-      if (d_snr >= MIN_SNR_64QAM_3_4) {
-        d_mac_and_parse->setEncoding(QAM64_3_4);
-      } else if (d_snr >= MIN_SNR_64QAM_2_3) {
-        d_mac_and_parse->setEncoding(QAM64_2_3);
-      } else if (d_snr >= MIN_SNR_16QAM_3_4) {
-        d_mac_and_parse->setEncoding(QAM16_3_4);
-      } else if (d_snr >= MIN_SNR_16QAM_1_2) {
-        d_mac_and_parse->setEncoding(QAM16_1_2);
-      } else if (d_snr >= MIN_SNR_QPSK_3_4) {
-        d_mac_and_parse->setEncoding(QPSK_3_4);
-      } else if (d_snr >= MIN_SNR_QPSK_1_2) {
-        d_mac_and_parse->setEncoding(QPSK_1_2);
-      } else if (d_snr >= MIN_SNR_BPSK_3_4) {
-        d_mac_and_parse->setEncoding(BPSK_3_4);
-      } else {
-        d_mac_and_parse->setEncoding(BPSK_1_2);
+      std::vector<int> encoding(4, BPSK);
+      bool punct_3_4 = true;
+      int puncturing = P_1_2;
+
+      dout << std::endl;
+      for (int i = 0; i < 4; i++) {
+        dout << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
+
+        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {      
+          encoding[i] = QAM64;
+          if (d_snr[i] < MIN_SNR_64QAM_3_4) {
+            punct_3_4 = false;
+          }
+        } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
+          encoding[i] = QAM16;
+          if (d_snr[i] < MIN_SNR_16QAM_3_4) {
+            punct_3_4 = false;
+          }
+        }else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
+          encoding[i] = QPSK;
+          if (d_snr[i] < MIN_SNR_QPSK_3_4) {
+            punct_3_4 = false;
+          }
+        } else {
+          encoding[i] = BPSK;
+          if (d_snr[i] < MIN_SNR_BPSK_3_4) {
+            punct_3_4 = false;
+          }
+        }
       }
+      dout << std::endl;
+
+      if (punct_3_4) {
+        puncturing = punct_3_4;
+      }
+
+      d_mac_and_parse->setEncoding(encoding, puncturing);
     }
-  } /* namespace adaptiveOFDM */
+  } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
 

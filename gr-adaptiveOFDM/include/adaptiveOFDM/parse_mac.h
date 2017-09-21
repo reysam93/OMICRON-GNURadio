@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
- *                          Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
+ * Copyright (C) 2013, 2016 Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
+ *                          Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H
+#ifndef INCLUDED_ADAPTIVEOFD_PARSE_MAC_H
+#define INCLUDED_ADAPTIVEOFD_PARSE_MAC_H
 
 #include <adaptiveOFDM/api.h>
-#include <adaptiveOFDM/mapper.h>
 #include <gnuradio/block.h>
-
+#include <unistd.h>
 
 
 namespace gr {
@@ -30,11 +29,15 @@ namespace adaptiveOFDM {
 class ADAPTIVEOFDM_API parse_mac : virtual public block
 {
 public:
-	typedef boost::shared_ptr<parse_mac> sptr;
-	static sptr make(std::vector<uint8_t> mac, bool log = false, bool debug = false);
+  typedef boost::shared_ptr<parse_mac> sptr;
+
+   static sptr make(void*  m_and_p,
+   						std::vector<uint8_t> src_mac,
+   						bool debug,
+   						char* rx_packets_f); 
 };
 
-} // namespace adaptiveOFDM
-} // namespace gr
+}  // namespace adaptiveOFDM
+}  // namespace gr
 
-#endif /* INCLUDED_ADAPTIVEOFDM_PARSE_MAC_H */
+#endif /* INCLUDED_ADAPTIVEOFD_PARSE_MAC_H */

@@ -53,6 +53,7 @@ struct mac_ack_header {
  */
 class ofdm_param {
 public:
+	//ofdm_param();
 	ofdm_param(std::vector<int> pilots_enc, int puncturing);
 
 	// resource block encoding

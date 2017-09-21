@@ -1,7 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2016 Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
- *                 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
+ *                  Bastian Bloessl <bloessl@ccs-labs.org>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ADAPTIVEOFDM_MAC_IMPL_H
-#define INCLUDED_ADAPTIVEOFDM_MAC_IMPL_H
+#ifndef INCLUDED_FREQUENCYADAPTIVEOFDM_MAC_IMPL_H
+#define INCLUDED_FREQUENCYADAPTIVEOFDM_MAC_IMPL_H
 
-#include <adaptiveOFDM/mac_and_parse.h>
-#include <adaptiveOFDM/mac.h>
+#include <frequencyAdaptiveOFDM/mac_and_parse.h>
+#include <frequencyAdaptiveOFDM/mac.h>
 
 namespace gr {
-  namespace adaptiveOFDM {
+  namespace frequencyAdaptiveOFDM {
 
     class mac_impl : public mac
     {
@@ -58,12 +58,12 @@ namespace gr {
 
       void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
       void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);
-      void send_message(int psdu_length, int enc);      
+      void send_message(int psdu_length, ofdm_param ofdm);      
       void app_in (pmt::pmt_t msg);
     };
 
-  } // namespace adaptiveOFDM
+  } // namespace frequencyAdaptiveOFDM
 } // namespace gr
 
-#endif /* INCLUDED_ADAPTIVEOFDM_MAC_IMPL_H */
+#endif /* INCLUDED_FREQUENCYADAPTIVEOFDM_MAC_IMPL_H */
 

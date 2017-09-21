@@ -4,8 +4,14 @@
   <key>adaptiveOFDM_mac</key>
   <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.mac($src_mac, $dst_mac, $bss_mac)</make>
+  <make>adaptiveOFDM.mac($m_and_p, $src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f)</make>
   
+  <param>
+    <name>MAC &amp; Parse pointer</name>
+    <key>m_and_p</key>
+    <type>mac_and_parse</type>
+  </param>
+
   <param>
     <name>SRC MAC</name>
     <key>src_mac</key>
@@ -27,6 +33,28 @@
     <type>int_vector</type>
   </param>
 
+  <param>
+    <name>Debug</name>
+    <key>debug</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <param>
+    <name># Tx Packets File</name>
+    <key>tx_packets_f</key>
+    <value>/tmp/tx_packets.csv</value>
+    <type>string</type>
+  </param>
+
   <check>len($src_mac) == 6</check>
   <check>len($dst_mac) == 6</check>
   <check>len($bss_mac) == 6</check>
@@ -34,23 +62,12 @@
   <check>all([x >= 0 and 255 >= x for x in $dst_mac])</check>
   <check>all([x >= 0 and 255 >= x for x in $bss_mac])</check>
 
+
   <sink>
     <name>app in</name>
     <type>message</type>
     <optional>1</optional>
   </sink>
-
-  <sink>
-    <name>phy in</name>
-    <type>message</type>
-    <optional>1</optional>
-  </sink>
-
-  <source>
-    <name>app out</name>
-    <type>message</type>
-    <optional>1</optional>
-  </source>
 
   <source>
     <name>phy out</name>

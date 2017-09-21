@@ -19,15 +19,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
-#define INCLUDED_ADAPTIVEOFDM_PARSE_MAC_IMPL_H
+#ifndef INCLUDED_FREQUENCYADAPTIVEOFDM_PARSE_MAC_IMPL_H
+#define INCLUDED_FREQUENCYADAPTIVEOFDM_PARSE_MAC_IMPL_H
 
-#include <adaptiveOFDM/mac_and_parse.h>
-#include <adaptiveOFDM/parse_mac.h>
+#include <frequencyAdaptiveOFDM/mac_and_parse.h>
+#include <frequencyAdaptiveOFDM/parse_mac.h>
 
 
 namespace gr {
-  namespace adaptiveOFDM {
+  namespace frequencyAdaptiveOFDM {
 
     class parse_mac_impl : public parse_mac
     {
@@ -41,7 +41,7 @@ namespace gr {
     private:
       mac_and_parse*  d_mac_and_parse;
 
-      double d_snr;
+      std::vector<double> d_snr;
       uint8_t d_src_mac[6];
       int d_last_seq_no;
 
@@ -64,8 +64,8 @@ namespace gr {
       void phy_in (pmt::pmt_t msg);      
     };
 
-  } // namespace adaptiveOFDM
+  } // namespace frequencyAdaptiveOFDM
 } // namespace gr
 
-#endif /* INCLUDED_aDAPTIVEOFDM_PARSE_MAC_IMPL_H */
+#endif /* INCLUDED_FREQUENCYADAPTIVEOFDM_PARSE_MAC_IMPL_H */
 

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <block>
   <name>Parse MAC</name>
-  <key>adaptiveOFDM_parse_mac</key>
-  <category>[Time Adaptive OFDM]</category>
-  <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.parse_mac($m_and_p, $src_mac, $debug, $rx_packets_f)</make>
-  
-<param>
+  <key>frequencyAdaptiveOFDM_parse_mac</key>
+  <category>[Frequency Adaptive OFDM]</category>
+  <import>import frequencyAdaptiveOFDM</import>
+  <make>frequencyAdaptiveOFDM.parse_mac($m_and_p, $src_mac, $debug, $rx_packets_f)</make>
+
+  <param>
     <name>MAC &amp; Parse</name>
     <key>m_and_p</key>
     <type>mac_and_parse</type>
@@ -69,3 +69,4 @@
     <optional>1</optional>
   </source>
 </block>
+
