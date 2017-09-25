@@ -4,8 +4,9 @@
   <key>frequencyAdaptiveOFDM_mac_and_parse</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f, $rx_packets_f)</make>
-  
+  <make>frequencyAdaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $debug,
+                  $debug_ack, $debug_delay, $tx_packets_f, $rx_packets_f)</make>
+
   <param>
     <name>SRC MAC</name>
     <key>src_mac</key>
@@ -30,6 +31,36 @@
   <param>
     <name>Debug</name>
     <key>debug</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Debug ACKs</name>
+    <key>debug_ack</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Debug Delay</name>
+    <key>debug_delay</key>
     <value>False</value>
     <type>bool</type>
     <option>
