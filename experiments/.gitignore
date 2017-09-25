@@ -1,1 +1,6 @@
+*.pyc
 !display_info.py
+!display_per.py
+!display_snr.py
+!display_rate.py
+!display_delay.py
