@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -56,7 +56,7 @@ namespace gr {
         d_seq_nr(0),
         d_debug(debug) {
 
-      message_port_register_in(pmt::mp("app in"));    
+      message_port_register_in(pmt::mp("app in"));
       message_port_register_out(pmt::mp("phy out"));
       set_msg_handler(pmt::mp("app in"), boost::bind(&mac_impl::app_in, this, _1));
 
@@ -86,7 +86,7 @@ namespace gr {
       pthread_mutex_destroy(&d_mutex);
     }
 
-    void 
+    void
     mac_impl::app_in (pmt::pmt_t msg) {
       size_t       msg_len;
       const char   *msdu;
@@ -115,9 +115,13 @@ namespace gr {
 
       // make MAC frame
       int psdu_length;
-
       if (d_mac_and_parse->getAckReceived()) {
-        dout << "WARNING: MAC: ACK received after timeout!\n";
+        if (d_mac_and_parse->d_debug_ack){
+          timeval time_now;
+          gettimeofday(&time_now, NULL);
+          std::cout << "\t\tWARNING: MAC: ACK received after timeout: " <<
+          time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
+        }
         d_mac_and_parse->setAckReceived(false);
       }
       pthread_mutex_lock(&d_mutex);
@@ -126,14 +130,30 @@ namespace gr {
       send_message(psdu_length, ofdm);
       pthread_mutex_unlock(&d_mutex);
 
-      // Study delays 
+      if (d_mac_and_parse->d_debug_ack){
+        timeval time_now;
+        gettimeofday(&time_now, NULL);
+        std::cout << "MAC: Message sent: " <<
+        time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
+      }
+
+
+      // Study delays
       /*timeval time_now;
       gettimeofday(&time_now, NULL);
-      std::cerr << "MAC_&_PARSE: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
+      std::cerr << "MAC: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
 
       usleep(TIMEOUT);
       if (!d_mac_and_parse->getAckReceived()) {
-        dout << "\t\t\tWARNING: MAC: ACK NOT received after timeout\n";
+        if (d_mac_and_parse->d_debug_ack){
+          timeval time_now;
+          gettimeofday(&time_now, NULL);
+          std::cout << "\t\t\t\tWARNING: MAC: ACK NOT received after timeout: " <<
+          time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
+        }
+
+        /*gettimeofday(&time_now, NULL);
+        std::cerr << "MAC: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
         d_mac_and_parse->decrease_encoding();
       }else{
         d_mac_and_parse->setAckReceived(false);
@@ -230,4 +250,3 @@ namespace gr {
     }
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
-

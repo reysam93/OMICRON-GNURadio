@@ -1,17 +1,17 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -28,8 +28,8 @@
 
 /*
   Possible useful debugs:
-    - ACK debug
-    - Delay debug
+    - ACK debug -> with delay
+    - Delay for all (main) blocks!
 
 
   Current debug (under d_debgug):
@@ -43,7 +43,7 @@
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
-    /* 
+    /*
         * Min SNR has been calculated considering a maximum bit error rate probability
         * of 0.001 and using the approximation:
         *
@@ -82,7 +82,7 @@ namespace gr {
         static const unsigned int TIMEOUT = 50*600;
 
         static const int N_RB = 4;
-        
+
     class FREQUENCYADAPTIVEOFDM_API mac_and_parse : virtual public gr::hier_block2
     {
      public:
@@ -92,6 +92,8 @@ namespace gr {
                           std::vector<uint8_t> dst_mac,
                           std::vector<uint8_t> bss_mac,
                           bool debug,
+                          bool debug_ack,
+                          bool debug_delay,
                           char* tx_packets_f,
                           char* rx_packets_f);
 
@@ -105,10 +107,14 @@ namespace gr {
       virtual void decrease_encoding() = 0;
 
       bool check_mac(std::vector<uint8_t> mac);
+
+      // Debug
+      bool d_debug;
+      bool d_debug_ack;
+      bool d_debug_delay;
     };
 
   } // namespace frequencyAdaptiveOFDM
 } // namespace gr
 
 #endif /* INCLUDED_FREQUENCYADAPTIVEOFDM_MAC_AND_PARSE_H */
-

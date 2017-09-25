@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -65,6 +65,7 @@ namespace gr {
       d_mac_and_parse = m_and_p;
       n_rx_packets = 0;
       rx_packets_fn = rx_packets_f;
+      d_is_ack = false;
 
       for(int i = 0; i < 6; i++) {
         d_src_mac[i] = src_mac[i];
@@ -123,14 +124,15 @@ namespace gr {
           parse_data((char*)h, data_len);
           parse_body((char*)pmt::blob_data(msg), h, data_len);
           int psdu_length;
-          
+          d_is_ack = false;
+
           d_mac_and_parse->sendAck(h->addr2, &psdu_length);
 
           // Measuring delay
           /*timeval time_now;
           gettimeofday(&time_now, NULL);
-          std::cerr << "\t\tMAC_&_PARSE: data message received and processed: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
-                  
+          std::cerr << "\t\tPARSE: DATA message: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
+
           if(rx_packets_fn != ""){
             n_rx_packets++;
             std::fstream rx_packets_fs(rx_packets_fn, std::ofstream::out);
@@ -154,6 +156,7 @@ namespace gr {
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(N_RB, d_snr));
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(N_RB, ofdm.resource_blocks_e));
       dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(ofdm.punct));
+      dict = pmt::dict_add(dict, pmt::mp("is ack"), pmt::from_bool(d_is_ack));
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
@@ -338,6 +341,19 @@ namespace gr {
     parse_mac_impl::process_ack() {
       //dout << ": ACK received";
       d_mac_and_parse->setAckReceived(true);
+      d_is_ack = true;
+      if (d_mac_and_parse->d_debug_ack) {
+        dout << "\n";
+        timeval time_now;
+        gettimeofday(&time_now, NULL);
+        std::cout << "\t\tPARSE: ACK received: " <<
+        time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
+      }
+
+      // Measuring delay
+      /*timeval time_now;
+      gettimeofday(&time_now, NULL);
+      std::cerr << "\t\t\t\tPARSE: ACK message: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
     }
 
     void
@@ -455,7 +471,7 @@ namespace gr {
       for (int i = 0; i < 4; i++) {
         dout << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
 
-        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {      
+        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {
           encoding[i] = QAM64;
           if (d_snr[i] < MIN_SNR_64QAM_3_4) {
             punct_3_4 = false;
@@ -487,4 +503,3 @@ namespace gr {
     }
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
-
