@@ -92,9 +92,9 @@ public:
     bool check_mac(std::vector<uint8_t> mac);
 
      // Debug
-    d_debug;
-    d_debug_ack;
-    d_debug_delay;
+    bool d_debug;
+    bool d_debug_ack;
+    bool d_debug_delay;
 };
 
 }  // namespace adaptiveOFDM
