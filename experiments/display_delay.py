@@ -4,7 +4,7 @@ import sys
 import os
 
 
-def display_mean_delay(delay_f):
+def display_mean_delay(delay_f,verbose):
 	delays = delay_f.read().split("\n")[2:-1]
 	
 	if len(delays) == 0:
@@ -23,8 +23,9 @@ def display_mean_delay(delay_f):
 	mean_delay /= len(delays)
 
 	print("Mean WiFi frame delay (ms): {0:.2f}".format(mean_delay))
-	print("Max  WiFi frame delay (ms): {0:.2f}".format(max_delay))
-	print("Min  WiFi frame delay (ms): {0:.2f}".format(min_delay))
+	if verbose:
+		print("Max  WiFi frame delay (ms): {0:.2f}".format(max_delay))
+		print("Min  WiFi frame delay (ms): {0:.2f}".format(min_delay))
 
 
 
@@ -39,5 +40,5 @@ if __name__ == "__main__":
 		print ("I/O error: {0}").format(e)
 		sys.exit(-1)
 
-	display_mean_delay(frame_delay_f)
+	display_mean_delay(frame_delay_f,True)
 	frame_delay_f.close()
