@@ -58,8 +58,8 @@ namespace adaptiveOFDM {
   static const float MIN_SNR_QPSK_3_4 = 8.75;
   static const float MIN_SNR_16QAM_1_2 = 13.75;
   static const float MIN_SNR_16QAM_3_4 = 15.75;
-  static const float MIN_SNR_64QAM_1_2 = 23;//18;
-        static const float MIN_SNR_64QAM_3_4 = 26;//20;
+  static const float MIN_SNR_64QAM_2_3 = 23;//18;
+  static const float MIN_SNR_64QAM_3_4 = 26;//20;
 
   // Time in usecs
   // SLOT_TIME value may be 9 or 20 usecs
