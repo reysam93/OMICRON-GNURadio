@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
 	if options.delay:
 		if options.time:
-			f = openDataFile(options.path+prefix+"_wifi_frame_delay"+filetype+".csv")
+			f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
 			if f != None:
 				display_mean_delay(f,verbose)
 		print("")
