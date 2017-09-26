@@ -4,7 +4,7 @@ import sys
 import os
 
 
-def display_mean_SNR(snr_f):
+def display_mean_SNR(snr_f,verbose):
 	SNRs = snr_f.read().split("\n")[:-1]
 
 	if len(SNRs) == 0:
@@ -29,16 +29,18 @@ def display_mean_SNR(snr_f):
 		for i in range(len(mean_SNR)):
 			mean_SNR[i] /= len(SNRs)
 			print("Mean SNR RB {0} (dB): {1:.2f}".format(i, mean_SNR[i]))
-			print("Max  SNR RB {0} (dB): {1:.2f}".format(i, max_SNR[i]))
-			print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
+			if verbose:
+				print("Max  SNR RB {0} (dB): {1:.2f}".format(i, max_SNR[i]))
+				print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
 		
 		whole_mean_SNR = 0
 		for i in range(len(mean_SNR)):
 			whole_mean_SNR += mean_SNR[i]
 		whole_mean_SNR /= len(mean_SNR)
 		print("Whole Mean SNR (dB): {0:.2f}".format(whole_mean_SNR))
-		print("Whole Max  SNR (dB): {0:.2f}".format(max(max_SNR)))
-		print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
+		if verbose:
+			print("Whole Max  SNR (dB): {0:.2f}".format(max(max_SNR)))
+			print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
 	else:
 		mean_SNR = 0
 		min_SNR=100
@@ -53,8 +55,9 @@ def display_mean_SNR(snr_f):
 
 		mean_SNR /= len(SNRs)
 		print("Mean SNR (dB): {0:.2f}".format(mean_SNR))
-		print("Max  SNR (dB): {0:.2f}".format(max_SNR))
-		print("Min  SNR (dB): {0:.2f}".format(min_SNR))
+		if verbose:
+			print("Max  SNR (dB): {0:.2f}".format(max_SNR))
+			print("Min  SNR (dB): {0:.2f}".format(min_SNR))
 
 
 if __name__ == "__main__":
@@ -68,5 +71,5 @@ if __name__ == "__main__":
 		print ("I/O error: {0}").format(e)
 		sys.exit(-1)
 
-	display_mean_SNR(snr_f)
+	display_mean_SNR(snr_f,True)
 	snr_f.close()

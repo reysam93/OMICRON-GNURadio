@@ -16,10 +16,55 @@ class Encoding(Enum):
 	_64QAM_3_4 = 7
 
 
+def display_encoding_adaptative(encodings):
+	encodingPunct = [[],[]]
+	for encoding in encodings:
+		encodingAux = encoding.split(",")
+		encodingPunct[int(encoding[-1])].append(encodingAux[:-1])
+	
+	encodingTotal = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
+
+	for encoding in encodingPunct[0]:
+		for i, encodingrb in enumerate(encoding):
+			encodingrb = int(encodingrb)
+			if encodingrb == 0:
+				encodingTotal[i][0]+=1;
+			elif encodingrb == 1:
+				encodingTotal[i][2]+=1
+			elif encodingrb == 2:
+				encodingTotal[i][4]+=1
+			else:
+				encodingTotal[i][6]+=1
+
+	for encoding in encodingPunct[1]:
+		for i, encodingrb in enumerate(encoding):
+			encodingrb = int(encodingrb)
+			if encodingrb == 0:
+				encodingTotal[i][1]+=1;
+			elif encodingrb == 1:
+				encodingTotal[i][3]+=1
+			elif encodingrb == 2:
+				encodingTotal[i][5]+=1
+			else:
+				encodingTotal[i][7]+=1
+
+	for index,rb in enumerate(encodingTotal):
+		print("Resource Block {0}".format(index))
+		i= 0
+		for name, _ in Encoding.__members__.items():	
+			if rb[i] != 0:
+				encoding_percent = 100 * rb[i]/float(len(encodings))
+				print ("   {0}: {1:.2f}%".format(name[1:],encoding_percent))
+			i+=1	
+		print("")
 
 def display_encoding(encoding_f):
 	encodings = encoding_f.read()
 	encodings = encodings.split("\n")[2:-1]
+
+	if "," in encodings[0]:
+		display_encoding_adaptative(encodings)
+		sys.exit(0)
 
 	if len(encodings) == 0:
 		print("ERROR: encoding file is not correct")
@@ -35,6 +80,11 @@ def display_encoding(encoding_f):
 			encoding_percent = 100 * n_encoding[i]/float(len(encodings))
 			print ("{0}: {1:.2f}%".format(name[1:],encoding_percent))
 		i+=1	
+
+
+
+
+
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
