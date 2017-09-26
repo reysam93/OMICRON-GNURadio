@@ -50,6 +50,7 @@ if __name__ == "__main__":
 	else:
 		filetype = "rx"
 
+
 	if options.time:
 		prefix = "/time"
 	else:
