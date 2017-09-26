@@ -39,7 +39,7 @@
 namespace gr {
 namespace adaptiveOFDM {
 
-  /* 
+  /*
    * Min SNR has been calculated considering a maximum bit error rate probability
    * of 0.001 and using the approximation:
    *
@@ -58,8 +58,8 @@ namespace adaptiveOFDM {
   static const float MIN_SNR_QPSK_3_4 = 8.75;
   static const float MIN_SNR_16QAM_1_2 = 13.75;
   static const float MIN_SNR_16QAM_3_4 = 15.75;
-  static const float MIN_SNR_64QAM_2_3 = 18;
-  static const float MIN_SNR_64QAM_3_4 = 20;
+  static const float MIN_SNR_64QAM_1_2 = 23;//18;
+        static const float MIN_SNR_64QAM_3_4 = 26;//20;
 
   // Time in usecs
   // SLOT_TIME value may be 9 or 20 usecs
@@ -76,6 +76,8 @@ public:
                           std::vector<uint8_t> dst_mac,
                           std::vector<uint8_t> bss_mac,
                           bool debug,
+                          bool debug_ack,
+                          bool debug_delay,
                           char* tx_packets_f,
                           char* rx_packets_f);
 
@@ -87,7 +89,12 @@ public:
     virtual void sendAck(uint8_t ra[], int *psdu_size) = 0;
     virtual void decrease_encoding() = 0;
 
-     bool check_mac(std::vector<uint8_t> mac);
+    bool check_mac(std::vector<uint8_t> mac);
+
+     // Debug
+    d_debug;
+    d_debug_ack;
+    d_debug_delay;
 };
 
 }  // namespace adaptiveOFDM
