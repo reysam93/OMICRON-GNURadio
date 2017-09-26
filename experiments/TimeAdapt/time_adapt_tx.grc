@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.75</value>
+      <value>0.9</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -611,7 +611,7 @@
     </param>
     <param>
       <key>tx_packets_f</key>
-      <value>/tmp/time_tx_packets.csv</value>
+      <value>/tmp/time_packets_tx.csv</value>
     </param>
     <param>
       <key>bss_mac</key>
@@ -652,10 +652,6 @@
     <param>
       <key>id</key>
       <value>adaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -914,7 +910,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>10</value>
+      <value>29</value>
     </param>
   </block>
   <block>
@@ -1031,7 +1027,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1392,7 +1388,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
