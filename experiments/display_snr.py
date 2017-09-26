@@ -13,28 +13,48 @@ def display_mean_SNR(snr_f):
 
 	if SNRs[0].find(",") > 0:
 		mean_SNR = [0, 0, 0, 0]
+		max_SNR = [0, 0, 0, 0]
+		min_SNR = [100, 100 ,100 ,100]
 
 		for SNR in SNRs:
 			SNR_rbs = SNR.split(", ")
 			for i in range(len(SNR_rbs)):
-				mean_SNR[i] += float(SNR_rbs[i])
+				fSNR = float(SNR_rbs[i])
+				if fSNR>=max_SNR[i]:
+					max_SNR[i] = fSNR
+				if fSNR<=min_SNR[i]:
+					min_SNR[i] = fSNR	
+				mean_SNR[i] += fSNR
 
 		for i in range(len(mean_SNR)):
 			mean_SNR[i] /= len(SNRs)
-			print("Mean SNR RB {0} (dB): {1}".format(i, mean_SNR[i]))
+			print("Mean SNR RB {0} (dB): {1:.2f}".format(i, mean_SNR[i]))
+			print("Max  SNR RB {0} (dB): {1:.2f}".format(i, max_SNR[i]))
+			print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
 		
 		whole_mean_SNR = 0
 		for i in range(len(mean_SNR)):
 			whole_mean_SNR += mean_SNR[i]
 		whole_mean_SNR /= len(mean_SNR)
-		print("Whole Mean SNR (dB): {0}".format(whole_mean_SNR))
+		print("Whole Mean SNR (dB): {0:.2f}".format(whole_mean_SNR))
+		print("Whole Max  SNR (dB): {0:.2f}".format(max(max_SNR)))
+		print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
 	else:
 		mean_SNR = 0
+		min_SNR=100
+		max_SNR=0
 		for SNR in SNRs:
-			mean_SNR += float(SNR)
+			fSNR = float(SNR)
+			if fSNR>=max_SNR:
+				max_SNR = fSNR
+			if fSNR<=min_SNR:
+				min_SNR = fSNR	
+			mean_SNR += fSNR
 
 		mean_SNR /= len(SNRs)
-		print("Mean SNR (dB): {0}".format(mean_SNR))
+		print("Mean SNR (dB): {0:.2f}".format(mean_SNR))
+		print("Max  SNR (dB): {0:.2f}".format(max_SNR))
+		print("Min  SNR (dB): {0:.2f}".format(min_SNR))
 
 
 if __name__ == "__main__":

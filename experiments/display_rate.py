@@ -29,12 +29,12 @@ def display_mean_rate(rate_f):
 	for rate in rates:
 		mean_rate += float(rate)
 	mean_rate /= len(rates)
-	print("Mean rate (b/s): {0}".format(mean_rate))
+	print("Mean rate (b/s): {0:.2f}".format(mean_rate))
 
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
-		print("usage: ./display_info.py rate_file")
+		print("usage: ./display_rate.py rate_file")
 		sys.exit(-1)
 
 	try:	
