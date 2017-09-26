@@ -35,8 +35,6 @@ namespace gr {
                          std::vector<uint8_t> dst_mac,
                          std::vector<uint8_t> bss_mac,
                          bool debug,
-                         bool debug_ack,
-                         bool debug_delay,
                          char* tx_packets_f,
                          char* rx_packets_f);
       ~mac_and_parse_impl();
