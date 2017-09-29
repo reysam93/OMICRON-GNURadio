@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.75</value>
+      <value>0.9</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -654,10 +654,6 @@
       <value>adaptiveOFDM_mac_and_parse_0</value>
     </param>
     <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
       <key>maxoutbuf</key>
       <value>0</value>
     </param>
@@ -914,7 +910,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>10</value>
+      <value>30</value>
     </param>
   </block>
   <block>
@@ -4519,11 +4515,15 @@
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>0</value>
+      <value>True</value>
     </param>
     <param>
       <key>delay_file</key>
       <value>""</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>3</value>
     </param>
     <param>
       <key>frequency</key>
