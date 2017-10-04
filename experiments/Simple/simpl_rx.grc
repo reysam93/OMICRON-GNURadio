@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.75</value>
+      <value>0.9</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -607,7 +607,7 @@
     <key>adaptiveOFDM_mac_and_parse</key>
     <param>
       <key>rx_packets_f</key>
-      <value>/tmp/simple_rx_packets.csv</value>
+      <value>/tmp/simple_packets_rx.csv</value>
     </param>
     <param>
       <key>tx_packets_f</key>
@@ -654,10 +654,6 @@
       <value>adaptiveOFDM_mac_and_parse_0</value>
     </param>
     <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
       <key>maxoutbuf</key>
       <value>0</value>
     </param>
@@ -667,7 +663,7 @@
     </param>
     <param>
       <key>src_mac</key>
-      <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
+      <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
     </param>
   </block>
   <block>
@@ -694,11 +690,11 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/simple_encoding.csv</value>
+      <value>/tmp/simple_encoding_rx.csv</value>
     </param>
     <param>
       <key>delay_file</key>
-      <value>/tmp/simple_wifi_frame_delay.csv</value>
+      <value>/tmp/simple_wifi_frame_delay_rx.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -714,7 +710,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>/tmp/simple_snr.csv</value>
+      <value>/tmp/simple_snr_rx.csv</value>
     </param>
   </block>
   <block>
@@ -741,7 +737,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/simple_rx_data.txt</value>
+      <value>/tmp/simple_data_rx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1070,7 +1066,7 @@
     </param>
     <param>
       <key>debug</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>display_file</key>
@@ -1078,7 +1074,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1094,7 +1090,7 @@
     </param>
     <param>
       <key>read_file</key>
-      <value>/tmp/simple_rx_data.txt</value>
+      <value>/tmp/simple_data_rx.txt</value>
     </param>
   </block>
   <block>
@@ -2046,7 +2042,7 @@
     </param>
     <param>
       <key>ant0</key>
-      <value></value>
+      <value>"TX/RX"</value>
     </param>
     <param>
       <key>bw0</key>
@@ -2869,7 +2865,7 @@
     </param>
     <param>
       <key>ant0</key>
-      <value></value>
+      <value>"TX/RX"</value>
     </param>
     <param>
       <key>bw0</key>
@@ -4248,11 +4244,15 @@
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>0</value>
+      <value>True</value>
     </param>
     <param>
       <key>delay_file</key>
       <value>""</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>3</value>
     </param>
     <param>
       <key>frequency</key>
