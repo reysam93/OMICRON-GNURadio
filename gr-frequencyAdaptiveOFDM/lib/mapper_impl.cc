@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -49,7 +49,6 @@ namespace gr {
           d_ofdm(pilots_enc, P_1_2)
     {
       message_port_register_in(pmt::mp("in"));
-      
       if (d_debug_enc) {
         std::vector<int> enc;
         int punct;
@@ -58,7 +57,7 @@ namespace gr {
         pilots_enc.pop_back();
         enc = pilots_enc;
         d_ofdm = ofdm_param(enc, punct);
-      
+
         std::cout << "MAPPER DEBUG ENCODDING: ";
         d_ofdm.print_encoding();
       }
@@ -69,7 +68,7 @@ namespace gr {
       free(d_symbols);
     }
 
-    void 
+    void
     mapper_impl::print_message(const char *msg, size_t len) {
 
 
@@ -83,7 +82,7 @@ namespace gr {
       dout << std::dec << std::endl;
     }
 
-    int 
+    int
     mapper_impl::general_work(int noutput, gr_vector_int& ninput_items,
           gr_vector_const_void_star& input_items,
           gr_vector_void_star& output_items ) {
@@ -134,7 +133,6 @@ namespace gr {
           char *interleaved_data = (char*)calloc(frame.n_encoded_bits, sizeof(char));
           char *symbols          = (char*)calloc((frame.n_encoded_bits / ofdm.n_bpsc), sizeof(char));
 
-          
           //generate the WIFI data field, adding service field and pad bits
           generate_bits(psdu, data_bits, frame);
           if (d_log) {
@@ -227,4 +225,3 @@ namespace gr {
 
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
-

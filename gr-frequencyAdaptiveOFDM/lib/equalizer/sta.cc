@@ -22,7 +22,6 @@
 using namespace gr::frequencyAdaptiveOFDM::equalizer;
 
 void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]) {
-
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 

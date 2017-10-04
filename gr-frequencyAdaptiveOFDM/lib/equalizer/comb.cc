@@ -21,7 +21,6 @@
 using namespace gr::frequencyAdaptiveOFDM::equalizer;
 
 void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]) {
-
 	gr_complex pilot[4];
 
 	if(n < 2) {

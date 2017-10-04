@@ -28,7 +28,7 @@ class ADAPTIVEOFDM_API decode_mac : virtual public block
 public:
 
 	typedef boost::shared_ptr<decode_mac> sptr;
-	static sptr make(bool log, bool debug, bool debug_checksum);
+	static sptr make(bool log, bool debug, bool debug_rx_err);
 
 };
 

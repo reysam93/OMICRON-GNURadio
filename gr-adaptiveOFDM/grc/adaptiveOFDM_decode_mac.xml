@@ -5,7 +5,7 @@
 	<key>adaptiveOFDM_decode_mac</key>
 	<category>[Time Adaptive OFDM]</category>
 	<import>import adaptiveOFDM</import>
-	<make>adaptiveOFDM.decode_mac($log, $debug, $debug_checksum)</make>
+	<make>adaptiveOFDM.decode_mac($log, $debug, $debug_rx_err)</make>
 
 	<param>
 		<name>Log</name>
@@ -40,8 +40,8 @@
 	</param>
 
 	<param>
-    <name>Show Checksum Errors</name>
-    <key>debug_checksum</key>
+    <name>Debug Rx Errors</name>
+    <key>debug_rx_err</key>
     <value>False</value>
     <type>bool</type>
 

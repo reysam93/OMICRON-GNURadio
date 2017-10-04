@@ -26,13 +26,13 @@
 	resource_blocks_e = std::vector<int>(4, BPSK);
 	punct = P_1_2;
 	n_dbps = 0;
- 
+
 	for (int i = 0; i < 4; i++) {
 		n_bpcrb[i] = 1;
 		n_bpsc += 1;
 		n_cbps += 12;
 		n_dbprb[i] = 6;
-		n_dbps += 6;		
+		n_dbps += 6;
 	}
 
 	// Mean of the four resource blocks
@@ -49,8 +49,9 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 	if (punct != P_1_2 && punct != P_3_4) {
 		throw std::invalid_argument("OFDM_PARAM: wrong puncturing");
 	}
-	// Rate field will not be used. The header sends the codification of each resource blocks directly. 
-	// Each resource block have 12 carriers 
+
+	// Rate field will not be used. The header sends the codification of each resource blocks directly.
+	// Each resource block have 12 carriers
 	for (int i = 0; i < 4; i++) {
 		switch(pilots_enc[i]) {
 		case BPSK:
@@ -108,7 +109,7 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 				n_dbps += 54;
 			}
 			break;
-		
+
 		default:
 			std::cerr << "ERROR: encodin: " << pilots_enc[i] << "\n";
 			throw std::invalid_argument("OFDM_PARAM: wrong encoding");
@@ -198,6 +199,17 @@ frame_param::frame_param(ofdm_param &ofdm, int psdu_length) {
 
 	n_encoded_bits = n_sym * ofdm.n_cbps;
 }
+
+void
+frame_param::to_header_param() {
+	psdu_size = 0;
+	n_sym = 2;
+	n_data_bits = 48;
+	n_encoded_bits = 96;
+	n_pad = n_data_bits - 22; //number of bits used in the header
+	// Minimun 6 bits of padding needed
+}
+
 void
 frame_param::print() {
 	std::cout << std::endl;
@@ -208,7 +220,6 @@ frame_param::print() {
 	std::cout << "n_encoded_bits: " << n_encoded_bits << std::endl;
 	std::cout << "n_data_bits: " << n_data_bits << std::endl << std::endl;
 }
-
 
 void scramble(const char *in, char *out, frame_param &frame, char initial_state) {
     int state = initial_state;
@@ -221,11 +232,9 @@ void scramble(const char *in, char *out, frame_param &frame, char initial_state)
     }
 }
 
-
 void reset_tail_bits(char *scrambled_data, frame_param &frame) {
 	memset(scrambled_data + frame.n_data_bits - frame.n_pad - 6, 0, 6 * sizeof(char));
 }
-
 
 int ones(int n) {
 	int sum = 0;
@@ -237,7 +246,6 @@ int ones(int n) {
 	return sum;
 }
 
-
 void convolutional_encoding(const char *in, char *out, frame_param &frame) {
 	int state = 0;
 
@@ -248,7 +256,6 @@ void convolutional_encoding(const char *in, char *out, frame_param &frame) {
 		out[i * 2 + 1] = ones(state & 0117) % 2;
 	}
 }
-
 
 void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm) {
 	int mod;
@@ -272,7 +279,6 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 		}
 	}
 }
-
 
 void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm, bool reverse) {
 	int n_cbps = ofdm.n_cbps;
@@ -331,7 +337,7 @@ void generate_bits(const char *psdu, char *data_bits, frame_param &frame) {
 	}
 }
 
-void 
+void
 print_bytes(std::string tag, char bytes[], int size)
 {
     std::cout << tag << std::endl;

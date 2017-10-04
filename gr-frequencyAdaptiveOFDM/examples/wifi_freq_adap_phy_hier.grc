@@ -1330,7 +1330,7 @@
       <value>0</value>
     </param>
     <param>
-      <key>debug_checksum</key>
+      <key>debug_errors</key>
       <value>False</value>
     </param>
   </block>

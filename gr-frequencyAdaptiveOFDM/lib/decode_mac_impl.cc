@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2016 Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -34,22 +34,22 @@ namespace gr {
   namespace frequencyAdaptiveOFDM {
 
     decode_mac::sptr
-    decode_mac::make(bool log, bool debug, bool debug_checksum)
+    decode_mac::make(bool log, bool debug, bool debug_rx_err)
     {
       return gnuradio::get_initial_sptr
-        (new decode_mac_impl(log, debug, debug_checksum));
+        (new decode_mac_impl(log, debug, debug_rx_err));
     }
 
     /*
      * The private constructor
      */
-    decode_mac_impl::decode_mac_impl(bool log, bool debug, bool debug_checksum):
+    decode_mac_impl::decode_mac_impl(bool log, bool debug, bool debug_rx_err):
      block("decode_mac",
               gr::io_signature::make(1, 1, 48),
               gr::io_signature::make(0, 0, 0)),
       d_log(log),
       d_debug(debug),
-      d_debug_checksum(debug_checksum),
+      d_debug_rx_err(debug_rx_err),
       d_snr(std::vector<double>(4,0)),
       d_nom_freq(0.0),
       d_freq_offset(0.0),
@@ -73,7 +73,7 @@ namespace gr {
                        gr_vector_void_star &output_items)
     {
       const uint8_t *in = (const uint8_t*)input_items[0];
-
+      timeval time_now;
       int i = 0;
 
       std::vector<gr::tag_t> tags;
@@ -87,7 +87,9 @@ namespace gr {
 
         if(tags.size()) {
           if (d_frame_complete == false) {
-            dout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
+            if (d_debug || d_debug_rx_err) {
+              std::cout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
+            }
             dout << "Already copied " << copied << " out of " << d_frame.n_sym << " symbols of last frame" << std::endl;
           }
           d_frame_complete = false;
@@ -110,12 +112,12 @@ namespace gr {
             copied = 0;
 
             if (d_debug){
-              std::cout << "Decode MAC: frame start -- len " << len_data << std::endl;
+              std::cout << "DECODE_MAC: frame start -- len " << len_data << std::endl;
               d_frame.print();
               d_ofdm.print();
             }
           } else {
-            dout << "Dropping frame which is too large (symbols or bits)" << std::endl;
+            dout << "DECOE_MAC: Dropping frame which is too large (symbols or bits)" << std::endl;
           }
         }
 
@@ -132,17 +134,15 @@ namespace gr {
             break;
           }
         }
-
         in += 48;
         i++;
       }
-
       consume(0, i);
       return 0;
     }
 
 
-    void 
+    void
     decode_mac_impl::decode(){
       // Received symbols
       if (d_log) {
@@ -168,13 +168,12 @@ namespace gr {
       if (d_log) {
         print_bytes("DECODE_MAC: generated bits (without 0s at the head):", (char*)out_bytes, d_frame.psdu_size*8);
       }
-      //print_output();
 
       // skip service field
       boost::crc_32_type result;
       result.process_bytes(out_bytes + 2, d_frame.psdu_size);
       if(result.checksum() != 558161692) {
-        if (d_debug || d_debug_checksum){
+        if (d_debug || d_debug_rx_err){
           std::cout << "WARNING: DECODE MAC: checksum wrong -- dropping\n";
         }
         return;
@@ -194,7 +193,6 @@ namespace gr {
       message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
     }
 
-
     void
     decode_mac_impl::regroup_symbols(){
       int bpsc;
@@ -205,7 +203,7 @@ namespace gr {
         rb_index = d_ofdm.rb_index_from_symbols(i);
         if (rb_index < 0)
           throw std::invalid_argument("DECODE_MAC: wrong rb index");
-        
+
         bpsc = d_ofdm.n_bpcrb[rb_index];
         for(int k = 0; k < bpsc; k++) {
           d_rx_bits[regrouped] = !!(d_rx_symbols[i] & (1 << k));
@@ -237,7 +235,6 @@ namespace gr {
       }
     }
 
-
     void
     decode_mac_impl::print_output(){
       dout << std::endl;
@@ -258,7 +255,5 @@ namespace gr {
       }
       dout << std::endl;
     }
-
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
-

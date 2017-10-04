@@ -29,13 +29,13 @@ using namespace gr::adaptiveOFDM;
 class decode_mac_impl : public decode_mac {
 
 public:
-decode_mac_impl(bool log, bool debug, bool debug_checksum) :
+decode_mac_impl(bool log, bool debug, bool debug_rx_err) :
 	block("decode_mac",
 			gr::io_signature::make(1, 1, 48),
 			gr::io_signature::make(0, 0, 0)),
 	d_log(log),
 	d_debug(debug),
-	d_debug_checksum(debug_checksum),
+	d_debug_rx_err(debug_rx_err),
 	d_snr(0),
 	d_nom_freq(0.0),
 	d_freq_offset(0.0),
@@ -66,7 +66,9 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 		if(tags.size()) {
 			if (d_frame_complete == false) {
-				dout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
+				if (d_debug ||d_debug_rx_err) {
+					std::cout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
+				}
 				dout << "Already copied " << copied << " out of " << d_frame.n_sym << " symbols of last frame" << std::endl;
 			}
 			d_frame_complete = false;
@@ -135,7 +137,7 @@ void decode() {
 	boost::crc_32_type result;
 	result.process_bytes(out_bytes + 2, d_frame.psdu_size);
 	if(result.checksum() != 558161692) {
-		if (d_debug || d_debug_checksum){
+		if (d_debug || d_debug_rx_err){
 			std::cout << "WARNING: DECODE MAC: checksum wrong -- dropping\n";		
 		}
 		return;
@@ -227,7 +229,7 @@ void print_output() {
 private:
 	bool d_debug;
 	bool d_log;
-	bool d_debug_checksum;
+	bool d_debug_rx_err;
 
 	frame_param d_frame;
 	ofdm_param d_ofdm;
@@ -246,6 +248,6 @@ private:
 };
 
 decode_mac::sptr
-decode_mac::make(bool log, bool debug, bool debug_checksum) {
-	return gnuradio::get_initial_sptr(new decode_mac_impl(log, debug, debug_checksum));
+decode_mac::make(bool log, bool debug, bool debug_rx_err) {
+	return gnuradio::get_initial_sptr(new decode_mac_impl(log, debug, debug_rx_err));
 }

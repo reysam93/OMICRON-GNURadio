@@ -23,7 +23,6 @@
 using namespace gr::frequencyAdaptiveOFDM::equalizer;
 
 void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod[4]) {
-
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 	} else if(n == 1) {
@@ -50,7 +49,7 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 					bits[c] = mod[3]->decision_maker(&symbols[c]);
 					mod[3]->map_to_points(bits[c], &point);
 				}
-				
+
 				d_H[i] = gr_complex(1-alpha,0) * d_H[i] + gr_complex(alpha,0) * in[i] / point;
 				c++;
 			}

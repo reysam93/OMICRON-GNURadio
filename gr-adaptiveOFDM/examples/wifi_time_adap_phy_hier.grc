@@ -204,6 +204,10 @@
       <value></value>
     </param>
     <param>
+      <key>debug_rx_err</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>debug</key>
       <value>False</value>
     </param>
@@ -234,10 +238,6 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
-    </param>
-    <param>
-      <key>debug_checksum</key>
-      <value>False</value>
     </param>
   </block>
   <block>

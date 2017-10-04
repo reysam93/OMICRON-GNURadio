@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -140,9 +140,7 @@ namespace gr {
       gr_complex symbols[48];
       gr_complex current_symbol[64];
 
-      //dout << "FRAME EQUALIZER: input " << ninput_items[0] << "  output " << noutput_items << std::endl;
-
-      while((i < ninput_items[0]) && (o < noutput_items)) {        
+      while((i < ninput_items[0]) && (o < noutput_items)) {
         // delay in ms
         float delay;
         timeval time_now;
@@ -168,7 +166,7 @@ namespace gr {
         }
 
         // not interesting -> skip
-        if(d_current_symbol > (d_frame_symbols + 2)) {
+        if(d_current_symbol > (d_frame_symbols + 3)) {
           i++;
           continue;
         }
@@ -180,7 +178,7 @@ namespace gr {
           delay_fstream << d_current_symbol << ", " << delay << ", " << new_frame << "\n";
         }
         if(d_log){
-          std::cout << "OFDM symbol " << d_current_symbol << " delay: " << delay << " ms. New frame: " << new_frame << "\n"; 
+          std::cout << "OFDM symbol " << d_current_symbol << " delay: " << delay << " ms. New frame: " << new_frame << "\n";
         }
 
         std::memcpy(current_symbol, in + i*64, 64*sizeof(gr_complex));
@@ -233,19 +231,21 @@ namespace gr {
 
         // update estimate of residual frequency offset
         if(d_current_symbol >= 2) {
-
           double alpha = 0.1;
           d_er = (1-alpha) * d_er + alpha * er;
         }
 
+        int index = o;
+        if (d_current_symbol == 3){
+          index += 1;
+        }
         // do equalization
         d_equalizer->equalize(current_symbol, d_current_symbol,
-            symbols, out + o * 48, d_frame_mod);
+            symbols, out + index * 48, d_frame_mod);
 
         // signal field
-        if(d_current_symbol == 2) {
+        if(d_current_symbol == 3) {
           if(decode_signal_field(out + o * 48)) {
-
             if (d_debug){
               std::cout << "FRAME EQ: frame coding:\n";
               ofdm_param ofdm(d_frame_enc, d_frame_punct);
@@ -266,16 +266,14 @@ namespace gr {
                 pmt::string_to_symbol(alias()));
           }
         }
-        if(d_current_symbol > 2) {
+        if(d_current_symbol > 3) {
           o++;
           pmt::pmt_t pdu = pmt::make_dict();
           message_port_pub(pmt::mp("symbols"), pmt::cons(pmt::make_dict(), pmt::init_c32vector(48, symbols)));
         }
-
         i++;
         d_current_symbol++;
       }
-
       consume(0, i);
       return o;
     }
@@ -285,6 +283,7 @@ namespace gr {
       std::vector<int> resource_block_e (4, BPSK);
       static ofdm_param ofdm(resource_block_e, P_1_2);
       static frame_param frame(ofdm, 0);
+      frame.to_header_param();
 
       interleave((char*)rx_bits, (char*)d_deinterleaved, frame, ofdm, true);
       uint8_t *decoded_bits = d_decoder.decode(&ofdm, &frame, d_deinterleaved);
@@ -337,7 +336,7 @@ namespace gr {
 
       if(parity != decoded_bits[21]) {
         if (d_debug || d_debug_parity){
-          std::cout << "WARNING: FRAME EQUALIZER: wrong parity" << std::endl;
+          std::cout << "WARNING: FRAME EQUALIZER: wrong parity.\n";
         }
         return false;
       }
@@ -345,7 +344,6 @@ namespace gr {
       ofdm_param ofdm_received(d_frame_enc, d_frame_punct);
       frame_param frame_received(ofdm_received, d_frame_bytes);
       d_frame_symbols = frame_received.n_sym;
-
       return true;
     }
 
@@ -358,8 +356,5 @@ namespace gr {
        2, 5, 8,11,14,17,20,23,
       26,29,32,35,38,41,44,47
     };
-
-
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
-

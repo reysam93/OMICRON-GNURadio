@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2016 Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -35,7 +35,7 @@ namespace gr {
      private:
       bool d_debug;
       bool d_log;
-      bool d_debug_checksum;
+      bool d_debug_rx_err;
 
       frame_param d_frame;
       ofdm_param d_ofdm;
@@ -53,7 +53,7 @@ namespace gr {
       bool d_frame_complete;
 
      public:
-      decode_mac_impl(bool log, bool debug, bool debug_checksum);
+      decode_mac_impl(bool log, bool debug, bool debug_rx_err);
       ~decode_mac_impl();
 
 
@@ -72,4 +72,3 @@ namespace gr {
 } // namespace gr
 
 #endif /* INCLUDED_FREQUENCYADAPTIVEOFDM_DECODE_MAC_IMPL_H */
-

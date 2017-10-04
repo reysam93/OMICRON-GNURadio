@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2016 	Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -34,9 +34,9 @@ signal_field::make() {
 	return signal_field::sptr(new signal_field_impl());
 }
 
-signal_field::signal_field() : packet_header_default(48, "packet_len") {}
+signal_field::signal_field() : packet_header_default(48*2, "packet_len") {}
 
-signal_field_impl::signal_field_impl() : packet_header_default(48, "packet_len") {}
+signal_field_impl::signal_field_impl() : packet_header_default(48*2, "packet_len") {}
 
 signal_field_impl::~signal_field_impl() {}
 
@@ -45,18 +45,16 @@ int signal_field_impl::get_bit(int b, int i) {
 }
 
 void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm) {
-
 	//data bits of the signal header
-	char *signal_header = (char *) malloc(sizeof(char) * 24);
+	char *signal_header = (char *) malloc(sizeof(char) * 24 * 2);
 
 	//signal header after...
 	//convolutional encoding
-	char *encoded_signal_header = (char *) malloc(sizeof(char) * 48);
+	char *encoded_signal_header = (char *) malloc(sizeof(char) * 48 * 2);
 	//interleaving
-	char *interleaved_signal_header = (char *) malloc(sizeof(char) * 48);
+	char *interleaved_signal_header = (char *) malloc(sizeof(char) * 48 * 2);
 
 	int length = frame.psdu_size;
-
 
 	// first 8 bits represent the modulation of the 4 resource blocks
 	signal_header[ 0] = get_bit(ofdm.resource_blocks_e[0], 0);
@@ -67,10 +65,10 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	signal_header[ 5] = get_bit(ofdm.resource_blocks_e[2], 1);
 	signal_header[ 6] = get_bit(ofdm.resource_blocks_e[3], 0);
 	signal_header[ 7] = get_bit(ofdm.resource_blocks_e[3], 1);
-	
+
 	// 9th represent the puncturing used
 	signal_header[ 8] = get_bit(ofdm.punct, 0);
-	
+
 	// then 12 bits represent the length
 	signal_header[ 9] = get_bit(length,  0);
 	signal_header[10] = get_bit(length,  1);
@@ -94,16 +92,15 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	}
 	signal_header[21] = sum % 2;
 
-	
-
-	// last 2 bits must be set to 0
-	for (int i = 0; i < 2; i++) {
-		signal_header[22 + i] = 0;
+	// last 6 must be 0, so we need a whole new symbol
+	for (int i = 22; i < 48; i++) {
+		signal_header[i] = 0;
 	}
 
 	std::vector<int> resource_block_e (4, BPSK);
 	ofdm_param signal_ofdm(resource_block_e, P_1_2);
-	frame_param signal_param(signal_ofdm, 0);
+	frame_param signal_param (signal_ofdm, 0);
+	signal_param.to_header_param();
 
 	// convolutional encoding (scrambling is not needed)
 	convolutional_encoding(signal_header, encoded_signal_header, signal_param);
@@ -145,7 +142,6 @@ bool signal_field_impl::header_formatter(long packet_len, unsigned char *out, co
 
 	ofdm_param ofdm(encoding, puncturing);
 	frame_param frame(ofdm, len);
-
 	generate_signal_field((char*)out, frame, ofdm);
 	return true;
 }

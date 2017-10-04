@@ -330,7 +330,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>96000</value>
+      <value>96000*2</value>
     </param>
   </block>
   <block>
@@ -341,7 +341,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>500</value>
+      <value>1500</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -460,6 +460,33 @@
     </param>
   </block>
   <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1200, 404)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>variable_0</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>frequencyAdaptiveOFDM.BPSK</value>
+    </param>
+  </block>
+  <block>
     <key>adaptiveOFDM_stream_spacer</key>
     <param>
       <key>alias</key>
@@ -507,6 +534,68 @@
     </param>
   </block>
   <block>
+    <key>blocks_ctrlport_monitor</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>en</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1192, 236)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_ctrlport_monitor_0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_ctrlport_monitor_performance</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>en</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1312, 236)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_ctrlport_monitor_performance_0</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_file_sink</key>
     <param>
       <key>append</key>
@@ -530,7 +619,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/prueba_rx.txt</value>
+      <value>/tmp/freq_prueba_rx.txt</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -656,7 +745,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>20</value>
+      <value>30</value>
     </param>
   </block>
   <block>
@@ -726,7 +815,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -773,7 +862,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -820,7 +909,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -981,7 +1070,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1201,7 +1290,7 @@
     </param>
     <param>
       <key>display_file</key>
-      <value>/tmp/rate_freq_adap.txt</value>
+      <value>/tmp/freq_rate.csv</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1221,18 +1310,18 @@
     </param>
     <param>
       <key>read_file</key>
-      <value>/tmp/prueba_rx.txt</value>
+      <value>/tmp/freq_prueba_rx.txt</value>
     </param>
   </block>
   <block>
     <key>frequencyAdaptiveOFDM_mac_and_parse</key>
     <param>
       <key>rx_packets_f</key>
-      <value>/tmp/freq_rx_packets.csv</value>
+      <value>/tmp/freq_packets_rx.csv</value>
     </param>
     <param>
       <key>tx_packets_f</key>
-      <value>/tmp/freq_tx_packets.csv</value>
+      <value>/tmp/freq_packets_tx.csv</value>
     </param>
     <param>
       <key>bss_mac</key>
@@ -1255,12 +1344,20 @@
       <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
     </param>
     <param>
+      <key>debug_ack</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>debug_delay</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>debug</key>
       <value>False</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1273,10 +1370,6 @@
     <param>
       <key>id</key>
       <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1354,11 +1447,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/freq_encoding.csv</value>
+      <value>freq_encoding.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -1378,7 +1471,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>/tmp/freq_snr.csv</value>
+      <value>freq_snr.csv</value>
     </param>
   </block>
   <block>
@@ -1397,7 +1490,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1256, 20)</value>
+      <value>(1280, 20)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1432,7 +1525,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(760, 512)</value>
+      <value>(768, 520)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1846,7 +1939,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2085,7 +2178,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2436,7 +2529,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(560, 424)</value>
+      <value>(560, 416)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2460,7 +2553,7 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>debug_encoding</key>
@@ -2468,11 +2561,11 @@
     </param>
     <param>
       <key>delay_file</key>
-      <value>"/tmp/symbols_delay.csv"</value>
+      <value>""</value>
     </param>
     <param>
       <key>encoding</key>
-      <value>[0,0,0,0,0]</value>
+      <value>[1,1,1,1,0]</value>
     </param>
     <param>
       <key>frequency</key>

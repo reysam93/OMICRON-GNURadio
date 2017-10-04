@@ -81,11 +81,11 @@ public:
 	 *			data and considers all coded bits extrated from the demodulation
 	 *			of the OFDM frame
 	 *
-	 *		-	rb_index_from_data_bits: like rb_index_from_coded_bits but 
+	 *		-	rb_index_from_data_bits: like rb_index_from_coded_bits but
 	 *			consders only the data bit, ignoring the coded bits.
 	 */
 	int rb_index_from_symbols(int n_symb);
-	
+
 	void print();
 	void print_encoding();
 };
@@ -96,6 +96,7 @@ public:
 class frame_param {
 public:
 	frame_param(ofdm_param &ofdm, int psdu_length);
+	void to_header_param();
 	// PSDU size in bytes
 	int psdu_size;
 	// number of OFDM symbols (17-11)
