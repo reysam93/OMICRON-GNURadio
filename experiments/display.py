@@ -24,20 +24,21 @@ if __name__ == "__main__":
 	parser = OptionParser()
 	parser.add_option("-t", "--time",action="store_true",help="Prefix of data files")
 	parser.add_option("-f","--freq",action="store_true",help="Prefix of data files")
+	parser.add_option("-s","--simple",action="store_true",help="Prefix of data files")
 	parser.add_option("-q","--quiet",action="store_true",help="Print less data")
 	parser.add_option("--path",help="Path of the data files")
 	parser.add_option("--tx",action="store_true",help="Transmision files")
 	parser.add_option("--rx",action="store_true",help="Recepction files")
 
 	parser.add_option("-r","--rate",action="store_true",help="Print rate info")
-	parser.add_option("-s","--snr",action="store_true",help="Print SNR info")
+	parser.add_option("--snr",action="store_true",help="Print SNR info")
 	parser.add_option("-e","--encoding",action="store_true",help="Print encoding info")
 	parser.add_option("-p","--per",action="store_true",help="Print PER info")
 	parser.add_option("-d","--delay",action="store_true",help="Print frame delay info")
 
 	(options, args) = parser.parse_args()
 
-	if (options.time and options.freq) or (not options.time and not options.freq):
+	if (not options.time and not options.freq and not options.simple):
 		print ("You must indicate the prefix of data files")
 		sys.exit(-1)
 
@@ -53,8 +54,10 @@ if __name__ == "__main__":
 
 	if options.time:
 		prefix = "/time"
-	else:
+	elif options.freq:
 		prefix = "/freq"
+	else:
+		prefix = "/simple"
 
 	verbose = True
 	if options.quiet:
