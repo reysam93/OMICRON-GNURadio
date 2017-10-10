@@ -95,7 +95,8 @@ namespace gr {
                           bool debug_ack,
                           bool debug_delay,
                           char* tx_packets_f,
-                          char* rx_packets_f);
+                          char* rx_packets_f,
+                          char* tx_enc_f);
 
       virtual std::vector<int> getEncoding() = 0;
       virtual int getPuncturing() = 0;

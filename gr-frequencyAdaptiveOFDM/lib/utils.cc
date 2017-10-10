@@ -20,7 +20,7 @@
 #include <cassert>
 #include <cstring>
 #include <math.h>
-
+#include <sstream>
 
 /*ofdm_param::ofdm_param() {
 	resource_blocks_e = std::vector<int>(4, BPSK);
@@ -133,6 +133,16 @@ ofdm_param::rb_index_from_symbols(int n_symb) {
 		}else{
 			return -1;
 		}
+}
+
+std::string
+ofdm_param::toFileFormat() {
+	std::stringstream ss;
+	for (int i = 0; i < 4; i++) {
+		ss << resource_blocks_e[i] << ", ";
+	}
+	ss << punct << "\n";
+	return ss.str();
 }
 
 void

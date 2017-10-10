@@ -30,10 +30,10 @@ namespace gr {
 
     mac_and_parse::sptr
     mac_and_parse::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
-                          bool debug, char* tx_packets_f, char* rx_packets_f)
+                          bool debug, char* tx_packets_f, char* rx_packets_f, char* tx_enc_f)
     {
       return gnuradio::get_initial_sptr
-        (new mac_and_parse_impl(src_mac, dst_mac, bss_mac, debug, tx_packets_f, rx_packets_f));
+        (new mac_and_parse_impl(src_mac, dst_mac, bss_mac, debug, tx_packets_f, rx_packets_f, tx_enc_f));
     }
 
     bool
@@ -42,7 +42,7 @@ namespace gr {
     }
 
     mac_and_parse_impl::mac_and_parse_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
-                          bool debug, char* tx_packets_f, char* rx_packets_f)
+                          bool debug, char* tx_packets_f, char* rx_packets_f, char* tx_enc_f)
       : gr::hier_block2("mac_and_parse",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(0, 0, 0)),
@@ -59,7 +59,7 @@ namespace gr {
       //d_debug_ack = debug_ack;
       //d_debug_delay = debug_delay;
       pthread_mutex_init(&d_mutex, NULL);
-      createBlocks(src_mac, dst_mac, bss_mac, debug, tx_packets_f, rx_packets_f);
+      createBlocks(src_mac, dst_mac, bss_mac, debug, tx_packets_f, rx_packets_f, tx_enc_f);
       connectBlocks();
     }
 
@@ -70,8 +70,8 @@ namespace gr {
 
     void
     mac_and_parse_impl::createBlocks(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
-                          bool debug, char* tx_packets_f, char* rx_packets_f) {
-      d_mac = mac::make(this, src_mac, dst_mac, bss_mac, debug, tx_packets_f);
+                          bool debug, char* tx_packets_f, char* rx_packets_f,char* tx_enc_f) {
+      d_mac = mac::make(this, src_mac, dst_mac, bss_mac, debug, tx_packets_f, tx_enc_f);
       d_parse_mac = parse_mac::make(this, src_mac, debug, rx_packets_f);
     }
 

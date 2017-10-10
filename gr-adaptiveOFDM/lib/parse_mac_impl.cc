@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -89,6 +89,8 @@ namespace gr {
 
       pmt::pmt_t dict = pmt::car(msg);
       d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+      int enc = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("encoding"),
+                                      pmt::from_uint64(-1)));
       msg = pmt::cdr(msg);
 
       int data_len = pmt::blob_length(msg);
@@ -122,14 +124,14 @@ namespace gr {
           parse_data((char*)h, data_len);
           parse_body((char*)pmt::blob_data(msg), h, data_len);
           int psdu_length;
-          
+
           d_mac_and_parse->sendAck(h->addr2, &psdu_length);
 
           // Measuring delay
           /*timeval time_now;
           gettimeofday(&time_now, NULL);
           std::cerr << "\t\tMAC_&_PARSE: data message received and processed: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
-                  
+
           if(rx_packets_fn != ""){
             n_rx_packets++;
             std::fstream rx_packets_fs(rx_packets_fn, std::ofstream::out);
@@ -142,14 +144,13 @@ namespace gr {
           break;
       }
       decide_encoding();
-      send_frame_data();
+      send_frame_data(enc);
     }
 
     void
-    parse_mac_impl::send_frame_data() {
+    parse_mac_impl::send_frame_data(int enc) {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
-      int enc = d_mac_and_parse->getEncoding();
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(enc));
       message_port_pub(pmt::mp("frame data"), dict);
     }
@@ -445,7 +446,7 @@ namespace gr {
     void
     parse_mac_impl::decide_encoding(){
       dout << std::endl << "SNR: " << d_snr << std::endl;
-      
+
       if (d_snr >= MIN_SNR_64QAM_3_4) {
         d_mac_and_parse->setEncoding(QAM64_3_4);
       } else if (d_snr >= MIN_SNR_64QAM_2_3) {
@@ -466,4 +467,3 @@ namespace gr {
     }
   } /* namespace adaptiveOFDM */
 } /* namespace gr */
-

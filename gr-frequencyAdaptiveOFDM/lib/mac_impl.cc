@@ -44,12 +44,12 @@ namespace gr {
 
     mac::sptr
     mac::make(void* m_and_p, std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac,
-              std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f) {
-      return gnuradio::get_initial_sptr(new mac_impl((mac_and_parse*)m_and_p, src_mac, dst_mac, bss_mac, debug, tx_packets_f));
+              std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f, char* tx_enc_f) {
+      return gnuradio::get_initial_sptr(new mac_impl((mac_and_parse*)m_and_p, src_mac, dst_mac, bss_mac, debug, tx_packets_f, tx_enc_f));
     }
 
     mac_impl::mac_impl(mac_and_parse*  m_and_p, std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac,
-                        std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f) :
+                        std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f, char* tx_enc_f) :
         block("mac",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(0, 0, 0)),
@@ -78,12 +78,17 @@ namespace gr {
         ofdm_param ofdm(d_mac_and_parse->getEncoding(), d_mac_and_parse->getPuncturing());
         ofdm.print();
       }
-
+      if (tx_enc_f != "") {
+        tx_enc_fstream.open(tx_enc_f, std::ofstream::out);
+      }
       pthread_mutex_init(&d_mutex, NULL);
     }
 
     mac_impl::~mac_impl() {
       pthread_mutex_destroy(&d_mutex);
+      if (tx_enc_fstream.is_open()) {
+        tx_enc_fstream.close();
+      }
     }
 
     void
@@ -137,7 +142,6 @@ namespace gr {
         time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
       }
 
-
       // Study delays
       /*timeval time_now;
       gettimeofday(&time_now, NULL);
@@ -186,9 +190,11 @@ namespace gr {
 
       // blob
       pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
-
-      // pdu
       message_port_pub(pmt::mp("phy out"), pmt::cons(dict, mac));
+      if (tx_enc_fstream.is_open()){
+        tx_enc_fstream << ofdm.toFileFormat();
+        tx_enc_fstream.flush();
+      }
     }
 
     void

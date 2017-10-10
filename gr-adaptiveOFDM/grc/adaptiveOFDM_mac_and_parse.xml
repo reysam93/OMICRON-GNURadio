@@ -4,7 +4,8 @@
   <key>adaptiveOFDM_mac_and_parse</key>
   <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f, $rx_packets_f)</make>
+  <make>adaptiveOFDM.mac_and_parse($src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f,
+                                    $rx_packets_f, $tx_enc_file)</make>
 
   <param>
     <name>SRC MAC</name>
@@ -53,6 +54,13 @@
     <name># Rx Packets File</name>
     <key>rx_packets_f</key>
     <value>/tmp/rx_packets.csv</value>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Tx Enc. File</name>
+    <key>tx_enc_file</key>
+    <value>/tmp/encoding.csv</value>
     <type>string</type>
   </param>
 

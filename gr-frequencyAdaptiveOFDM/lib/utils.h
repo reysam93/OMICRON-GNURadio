@@ -86,6 +86,7 @@ public:
 	 */
 	int rb_index_from_symbols(int n_symb);
 
+	std::string toFileFormat(); 
 	void print();
 	void print_encoding();
 };

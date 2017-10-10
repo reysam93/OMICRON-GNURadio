@@ -91,6 +91,9 @@ namespace gr {
 
       pmt::pmt_t dict = pmt::car(msg);
       d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
+      std::vector<int> enc = pmt::s32vector_elements(pmt::dict_ref(dict,
+                              pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
+      int punct = pmt::to_long(pmt::dict_ref(dict, pmt::mp("puncturing"), pmt::from_long(-1)));
       msg = pmt::cdr(msg);
 
       int data_len = pmt::blob_length(msg);
@@ -145,17 +148,15 @@ namespace gr {
           break;
       }
       decide_encoding();
-      send_frame_data();
+      send_frame_data(enc, punct);
     }
 
     void
-    parse_mac_impl::send_frame_data() {
-      ofdm_param ofdm(d_mac_and_parse->getEncoding(), d_mac_and_parse->getPuncturing());
-
+    parse_mac_impl::send_frame_data(std::vector<int> enc, int punct) {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(N_RB, d_snr));
-      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(N_RB, ofdm.resource_blocks_e));
-      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(ofdm.punct));
+      dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(N_RB, enc));
+      dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(punct));
       dict = pmt::dict_add(dict, pmt::mp("is ack"), pmt::from_bool(d_is_ack));
       message_port_pub(pmt::mp("frame data"), dict);
     }

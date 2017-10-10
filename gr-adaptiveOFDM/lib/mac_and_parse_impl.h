@@ -36,7 +36,8 @@ namespace gr {
                          std::vector<uint8_t> bss_mac,
                          bool debug,
                          char* tx_packets_f,
-                         char* rx_packets_f);
+                         char* rx_packets_f,
+                         char* tx_enc_f);
       ~mac_and_parse_impl();
 
       Encoding getEncoding();
@@ -56,7 +57,7 @@ namespace gr {
       bool d_ack_received;
 
       void createBlocks(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
-                          bool debug, char* tx_packets_f, char* rx_packets_f);
+                          bool debug, char* tx_packets_f, char* rx_packets_f, char* tx_enc_f);
       void connectBlocks();
     };
 

@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2017 Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -44,19 +44,19 @@ namespace gr {
 
     mac::sptr
     mac::make(void* m_and_p, std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac,
-              std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f) {
-      return gnuradio::get_initial_sptr(new mac_impl((mac_and_parse*)m_and_p, src_mac, dst_mac, bss_mac, debug, tx_packets_f));
+              std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f, char* tx_enc_f) {
+      return gnuradio::get_initial_sptr(new mac_impl((mac_and_parse*)m_and_p, src_mac, dst_mac, bss_mac, debug, tx_packets_f, tx_enc_f));
     }
 
     mac_impl::mac_impl(mac_and_parse*  m_and_p, std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac,
-                        std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f) :
+                        std::vector<uint8_t> bss_mac, bool debug, char* tx_packets_f, char* tx_enc_f) :
         block("mac",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(0, 0, 0)),
         d_seq_nr(0),
         d_debug(debug) {
 
-      message_port_register_in(pmt::mp("app in"));    
+      message_port_register_in(pmt::mp("app in"));
       message_port_register_out(pmt::mp("phy out"));
       set_msg_handler(pmt::mp("app in"), boost::bind(&mac_impl::app_in, this, _1));
 
@@ -78,15 +78,20 @@ namespace gr {
         ofdm_param ofdm(d_mac_and_parse->getEncoding());
         ofdm.print();
       }
-
+      if (tx_enc_f != "") {
+        tx_enc_fstream.open(tx_enc_f, std::ofstream::out);
+      }
       pthread_mutex_init(&d_mutex, NULL);
     }
 
     mac_impl::~mac_impl() {
       pthread_mutex_destroy(&d_mutex);
+      if (tx_enc_fstream.is_open()) {
+        tx_enc_fstream.close();
+      }
     }
 
-    void 
+    void
     mac_impl::app_in (pmt::pmt_t msg) {
       size_t       msg_len;
       const char   *msdu;
@@ -122,10 +127,11 @@ namespace gr {
       }
       pthread_mutex_lock(&d_mutex);
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
-      send_message(psdu_length, d_mac_and_parse->getEncoding());
+      Encoding enc = d_mac_and_parse->getEncoding();
+      send_message(psdu_length, enc);
       pthread_mutex_unlock(&d_mutex);
 
-      // Study delays 
+      // Study delays
       /*timeval time_now;
       gettimeofday(&time_now, NULL);
       std::cerr << "MAC_&_PARSE: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
@@ -160,12 +166,15 @@ namespace gr {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(enc));
-      
-      // blob
-      pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
 
-      // pdu
+      // blob & PDU
+      pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
       message_port_pub(pmt::mp("phy out"), pmt::cons(dict, mac));
+
+      if (tx_enc_fstream.is_open()) {
+        tx_enc_fstream << enc << "\n";
+        tx_enc_fstream.flush();
+      }
     }
 
     void
@@ -227,4 +236,3 @@ namespace gr {
     }
   } /* namespace adaptiveOFDM */
 } /* namespace gr */
-
