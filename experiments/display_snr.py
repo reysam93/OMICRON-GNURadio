@@ -2,7 +2,7 @@
 
 import sys
 import os
-
+from numpy import var
 
 def display_mean_SNR(snr_f,verbose):
 	SNRs = snr_f.read().split("\n")[:-1]
@@ -34,6 +34,7 @@ def display_mean_SNR(snr_f,verbose):
 				print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
 		
 		whole_mean_SNR = 0
+
 		for i in range(len(mean_SNR)):
 			whole_mean_SNR += mean_SNR[i]
 		whole_mean_SNR /= len(mean_SNR)

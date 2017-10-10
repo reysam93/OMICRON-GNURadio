@@ -64,7 +64,7 @@ def display_encoding(encoding_f):
 
 	if "," in encodings[0]:
 		display_encoding_adaptative(encodings)
-		sys.exit(0)
+		return
 
 	if len(encodings) == 0:
 		print("ERROR: encoding file is not correct")
@@ -80,10 +80,6 @@ def display_encoding(encoding_f):
 			encoding_percent = 100 * n_encoding[i]/float(len(encodings))
 			print ("{0}: {1:.2f}%".format(name[1:],encoding_percent))
 		i+=1	
-
-
-
-
 
 
 if __name__ == "__main__":
