@@ -34,7 +34,7 @@ def translate_data(encodings):
 					translated_encoding.append(7)
 	return translated_encoding
 
-def display_PER_eff(encodings_tx_f,encodings_rx_f):
+def display_eff(encodings_tx_f,encodings_rx_f):
 
 	encodings_tx = encodings_tx_f.read()
 	encodings_rx = encodings_rx_f.read()
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 		print ("I/O error: {0:}").format(e)
 		sys.exit(-1)
 
-	display_PER_eff(encodings_tx_f, encodings_rx_f)
+	display_eff(encodings_tx_f, encodings_rx_f)
 
 	encodings_tx_f.close()
 	encodings_rx_f.close()
