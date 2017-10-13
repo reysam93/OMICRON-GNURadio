@@ -64,7 +64,7 @@ if __name__ == "__main__":
 		verbose = False
 
 	if options.rate:
-		f = openDataFile(options.path+prefix+"_received_encoding_tx.csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 		if f != None and f2!= None:
 			display_eff(f,f2)
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 		print("")
 
 	if options.per:
-			f = openDataFile(options.path+prefix+"_received_encoding_tx.csv")
+			f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 			f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 			if f != None and f2!= None:
 				display_PER_eff(f,f2)
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
 	#If all flags are false, show all
 	if not options.rate and not options.snr and not options.encoding and not options.per and not options.delay:
-		f = openDataFile(options.path+prefix+"_received_encoding_tx.csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 		if f != None and f2!= None:
 			display_eff(f,f2)
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 			display_encoding(f)
 		print("")
 
-		f = openDataFile(options.path+prefix+"_received_encoding_tx.csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 		if f != None and f2!= None:
 			display_PER_eff(f,f2)
