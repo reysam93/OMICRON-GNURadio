@@ -59,8 +59,8 @@ def show_results(total,errors):
 def display_PER_eff(encodings_tx_f,encodings_rx_f):
 	encodings_tx = encodings_tx_f.read()
 	encodings_rx = encodings_rx_f.read()
-	encodings_tx = encodings_tx.split("\n")#[2:-1]
-	encodings_rx = encodings_rx.split("\n")#[2:-1]
+	encodings_tx = encodings_tx.split("\n")[2:-1]
+	encodings_rx = encodings_rx.split("\n")[2:-1]
 
 
 	if "," in encodings_tx[0]:
@@ -72,8 +72,6 @@ def display_PER_eff(encodings_tx_f,encodings_rx_f):
 	index_tx = 0
 	index_rx = 0
 	
-	print encodings_tx
-	print encodings_rx
 
 	while index_tx < len(encodings_tx):
 		total[int(encodings_tx[index_tx])]+=1
@@ -88,6 +86,7 @@ def display_PER_eff(encodings_tx_f,encodings_rx_f):
 	show_results(total,errors)
 
 
+	
 
 if __name__ == "__main__":
 	if len(sys.argv) < 3:

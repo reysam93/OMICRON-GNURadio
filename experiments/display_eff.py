@@ -38,8 +38,8 @@ def display_eff(encodings_tx_f,encodings_rx_f):
 
 	encodings_tx = encodings_tx_f.read()
 	encodings_rx = encodings_rx_f.read()
-	encodings_tx = encodings_tx.split("\n")#[2:-1]
-	encodings_rx = encodings_rx.split("\n")#[2:-1]
+	encodings_tx = encodings_tx.split("\n")[2:-1]
+	encodings_rx = encodings_rx.split("\n")[2:-1]
 
 	mods_rx = [0, 0, 0, 0, 0, 0, 0, 0]
 

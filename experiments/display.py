@@ -10,6 +10,8 @@ from display_per      import display_PER
 from display_snr      import display_mean_SNR
 from display_delay    import display_mean_delay
 from display_encoding import display_encoding
+from display_eff      import display_eff
+from display_per_eff  import display_PER_eff
 
 
 def openDataFile(file):
@@ -83,10 +85,10 @@ if __name__ == "__main__":
 		print("")
 
 	if options.per:
-			f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
-			f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
-			if f != None and f2!= None:
-				display_PER_eff(f,f2)
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
+		if f != None and f2!= None:
+			display_PER_eff(f,f2)
 		print("")
 
 	if options.delay:
