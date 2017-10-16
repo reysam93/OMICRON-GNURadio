@@ -64,9 +64,10 @@ if __name__ == "__main__":
 		verbose = False
 
 	if options.rate:
-		f = openDataFile(options.path+prefix+"_rate.csv")
-		if f != None:
-			display_mean_rate(f)
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
+		if f != None and f2!= None:
+			display_eff(f,f2)
 		print("")
 
 	if options.snr:
@@ -82,26 +83,25 @@ if __name__ == "__main__":
 		print("")
 
 	if options.per:
-		if options.time:
-			f = openDataFile(options.path+prefix+"_packets_.csv")
-			f2 = openDataFile(options.path+prefix+"_packets_.csv")
+			f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
+			f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 			if f != None and f2!= None:
-				display_PER(f,f2)
+				display_PER_eff(f,f2)
 		print("")
 
 	if options.delay:
-		if options.time:
-			f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
-			if f != None:
-				display_mean_delay(f,verbose)
+		f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
+		if f != None:
+			display_mean_delay(f,verbose)
 		print("")
 
 
 	#If all flags are false, show all
 	if not options.rate and not options.snr and not options.encoding and not options.per and not options.delay:
-		f = openDataFile(options.path+prefix+"_rate.csv")
-		if f != None:
-			display_mean_rate(f)
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
+		if f != None and f2!= None:
+			display_eff(f,f2)
 		print("")
 
 		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
@@ -114,10 +114,10 @@ if __name__ == "__main__":
 			display_encoding(f)
 		print("")
 
-		f = openDataFile(options.path+prefix+"_packets_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 		if f != None and f2!= None:
-			display_PER(f,f2)
+			display_PER_eff(f,f2)
 		print("")
 
 		f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
