@@ -593,7 +593,7 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/time_encoding.csv</value>
+      <value>/tmp/time_received_enc.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -766,7 +766,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>30</value>
+      <value>500</value>
     </param>
   </block>
   <block>
@@ -2441,7 +2441,7 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>0</value>
+      <value>2</value>
     </param>
     <param>
       <key>frequency</key>
@@ -2450,6 +2450,10 @@
     <param>
       <key>sensitivity</key>
       <value>0.56</value>
+    </param>
+    <param>
+      <key>tx_enc</key>
+      <value>"/tmp/time_transmited_encoding_tx"</value>
     </param>
   </block>
   <connection>

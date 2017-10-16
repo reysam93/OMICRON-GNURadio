@@ -24,7 +24,6 @@
 
 #include <frequencyAdaptiveOFDM/mac_and_parse.h>
 #include <frequencyAdaptiveOFDM/mac.h>
-#include <fstream>
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -37,8 +36,7 @@ namespace gr {
                 std::vector<uint8_t> dst_mac,
                 std::vector<uint8_t> bss_mac,
                 bool debug,
-                char* tx_packets_f,
-                char* tx_enc_f);
+                char* tx_packets_f);
       ~mac_impl();
 
       void sendAck(uint8_t ra[], int *psdu_size);
@@ -57,7 +55,6 @@ namespace gr {
       char* tx_packets_fn;
       long n_tx_packets;
       bool d_debug;
-      std::ofstream tx_enc_fstream;
 
       void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
       void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);

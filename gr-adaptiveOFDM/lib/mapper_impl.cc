@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2016   Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -31,13 +31,13 @@ namespace gr {
   namespace adaptiveOFDM {
 
     mapper::sptr
-    mapper::make(bool debug_enc, Encoding e, bool debug, bool log)
+    mapper::make(bool debug_enc, Encoding e, bool debug, bool log, char* tx_enc_f)
     {
       return gnuradio::get_initial_sptr
-        (new mapper_impl(debug_enc, e, debug, log));
+        (new mapper_impl(debug_enc, e, debug, log, tx_enc_f));
     }
 
-    mapper_impl::mapper_impl(bool debug_enc, Encoding e, bool debug, bool log)
+    mapper_impl::mapper_impl(bool debug_enc, Encoding e, bool debug, bool log, char* tx_enc_f)
       : gr::block("mapper",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(1, 1, sizeof(char))),
@@ -49,7 +49,10 @@ namespace gr {
           d_ofdm(e)
     {
       message_port_register_in(pmt::mp("in"));
-      
+
+      if (tx_enc_f != "") {
+        tx_enc_fstream.open(tx_enc_f, std::ofstream::out);
+      }
       if (d_debug_enc) {
         d_ofdm = ofdm_param(e);
 
@@ -61,9 +64,12 @@ namespace gr {
     mapper_impl::~mapper_impl()
     {
       free(d_symbols);
+      if (tx_enc_fstream.is_open()) {
+        tx_enc_fstream.close();
+      }
     }
 
-    void 
+    void
     mapper_impl::print_message(const char *msg, size_t len) {
 
 
@@ -77,7 +83,7 @@ namespace gr {
       dout << std::dec << std::endl;
     }
 
-    int 
+    int
     mapper_impl::general_work(int noutput, gr_vector_int& ninput_items,
           gr_vector_const_void_star& input_items,
           gr_vector_void_star& output_items ) {
@@ -125,11 +131,11 @@ namespace gr {
           char *interleaved_data = (char*)calloc(frame.n_encoded_bits, sizeof(char));
           char *symbols          = (char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
 
-          
+
           //generate the WIFI data field, adding service field and pad bits
           generate_bits(psdu, data_bits, frame);
           if (d_log) {
-//            print_bytes("MAPPER: data bits:", data_bits, frame.psdu_size*8+16);
+            //print_bytes("MAPPER: data bits:", data_bits, frame.psdu_size*8+16);
           }
 
           // scrambling
@@ -142,19 +148,19 @@ namespace gr {
           // reset tail bits
           reset_tail_bits(scrambled_data, frame);
           if (d_log) {
-//            print_bytes("MAPPER: scrambled data and reset tail:", scrambled_data, frame.n_data_bits);
+            //print_bytes("MAPPER: scrambled data and reset tail:", scrambled_data, frame.n_data_bits);
           }
 
           // encoding
           convolutional_encoding(scrambled_data, encoded_data, frame);
           if (d_log) {
-//            print_bytes("MAPPER: encoded data:", encoded_data, frame.n_data_bits*2);
+            //print_bytes("MAPPER: encoded data:", encoded_data, frame.n_data_bits*2);
           }
 
           // puncturing
           puncturing(encoded_data, punctured_data, frame, d_ofdm);
           if (d_log) {
-//            print_bytes("MAPPER: punctured data:", punctured_data, frame.n_encoded_bits);
+            //print_bytes("MAPPER: punctured data:", punctured_data, frame.n_encoded_bits);
           }
 
           // interleaving
@@ -182,6 +188,11 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
               encoding, srcid);
 
+          if (tx_enc_fstream.is_open()) {
+            tx_enc_fstream << d_ofdm.encoding << "\n";
+            tx_enc_fstream.flush();
+          }
+
           free(data_bits);
           free(scrambled_data);
           free(encoded_data);
@@ -208,4 +219,3 @@ namespace gr {
 
   } /* namespace adaptiveOFDM */
 } /* namespace gr */
-

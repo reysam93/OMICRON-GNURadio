@@ -4,8 +4,8 @@
   <key>frequencyAdaptiveOFDM_mapper</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.mapper($debug_enc, $encoding, $debug, $log)</make>
-  
+  <make>frequencyAdaptiveOFDM.mapper($debug_enc, $encoding, $debug, $log, $tx_enc_file)</make>
+
   <param>
     <name>Debug Encoding</name>
     <key>debug_enc</key>
@@ -59,6 +59,13 @@
       <name>Disable</name>
       <key>False</key>
     </option>
+  </param>
+
+  <param>
+    <name>Tx Enc. File</name>
+    <key>tx_enc_file</key>
+    <value>/tmp/encoding.csv</value>
+    <type>string</type>
   </param>
 
   <sink>

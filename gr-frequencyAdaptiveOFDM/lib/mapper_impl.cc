@@ -31,13 +31,15 @@ namespace gr {
   namespace frequencyAdaptiveOFDM {
 
     mapper::sptr
-    mapper::make(bool debug_enc, std::vector<int> pilots_enc, bool debug, bool log)
+    mapper::make(bool debug_enc, std::vector<int> pilots_enc, bool debug,
+                  bool log, char* tx_enc_f)
     {
       return gnuradio::get_initial_sptr
-        (new mapper_impl(debug_enc, pilots_enc, debug, log));
+        (new mapper_impl(debug_enc, pilots_enc, debug, log, tx_enc_f));
     }
 
-    mapper_impl::mapper_impl(bool debug_enc, std::vector<int> pilots_enc, bool debug, bool log)
+    mapper_impl::mapper_impl(bool debug_enc, std::vector<int> pilots_enc,
+                              bool debug, bool log, char* tx_enc_f)
       : gr::block("mapper",
           gr::io_signature::make(0, 0, 0),
           gr::io_signature::make(1, 1, sizeof(char))),
@@ -60,6 +62,9 @@ namespace gr {
 
         std::cout << "MAPPER DEBUG ENCODDING: ";
         d_ofdm.print_encoding();
+      }
+      if (tx_enc_f != "") {
+        tx_enc_fstream.open(tx_enc_f, std::ofstream::out);
       }
     }
 
@@ -198,6 +203,11 @@ namespace gr {
           pmt::pmt_t pmt_punct = pmt::from_long(ofdm.punct);
           add_item_tag(0, nitems_written(0), pmt::mp("puncturing"),
               pmt_punct, srcid);
+
+          if (tx_enc_fstream.is_open()){
+            tx_enc_fstream << ofdm.toFileFormat();
+            tx_enc_fstream.flush();
+          }
 
           free(data_bits);
           free(scrambled_data);

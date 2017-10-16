@@ -77,8 +77,7 @@ public:
                           std::vector<uint8_t> bss_mac,
                           bool debug,
                           char* tx_packets_f,
-                          char* rx_packets_f,
-                          char* tx_enc_f);
+                          char* rx_packets_f);
 
     virtual Encoding getEncoding() = 0;
     virtual void setEncoding(Encoding enc) = 0;

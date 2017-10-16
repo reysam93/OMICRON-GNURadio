@@ -4,8 +4,7 @@
   <key>frequencyAdaptiveOFDM_mac</key>
   <category>[Frequency Adaptive OFDM]</category>
   <import>import frequencyAdaptiveOFDM</import>
-  <make>frequencyAdaptiveOFDM.mac($m_and_p, $src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f
-                                  $tx_enc_file)</make>
+  <make>frequencyAdaptiveOFDM.mac($m_and_p, $src_mac, $dst_mac, $bss_mac, $debug, $tx_packets_f)</make>
 
   <param>
     <name>MAC &amp; Parse pointer</name>
@@ -53,13 +52,6 @@
     <name># Tx Packets File</name>
     <key>tx_packets_f</key>
     <value>/tmp/tx_packets.csv</value>
-    <type>string</type>
-  </param>
-
-  <param>
-    <name>Tx Enc. File</name>
-    <key>tx_enc_file</key>
-    <value>/tmp/encoding.csv</value>
     <type>string</type>
   </param>
 

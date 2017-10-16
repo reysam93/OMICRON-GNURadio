@@ -1451,7 +1451,7 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>freq_encoding.csv</value>
+      <value>/tmp/freq_used_encoding.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -1471,7 +1471,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>freq_snr.csv</value>
+      <value>/tmp/freq_snr.csv</value>
     </param>
   </block>
   <block>
@@ -2574,6 +2574,10 @@
     <param>
       <key>sensitivity</key>
       <value>0.56</value>
+    </param>
+    <param>
+      <key>tx_enc</key>
+      <value>"/tmp/freq_transmited_encoding.csv"</value>
     </param>
   </block>
   <connection>

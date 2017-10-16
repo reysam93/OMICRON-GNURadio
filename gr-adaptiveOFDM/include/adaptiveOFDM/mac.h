@@ -36,8 +36,7 @@ public:
 	                    std::vector<uint8_t> dst_mac,
 	                    std::vector<uint8_t> bss_mac,
 	                    bool debug,
-	                    char* tx_packets_f,
-                      char* tx_enc_f);
+	                    char* tx_packets_f);
 
     virtual void sendAck(uint8_t ra[], int *psdu_size) = 0;
 };
