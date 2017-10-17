@@ -188,7 +188,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5890000000</value>
+      <value>5200000000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -4487,7 +4487,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 568)</value>
+      <value>(448, 556)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4531,7 +4531,11 @@
     </param>
     <param>
       <key>sensitivity</key>
-      <value>0.56</value>
+      <value>0.56+0.14</value>
+    </param>
+    <param>
+      <key>tx_enc</key>
+      <value>"/tmp/time_transmited_encoding_tx.csv"</value>
     </param>
   </block>
   <connection>

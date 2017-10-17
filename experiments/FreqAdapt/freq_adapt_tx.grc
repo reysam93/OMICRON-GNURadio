@@ -188,7 +188,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5890000000</value>
+      <value>5200000000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.75</value>
+      <value>0.9</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1238,6 +1238,14 @@
       <value>[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]</value>
     </param>
     <param>
+      <key>debug_ack</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>debug_delay</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>debug</key>
       <value>False</value>
     </param>
@@ -1256,10 +1264,6 @@
     <param>
       <key>id</key>
       <value>frequencyAdaptiveOFDM_mac_and_parse_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1341,7 +1345,7 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/freq_encoding_tx.csv</value>
+      <value>/tmp/freq_received_encoding_tx.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -4487,7 +4491,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(480, 552)</value>
+      <value>(480, 520)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4511,15 +4515,19 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>[0,0,0,0,0]</value>
+      <value>True</value>
     </param>
     <param>
       <key>delay_file</key>
       <value>""</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>[0,0,0,0,0]</value>
     </param>
     <param>
       <key>frequency</key>
@@ -4527,7 +4535,11 @@
     </param>
     <param>
       <key>sensitivity</key>
-      <value>0.56</value>
+      <value>0.56+0.14</value>
+    </param>
+    <param>
+      <key>tx_enc</key>
+      <value>"/tmp/freq_transmited_encoding_tx.csv"</value>
     </param>
   </block>
   <connection>

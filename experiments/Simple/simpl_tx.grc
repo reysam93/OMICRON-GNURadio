@@ -188,7 +188,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5890000000</value>
+      <value>5200000000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -4523,7 +4523,7 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>5</value>
+      <value>2</value>
     </param>
     <param>
       <key>frequency</key>
@@ -4532,6 +4532,10 @@
     <param>
       <key>sensitivity</key>
       <value>0.56</value>
+    </param>
+    <param>
+      <key>tx_enc</key>
+      <value>"/tmp/simple_transmited_encoding_tx.csv"</value>
     </param>
   </block>
   <connection>
