@@ -79,12 +79,19 @@ if __name__ == "__main__":
 		print("")
 
 	if options.encoding:	
-		f = openDataFile(options.path+prefix+"_encoding_"+filetype+".csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		if f != None:
 			display_encoding(f)
 		print("")
 
 	if options.per:
+
+		f = openDataFile(options.path+prefix+"_packets_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")	
+		if f!= None and f2!= None:
+			display_PER(f,f2)
+		print("")
+
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
 		if f != None and f2!= None:
@@ -111,9 +118,15 @@ if __name__ == "__main__":
 			display_mean_SNR(f,verbose)
 		print("")
 
-		f = openDataFile(options.path+prefix+"_encoding_"+filetype+".csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		if f != None:
 			display_encoding(f)
+		print("")
+
+		f = openDataFile(options.path+prefix+"_packets_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")	
+		if f!= None and f2!= None:
+			display_PER(f,f2)
 		print("")
 
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
