@@ -87,12 +87,13 @@ def display_encoding_adaptative(encodings):
 		print("")
 
 
-def display_encoding(encoding_f):
+def display_encoding(encoding_f,verbose):
 	encodings = encoding_f.read()
 	encodings = encodings.split("\n")[2:-1]
 
 	if "," in encodings[0]:
-		display_encoding_adaptative(encodings)
+		if verbose :
+			display_encoding_adaptative(encodings)
 		encodings =translate_data(encodings)
 
 	if len(encodings) == 0:
@@ -121,5 +122,5 @@ if __name__ == "__main__":
 	except IOError as e:
 		print ("I/O error: {0}").format(e)
 		sys.exit(-1)
-	display_encoding(encoding_f)
+	display_encoding(encoding_f,True)
 	encoding_f.close()

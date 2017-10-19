@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	parser.add_option("-t", "--time",action="store_true",help="Prefix of data files")
 	parser.add_option("-f","--freq",action="store_true",help="Prefix of data files")
 	parser.add_option("-s","--simple",action="store_true",help="Prefix of data files")
-	parser.add_option("-q","--quiet",action="store_true",help="Print less data")
+	parser.add_option("-v","--verbose",action="store_true",help="Print more data")
 	parser.add_option("--path",help="Path of the data files")
 	parser.add_option("--tx",action="store_true",help="Transmision files")
 	parser.add_option("--rx",action="store_true",help="Recepction files")
@@ -61,9 +61,9 @@ if __name__ == "__main__":
 	else:
 		prefix = "/simple"
 
-	verbose = True
-	if options.quiet:
-		verbose = False
+	verbose = False
+	if options.verbose:
+		verbose = True
 
 	if options.rate:
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 	if options.encoding:	
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		if f != None:
-			display_encoding(f)
+			display_encoding(f,verbose)
 		print("")
 
 	if options.per:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		if f != None:
-			display_encoding(f)
+			display_encoding(f,verbose)
 		print("")
 
 		f = openDataFile(options.path+prefix+"_packets_tx.csv")
