@@ -16,6 +16,34 @@ class Encoding(Enum):
 	_64QAM_3_4 = 7
 
 
+
+def translate_data(encodings):
+
+	translated_encoding = []
+	for encoding in encodings:
+		encoding = encoding.split(",")
+		if int(encoding[4]) ==0:
+			for i in range(4):
+				if int(encoding[i])==0:
+					translated_encoding.append(0)
+				elif int(encoding[i])==1:
+					translated_encoding.append(2)
+				elif int(encoding[i])==2:
+					translated_encoding.append(4)
+				else:
+					translated_encoding.append(6)
+		else:
+			for i in range(4):
+				if int(encoding[i])==0:
+					translated_encoding.append(1)
+				elif int(encoding[i])==1:
+					translated_encoding.append(3)
+				elif int(encoding[i])==2:
+					translated_encoding.append(5)
+				else:
+					translated_encoding.append(7)
+	return translated_encoding
+
 def display_encoding_adaptative(encodings):
 	encodingPunct = [[],[]]
 	for encoding in encodings:
@@ -58,13 +86,14 @@ def display_encoding_adaptative(encodings):
 			i+=1	
 		print("")
 
+
 def display_encoding(encoding_f):
 	encodings = encoding_f.read()
 	encodings = encodings.split("\n")[2:-1]
 
 	if "," in encodings[0]:
 		display_encoding_adaptative(encodings)
-		return
+		encodings =translate_data(encodings)
 
 	if len(encodings) == 0:
 		print("ERROR: encoding file is not correct")
@@ -74,11 +103,12 @@ def display_encoding(encoding_f):
 	for encoding in encodings:
 		n_encoding[int(encoding)]+=1
 
+	print("Encodings")
 	i= 0
 	for name, _ in Encoding.__members__.items():	
 		if n_encoding[i] != 0:
 			encoding_percent = 100 * n_encoding[i]/float(len(encodings))
-			print ("{0}: {1:.2f}%".format(name[1:],encoding_percent))
+			print ("   {0}: {1:.2f}%".format(name[1:],encoding_percent))
 		i+=1	
 
 
