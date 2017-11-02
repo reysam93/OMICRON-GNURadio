@@ -15,16 +15,22 @@ def display_mean_SNR(snr_f,verbose):
 		mean_SNR = [0, 0, 0, 0]
 		max_SNR = [0, 0, 0, 0]
 		min_SNR = [100, 100 ,100 ,100]
+		sim_SNR = 0
+		min_Rb = 0
 
 		for SNR in SNRs:
 			SNR_rbs = SNR.split(", ")
+			min_Rb= SNR_rbs[0]
 			for i in range(len(SNR_rbs)):
 				fSNR = float(SNR_rbs[i])
 				if fSNR>=max_SNR[i]:
 					max_SNR[i] = fSNR
 				if fSNR<=min_SNR[i]:
 					min_SNR[i] = fSNR	
+				if fSNR<=min_Rb:
+					min_Rb = fSNR
 				mean_SNR[i] += fSNR
+			sim_SNR+= min_Rb
 
 		for i in range(len(mean_SNR)):
 			mean_SNR[i] /= len(SNRs)
@@ -33,6 +39,7 @@ def display_mean_SNR(snr_f,verbose):
 				print("Max  SNR RB {0} (dB): {1:.2f}".format(i, max_SNR[i]))
 				print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
 		
+		sim_SNR /= len(SNRs)
 		whole_mean_SNR = 0
 
 		for i in range(len(mean_SNR)):
@@ -42,6 +49,7 @@ def display_mean_SNR(snr_f,verbose):
 		if verbose:
 			print("Whole Max  SNR (dB): {0:.2f}".format(max(max_SNR)))
 			print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
+		print("Equivalent SNR: {0:.2f}".format(sim_SNR))
 	else:
 		mean_SNR = 0
 		min_SNR=100
