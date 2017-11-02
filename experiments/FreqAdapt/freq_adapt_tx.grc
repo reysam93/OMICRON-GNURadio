@@ -800,7 +800,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>10</value>
+      <value>30</value>
     </param>
   </block>
   <block>
@@ -1215,7 +1215,7 @@
     </param>
     <param>
       <key>tx_packets_f</key>
-      <value>/tmp/freq_tx_packets.csv</value>
+      <value>/tmp/freq_packets_tx.csv</value>
     </param>
     <param>
       <key>bss_mac</key>
@@ -1345,7 +1345,7 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/freq_received_encoding_tx.csv</value>
+      <value>/tmp/freq_encoding_tx.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -4519,7 +4519,7 @@
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>delay_file</key>

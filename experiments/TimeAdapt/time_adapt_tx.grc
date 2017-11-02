@@ -737,7 +737,7 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/time_encoding_tx.csv</value>
+      <value>/tmp/time_received_encoding_tx.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -910,7 +910,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>29</value>
+      <value>30</value>
     </param>
   </block>
   <block>

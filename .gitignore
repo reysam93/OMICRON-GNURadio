@@ -1,4 +1,5 @@
 *.py
+*.pyc
 *.csv
 experiments/FreqAdapt
 experiments/Simple
