@@ -15,7 +15,7 @@ from display_per_eff  import display_PER_eff
 
 
 def openDataFile(file):
-	try:	
+	try:
 		return open(file)
 	except IOError as e:
 		print ("I/O error: {0}").format(e)
@@ -65,35 +65,42 @@ if __name__ == "__main__":
 	if options.verbose:
 		verbose = True
 
+	#If all flags are false, show all
+	if not options.rate and not options.snr and not options.encoding and not options.per and not options.delay:
+		options.rate = True
+		options.snr = True
+		options.encoding = True
+		options.per = True
+		options.delay = True
+
 	if options.rate:
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f != None and f2!= None:
 			display_eff(f,f2)
 		print("")
 
 	if options.snr:
-		f = openDataFile(options.path+prefix+"_snr_"+fileType+".csv")
+		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
 		if f != None:
 			display_mean_SNR(f,verbose)
 		print("")
 
-	if options.encoding:	
+	if options.encoding:
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		if f != None:
 			display_encoding(f,verbose)
 		print("")
 
 	if options.per:
-
 		f = openDataFile(options.path+prefix+"_packets_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")	
+		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")
 		if f!= None and f2!= None:
 			display_PER(f,f2)
 		print("")
 
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f != None and f2!= None:
 			display_PER_eff(f,f2)
 		print("")
@@ -102,39 +109,4 @@ if __name__ == "__main__":
 		f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
 		if f != None:
 			display_mean_delay(f,verbose)
-		print("")
-
-
-	#If all flags are false, show all
-	if not options.rate and not options.snr and not options.encoding and not options.per and not options.delay:
-		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
-		if f != None and f2!= None:
-			display_eff(f,f2)
-		print("")
-
-		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
-		if f != None:
-			display_mean_SNR(f,verbose)
-		print("")
-
-		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
-		if f != None:
-			display_encoding(f,verbose)
-		print("")
-
-		f = openDataFile(options.path+prefix+"_packets_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")	
-		if f!= None and f2!= None:
-			display_PER(f,f2)
-		print("")
-
-		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")	
-		if f != None and f2!= None:
-			display_PER_eff(f,f2)
-		print("")
-
-		f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
-		if f != None:
-			display_mean_delay(f,verbose)
+		print("")	

@@ -16,9 +16,7 @@ class Encoding(Enum):
 	_64QAM_3_4 = 7
 
 
-
 def translate_data(encodings):
-
 	translated_encoding = []
 	for encoding in encodings:
 		encoding = encoding.split(",")
@@ -49,7 +47,7 @@ def display_encoding_adaptative(encodings):
 	for encoding in encodings:
 		encodingAux = encoding.split(",")
 		encodingPunct[int(encoding[-1])].append(encodingAux[:-1])
-	
+
 	encodingTotal = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
 
 	for encoding in encodingPunct[0]:
@@ -79,17 +77,17 @@ def display_encoding_adaptative(encodings):
 	for index,rb in enumerate(encodingTotal):
 		print("Resource Block {0}".format(index))
 		i= 0
-		for name, _ in Encoding.__members__.items():	
+		for name, _ in Encoding.__members__.items():
 			if rb[i] != 0:
 				encoding_percent = 100 * rb[i]/float(len(encodings))
 				print ("   {0}: {1:.2f}%".format(name[1:],encoding_percent))
-			i+=1	
+			i+=1
 		print("")
 
 
 def display_encoding(encoding_f,verbose):
 	encodings = encoding_f.read()
-	encodings = encodings.split("\n")[2:-1]
+	encodings = encodings.split("\n")[:-1]
 
 	if "," in encodings[0]:
 		if verbose :
@@ -106,18 +104,18 @@ def display_encoding(encoding_f,verbose):
 
 	print("Encodings")
 	i= 0
-	for name, _ in Encoding.__members__.items():	
+	for name, _ in Encoding.__members__.items():
 		if n_encoding[i] != 0:
 			encoding_percent = 100 * n_encoding[i]/float(len(encodings))
 			print ("   {0}: {1:.2f}%".format(name[1:],encoding_percent))
-		i+=1	
+		i+=1
 
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
 		print("usage: ./display_encoding.py encoding_file")
 		sys.exit(-1)
-	try:	
+	try:
 		encoding_f = open(sys.argv[1])
 	except IOError as e:
 		print ("I/O error: {0}").format(e)

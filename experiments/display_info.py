@@ -7,7 +7,7 @@ from optparse import OptionParser
 from display_rate import display_mean_rate
 from display_per import display_PER
 from display_snr import display_mean_SNR
-from display_delay import display_mean_deay
+from display_delay import display_mean_delay
 
 
 def display_rx_data(data_f):
@@ -53,5 +53,5 @@ if __name__ == "__main__":
 		snr_f.close()
 
 	if frame_delay_f:
-		display_mean_deay(frame_delay_f)
+		display_mean_delay(frame_delay_f)
 		frame_delay_f.close()
