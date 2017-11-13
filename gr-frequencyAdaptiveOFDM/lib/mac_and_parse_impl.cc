@@ -51,7 +51,7 @@ namespace gr {
       message_port_register_hier_in(pmt::mp("app in"));
       message_port_register_hier_in(pmt::mp("phy in"));
       message_port_register_hier_out(pmt::mp("phy out"));
-      message_port_register_hier_out(pmt::mp("fer"));
+      message_port_register_hier_out(pmt::mp("per"));
       message_port_register_hier_out(pmt::mp("frame data"));
       message_port_register_hier_out(pmt::mp("app out"));
 
@@ -82,7 +82,7 @@ namespace gr {
       msg_connect(d_mac, "phy out", self(), "phy out");
       msg_connect(d_parse_mac, "app out", self(), "app out");
       msg_connect(d_parse_mac, "frame data", self(), "frame data");
-      msg_connect(d_parse_mac, "fer", self(), "fer");
+      msg_connect(d_parse_mac, "per", self(), "per");
     }
 
     std::vector<int>

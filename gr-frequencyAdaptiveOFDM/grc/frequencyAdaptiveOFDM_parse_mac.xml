@@ -58,7 +58,7 @@
   </source>
 
   <source>
-    <name>fer</name>
+    <name>per</name>
     <type>message</type>
     <optional>1</optional>
   </source>
@@ -69,4 +69,3 @@
     <optional>1</optional>
   </source>
 </block>
-

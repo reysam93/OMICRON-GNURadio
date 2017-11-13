@@ -52,15 +52,25 @@ namespace adaptiveOFDM {
   // static const float MIN_SNR_16QAM = 52.983173665480365;
   // static const float MIN_SNR_64QAM = 222.52932939501753;
 
+   static const float MIN_SNR_BPSK_1_2 = 200;
+  static const float MIN_SNR_BPSK_3_4 = 200;
+  static const float MIN_SNR_QPSK_1_2 = 200;
+  static const float MIN_SNR_QPSK_3_4 = 200;
+  static const float MIN_SNR_16QAM_1_2 = 200;
+  static const float MIN_SNR_16QAM_3_4 = 200;
+  static const float MIN_SNR_64QAM_2_3 = 200;
+  static const float MIN_SNR_64QAM_3_4 = 200;
+
+/*
   // This limits have been selected experimentally for PER < 5%
   static const float MIN_SNR_BPSK_3_4 = 4.5;
   static const float MIN_SNR_QPSK_1_2 = 6.5;
   static const float MIN_SNR_QPSK_3_4 = 10;
   static const float MIN_SNR_16QAM_1_2 = 17.5;
   static const float MIN_SNR_16QAM_3_4 = 20;
-  static const float MIN_SNR_64QAM_2_3 = 23+3;
-  static const float MIN_SNR_64QAM_3_4 = 26+3;
-
+  static const float MIN_SNR_64QAM_2_3 = 23+6;
+  static const float MIN_SNR_64QAM_3_4 = 26+6;
+*/
   // Time in usecs
   // SLOT_TIME value may be 9 or 20 usecs
   static const unsigned int SLOT_TIME = 20;
