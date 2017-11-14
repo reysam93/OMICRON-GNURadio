@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
 	if options.tx:
 		filetype = "tx"
-	else:
+	if options.rx:
 		filetype = "rx"
 
 

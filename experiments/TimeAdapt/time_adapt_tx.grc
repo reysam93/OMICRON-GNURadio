@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.9</value>
+      <value>.85</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -737,7 +737,7 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/time_received_encoding_tx.csv</value>
+      <value>/tmp/time_encoding_tx.csv</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -1027,7 +1027,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1388,7 +1388,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -4511,11 +4511,11 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>chan_est</value>
+      <value>True</value>
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>delay_file</key>
@@ -4527,11 +4527,11 @@
     </param>
     <param>
       <key>frequency</key>
-      <value>5.89e9</value>
+      <value>freq</value>
     </param>
     <param>
       <key>sensitivity</key>
-      <value>0.56+0.14</value>
+      <value>0.56</value>
     </param>
     <param>
       <key>tx_enc</key>

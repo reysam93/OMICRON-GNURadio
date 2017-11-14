@@ -102,7 +102,7 @@ def display_encoding(encoding_f,verbose):
 	for encoding in encodings:
 		n_encoding[int(encoding)]+=1
 
-	print("Encodings")
+	print("Transmited Encoding")
 	i= 0
 	for name, _ in Encoding.__members__.items():
 		if n_encoding[i] != 0:

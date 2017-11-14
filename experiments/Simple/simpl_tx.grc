@@ -4527,7 +4527,7 @@
     </param>
     <param>
       <key>frequency</key>
-      <value>5.89e9</value>
+      <value>freq</value>
     </param>
     <param>
       <key>sensitivity</key>

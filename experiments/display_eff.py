@@ -5,35 +5,31 @@ import os
 from enum import Enum
 
 # Efficencies for Time Adaptive
-EFF  = [0.5, 0.75, 1, 1.5, 2, 3, 4, 4.5]
+EFF  = [0.5, 0.75, 1, 1.5, 2, 3, 4, 4.5] #1.884
 # Efficencies for Frequency Adaptive
-EFFF = [0.5, 0.75, 1, 1.5, 2, 3, 3, 4.5]
+EFFF = [0.5, 0.75, 1, 1.5, 2, 3, 3, 4.5] #2.81
+
 
 def translate_data(encodings):
 	translated_encoding = []
 	for encoding in encodings:
 		encoding = encoding.split(",")
-		if int(encoding[4]) == 0:
-			for i in range(4):
-				if int(encoding[i]) == 0:
-					translated_encoding.append(0)
-				elif int(encoding[i]) == 1:
-					translated_encoding.append(2)
-				elif int(encoding[i]) == 2:
-					translated_encoding.append(4)
-				else:
-					translated_encoding.append(6)
-		else:
-			for i in range(4):
-				if int(encoding[i]) == 0:
-					translated_encoding.append(1)
-				elif int(encoding[i]) == 1:
-					translated_encoding.append(3)
-				elif int(encoding[i]) == 2:
-					translated_encoding.append(5)
-				else:
-					translated_encoding.append(7)
+		offset=0
+		if int(encoding[4]) == 1:
+			offset=1
+		for i in range(4):
+			if int(encoding[i]) == 0:
+				translated_encoding.append(0+offset)
+			elif int(encoding[i]) == 1:
+				translated_encoding.append(2+offset)
+			elif int(encoding[i]) == 2:
+				translated_encoding.append(4+offset)
+			else:
+				translated_encoding.append(6+offset)
 	return translated_encoding
+
+
+
 
 def display_eff(encodings_tx_f,encodings_rx_f):
 	encodings_tx = encodings_tx_f.read()
@@ -60,7 +56,7 @@ def display_eff(encodings_tx_f,encodings_rx_f):
 	for index,_ in enumerate(probs):
 		probs[index] = mods_rx[index]/float(total)
 		mean_eff += probs[index]*efficencies[index]
-
+		
 	print("Spectral eff: {0}".format(mean_eff))
 
 if __name__ == "__main__":
