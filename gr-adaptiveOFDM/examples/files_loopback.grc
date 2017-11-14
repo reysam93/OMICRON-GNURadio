@@ -341,7 +341,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>1500</value>
+      <value>500</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -404,7 +404,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>15</value>
+      <value>20</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -457,6 +457,33 @@
     <param>
       <key>widget</key>
       <value>counter_slider</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(864, 12)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>taps</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[-0.4,0.9,0.7,-0.2,-.5]</value>
     </param>
   </block>
   <block>
@@ -593,11 +620,11 @@
     </param>
     <param>
       <key>enc_file</key>
-      <value>/tmp/time_received_enc.csv</value>
+      <value>/tmp/time_received_encoding_rx.csv</value>
     </param>
     <param>
       <key>delay_file</key>
-      <value>/tmp/time_wifi_frame_delay.csv</value>
+      <value>/tmp/time_wifi_frame_delay_rx.csv</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -613,7 +640,7 @@
     </param>
     <param>
       <key>snr_file</key>
-      <value>/tmp/time_snr.csv</value>
+      <value>/tmp/time_snr_rx.csv</value>
     </param>
   </block>
   <block>
@@ -766,7 +793,7 @@
     </param>
     <param>
       <key>period</key>
-      <value>500</value>
+      <value>30</value>
     </param>
   </block>
   <block>
@@ -1280,7 +1307,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>1.0</value>
+      <value>taps</value>
     </param>
   </block>
   <block>
@@ -1401,7 +1428,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(768, 496)</value>
+      <value>(816, 504)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2429,7 +2456,7 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>chan_est</value>
+      <value>1</value>
     </param>
     <param>
       <key>debug_encoding</key>
@@ -2437,7 +2464,7 @@
     </param>
     <param>
       <key>delay_file</key>
-      <value>"/tmp/time_symbol_delay.csv"</value>
+      <value>""</value>
     </param>
     <param>
       <key>encoding</key>
@@ -2445,7 +2472,7 @@
     </param>
     <param>
       <key>frequency</key>
-      <value>5.89e9</value>
+      <value>5.2e9</value>
     </param>
     <param>
       <key>sensitivity</key>
@@ -2453,7 +2480,7 @@
     </param>
     <param>
       <key>tx_enc</key>
-      <value>"/tmp/time_transmited_encoding_tx"</value>
+      <value>"/tmp/time_transmited_encoding_tx.csv"</value>
     </param>
   </block>
   <connection>
@@ -2464,15 +2491,15 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
-    <source_key>fer</source_key>
-    <sink_key>pdus</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>adaptiveOFDM_write_frame_data_0</sink_block_id>
     <source_key>frame data</source_key>
     <sink_key>frame data</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
+    <source_key>per</source_key>
+    <sink_key>pdus</sink_key>
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>

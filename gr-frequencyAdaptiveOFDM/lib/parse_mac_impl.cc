@@ -321,15 +321,14 @@ namespace gr {
 
       d_100_rx_packets += seq_no - d_last_seq_no;
       d_lost_packets += seq_no - d_last_seq_no - 1;
-      float per = d_lost_packets / d_100_rx_packets;
+      float per = d_lost_packets / float(d_100_rx_packets);
       dout << "instantaneous PER: " << per << std::endl;
 
-      // keep track of values
-      d_last_seq_no = seq_no;
       pmt::pmt_t pdu = pmt::make_f32vector(1, per * 100);
       message_port_pub(pmt::mp("per"), pmt::cons( pmt::PMT_NIL, pdu ));
 
-      if (d_100_rx_packets >= 100) {
+      d_last_seq_no = seq_no;
+      if (d_100_rx_packets >= 100 ||  d_100_rx_packets < 0) {
         d_lost_packets = 0;
         d_100_rx_packets = 0;
       }

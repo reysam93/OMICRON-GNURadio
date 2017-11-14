@@ -51,8 +51,8 @@ namespace gr {
       bool d_debug;
 
       // Intantaneous PER
-      float d_lost_packets;
-      float d_100_rx_packets;
+      int d_lost_packets;
+      int d_100_rx_packets;
 
       void print_mac_address(uint8_t *addr, bool new_line = false);
       bool equal_mac(uint8_t *addr1, uint8_t *addr2);
