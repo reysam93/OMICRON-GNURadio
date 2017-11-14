@@ -56,7 +56,7 @@ namespace gr {
         d_debug(debug) {
 
       message_port_register_in(pmt::mp("phy in"));
-      message_port_register_out(pmt::mp("fer"));
+      message_port_register_out(pmt::mp("per"));
       message_port_register_out(pmt::mp("frame data"));
       message_port_register_out(pmt::mp("app out"));
       set_msg_handler(pmt::mp("phy in"), boost::bind(&parse_mac_impl::phy_in, this, _1));
@@ -316,25 +316,25 @@ namespace gr {
       dout << "mac 3: ";
       print_mac_address(h->addr3, true);
 
-      float lost_frames = seq_no - d_last_seq_no - 1;
-      if(lost_frames  < 0)
-        lost_frames += 1 << 12;
-
-      // calculate frame error rate
-      float fer = lost_frames / (lost_frames + 1);
-      dout << "instantaneous fer: " << fer << std::endl;
+      d_100_rx_packets += seq_no - d_last_seq_no;
+      d_lost_packets += seq_no - d_last_seq_no - 1;
+      float per = d_lost_packets / d_100_rx_packets;
+      dout << "instantaneous PER: " << per << std::endl;
 
       // keep track of values
       d_last_seq_no = seq_no;
+      pmt::pmt_t pdu = pmt::make_f32vector(1, per * 100);
+      message_port_pub(pmt::mp("per"), pmt::cons( pmt::PMT_NIL, pdu ));
 
-      // publish FER estimate
-      pmt::pmt_t pdu = pmt::make_f32vector(lost_frames + 1, fer * 100);
-      message_port_pub(pmt::mp("fer"), pmt::cons( pmt::PMT_NIL, pdu ));
+      if (d_100_rx_packets >= 100) {
+        d_lost_packets = 0;
+        d_100_rx_packets = 0;
+      }
     }
 
     void
-    parse_mac_impl::process_ack() {
       //dout << ": ACK received";
+      parse_mac_impl::process_ack() {
       d_mac_and_parse->setAckReceived(true);
     }
 
