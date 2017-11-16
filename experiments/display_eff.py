@@ -7,7 +7,7 @@ from enum import Enum
 # Efficencies for Time Adaptive
 EFF  = [0.5, 0.75, 1, 1.5, 2, 3, 4, 4.5] #1.884
 # Efficencies for Frequency Adaptive
-EFFF = [0.5, 0.75, 1, 1.5, 2, 3, 3, 4.5] #2.81
+EFFF = [0.5, 0.75, 1, 1.5, 2, 3, 3, 4, 4.5] #2.81
 
 
 def translate_data(encodings):

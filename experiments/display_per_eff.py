@@ -14,13 +14,23 @@ class Encoding(Enum):
 	_64QAM_2_3 = 6
 	_64QAM_3_4 = 7
 
+class EncodingF(Enum):
+	_BPSK_1_2 = 0
+	_BPSK_3_4 = 1
+	_QPSK_1_2 = 2
+	_QPSK_3_4 = 3
+	_16QAM_1_2 = 4
+	_16QAM_3_4 = 5
+	_64QAM_1_2 = 6
+	_64QAM_3_4 = 7
+	_64QAM_2_3 = 8
+	
+
 def translate_data(encodings):
 	translated_encoding = []
 	for encoding in encodings:
 		encoding = encoding.split(",")
-		offset=0
-		if int(encoding[4]) == 1:
-			offset=1
+		offset = int(encoding[4])
 		for i in range(4):
 			if int(encoding[i]) == 0:
 				translated_encoding.append(0+offset)
@@ -32,10 +42,10 @@ def translate_data(encodings):
 				translated_encoding.append(6+offset)
 	return translated_encoding
 
-def show_results(rx, tx, total):
+def show_results(names,rx, tx, total):
 	i = 0
 	print "PER (PER normalized): "
-	for name, _ in Encoding.__members__.items():
+	for name, _ in names:
 			per = 0
 			if tx[i] != 0:
 				per = 100*(tx[i] - rx[i])/float(tx[i])
@@ -56,9 +66,14 @@ def display_PER_eff(encodings_tx_f,encodings_rx_f):
 	if "," in encodings_tx[0]:
 		encodings_tx = translate_data(encodings_tx)
 		encodings_rx = translate_data(encodings_rx)
+		tx = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+		rx = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+		EncoNames = EncodingF.__members__.items()
+	else:
+		tx = [0, 0, 0, 0, 0, 0, 0, 0]
+		rx = [0, 0, 0, 0, 0, 0, 0, 0]
+		EncoNames = Encoding.__members__.items()
 
-	tx = [0, 0, 0, 0, 0, 0, 0, 0]
-	rx = [0, 0, 0, 0, 0, 0, 0, 0]
 	i = 0
 	while i < len(encodings_tx):
 		tx[int(encodings_tx[i])] += 1
@@ -66,7 +81,7 @@ def display_PER_eff(encodings_tx_f,encodings_rx_f):
 			rx[int(encodings_rx[i])] += 1
 		i += 1
 
-	show_results(rx, tx, len(encodings_tx))
+	show_results(EncoNames,rx, tx, len(encodings_tx))
 
 
 if __name__ == "__main__":

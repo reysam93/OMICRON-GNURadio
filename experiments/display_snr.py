@@ -3,6 +3,8 @@
 import sys
 import os
 from numpy import var
+import matplotlib.pyplot as plt
+
 
 def display_mean_SNR(snr_f,verbose):
 	SNRs = snr_f.read().split("\n")[:-1]
@@ -49,6 +51,7 @@ def display_mean_SNR(snr_f,verbose):
 		if verbose:
 			print("Whole Max  SNR (dB): {0:.2f}".format(max(max_SNR)))
 			print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
+			plotSNR(meanRBs(SNRs))
 		print("Equivalent SNR: {0:.2f}".format(sim_SNR))
 	else:
 		mean_SNR = 0
@@ -61,13 +64,29 @@ def display_mean_SNR(snr_f,verbose):
 			if fSNR<=min_SNR:
 				min_SNR = fSNR	
 			mean_SNR += fSNR
-
 		mean_SNR /= len(SNRs)
 		print("Mean SNR (dB): {0:.2f}".format(mean_SNR))
 		if verbose:
 			print("Max  SNR (dB): {0:.2f}".format(max_SNR))
 			print("Min  SNR (dB): {0:.2f}".format(min_SNR))
 
+			plotSNR(SNRs)
+
+def meanRBs(SNRs):
+	meanSNR = []
+	for snr in SNRs:
+		SNR_rbs = snr.split(", ")
+		tot = 0.0
+		for rb in SNR_rbs:
+			tot+= float(rb)
+		meanSNR.append(tot/len(snr))
+	return meanSNR
+
+def plotSNR(snr):
+	plt.plot(snr)
+	plt.ylabel('dB')
+	plt.xlabel('packet')
+	plt.show()
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
