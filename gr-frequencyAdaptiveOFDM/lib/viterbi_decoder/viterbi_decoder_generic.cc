@@ -386,6 +386,11 @@ viterbi_decoder::reset() {
 		d_depuncture_pattern = PUNCTURE_3_4;
 		d_k = 3;
 		break;
+	case P_2_3:
+		d_ntraceback = 9;
+		d_depuncture_pattern = PUNCTURE_2_3;
+		d_k = 2;
+		break;
 	}
 }
 

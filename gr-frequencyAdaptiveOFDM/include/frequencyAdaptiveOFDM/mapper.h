@@ -31,12 +31,13 @@ enum Encoding {
   BPSK  = 0,
   QPSK  = 1,
   QAM16  = 2,
-  QAM64= 3,
+  QAM64 = 3,
 };
 
 enum Puncturing {
   P_1_2 = 0,
   P_3_4 = 1,
+  P_2_3 = 2,
 };
 
 

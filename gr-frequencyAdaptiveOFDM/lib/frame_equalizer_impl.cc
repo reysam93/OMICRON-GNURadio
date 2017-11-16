@@ -319,12 +319,23 @@ namespace gr {
         }
       }
 
+      if(parity != decoded_bits[21]) {
+        if (d_debug || d_debug_parity){
+          std::cout << "WARNING: FRAME EQUALIZER: wrong parity.\n";
+        }
+        return false;
+      }
+
+      bool all_mod_64QAM = true;
       for(int i = 0; i < 4; i++){
         if(d_frame_enc[i] == BPSK){
+          all_mod_64QAM = false;
           d_frame_mod[i] = d_bpsk;
         }else if(d_frame_enc[i] == QPSK){
+          all_mod_64QAM = false;
           d_frame_mod[i] = d_qpsk;
         }else if(d_frame_enc[i] == QAM16){
+          all_mod_64QAM = false;
           d_frame_mod[i] = d_16qam;
         }else if(d_frame_enc[i] == QAM64){
           d_frame_mod[i] = d_64qam;
@@ -334,12 +345,11 @@ namespace gr {
         }
       }
 
-      if(parity != decoded_bits[21]) {
-        if (d_debug || d_debug_parity){
-          std::cout << "WARNING: FRAME EQUALIZER: wrong parity.\n";
-        }
-        return false;
+      
+      if (all_mod_64QAM && d_frame_punct == P_1_2) {
+        d_frame_punct = P_2_3;
       }
+
 
       ofdm_param ofdm_received(d_frame_enc, d_frame_punct);
       frame_param frame_received(ofdm_received, d_frame_bytes);

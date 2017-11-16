@@ -46,7 +46,7 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 	n_cbps = 0;
 	n_dbps = 0;
 
-	if (punct != P_1_2 && punct != P_3_4) {
+	if (punct != P_1_2 && punct != P_3_4 && punct != P_2_3) {
 		throw std::invalid_argument("OFDM_PARAM: wrong puncturing");
 	}
 
@@ -107,6 +107,9 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 			}else if(punct == P_3_4){
 				n_dbprb[i] = 54;
 				n_dbps += 54;
+			} else if (punct == P_2_3){
+				n_dbprb[i] == 48;
+				n_dbps += 48;
 			}
 			break;
 
@@ -187,6 +190,9 @@ ofdm_param::print_encoding() {
 		break;
 	case P_3_4:
 		punct_str = "3/4";
+		break;
+	case P_2_3:
+		punct_str = "2/3";
 		break;
 	default:
 		punct_str = "Unknown puncturing.";
@@ -279,6 +285,12 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 			case P_3_4:
 				mod = i % 6;
 				if (!(mod == 3 || mod == 4)) {
+					*out = in[i];
+					out++;
+				}
+				break;
+			case P_2_3:
+				if (i % 4 != 3) {
 					*out = in[i];
 					out++;
 				}

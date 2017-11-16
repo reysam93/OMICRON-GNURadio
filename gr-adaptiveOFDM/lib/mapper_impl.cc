@@ -101,6 +101,7 @@ namespace gr {
           dout << "MAPPER: received new message" << std::endl;
 
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
+          mac_header *h = (mac_header*)pmt::blob_data(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
 
           pmt::pmt_t dict = pmt::car(msg);
@@ -188,7 +189,7 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
               encoding, srcid);
 
-          if (tx_enc_fstream.is_open()) {
+          if (tx_enc_fstream.is_open() && ((h->frame_control >> 2) & 3) == 2) {
             tx_enc_fstream << d_ofdm.encoding << "\n";
             tx_enc_fstream.flush();
           }

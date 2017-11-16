@@ -124,7 +124,6 @@ namespace gr {
           parse_data((char*)h, data_len);
           parse_body((char*)pmt::blob_data(msg), h, data_len);
           int psdu_length;
-
           d_mac_and_parse->sendAck(h->addr2, &psdu_length);
 
           // Measuring delay
@@ -138,13 +137,13 @@ namespace gr {
             rx_packets_fs << n_rx_packets << std::endl;
             rx_packets_fs.close();
           }
+          send_frame_data(enc);
           break;
         default:
           dout << " (unknown)" << std::endl;
           break;
       }
       decide_encoding();
-      send_frame_data(enc);
     }
 
     void

@@ -126,7 +126,6 @@ namespace gr {
           parse_data((char*)h, data_len);
           parse_body((char*)pmt::blob_data(msg), h, data_len);
           int psdu_length;
-
           d_mac_and_parse->sendAck(h->addr2, &psdu_length);
 
           // Measuring delay
@@ -140,13 +139,14 @@ namespace gr {
             rx_packets_fs << n_rx_packets << std::endl;
             rx_packets_fs.close();
           }
+          // Only send the received information if its from a data package
+          send_frame_data(enc, punct);
           break;
         default:
           dout << " (unknown)" << std::endl;
           break;
       }
       decide_encoding();
-      send_frame_data(enc, punct);
     }
 
     void
@@ -457,32 +457,43 @@ namespace gr {
       message_port_pub(pmt::mp("app out"), pmt::cons( pmt::PMT_NIL, pdu ));
     }
 
+    /*std::vector<int>
+    parse_mac_impl::change64QAM(std::vector<int> enc, int punct) {
+      for (int i = 0; i < N_RB; i++) {
+        if (enc[i] == QAM64 && punct == )
+      }
+    }*/
+
     void
     parse_mac_impl::decide_encoding(){
       std::vector<int> encoding(4, BPSK);
       bool punct_3_4 = true;
+      bool all_mod_64QAM = true;
       int puncturing = P_1_2;
 
       dout << std::endl;
       for (int i = 0; i < 4; i++) {
         dout << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
 
-        if (d_snr[i] >= MIN_SNR_64QAM_1_2) {
+        if (d_snr[i] >= MIN_SNR_64QAM_2_3) {
           encoding[i] = QAM64;
           if (d_snr[i] < MIN_SNR_64QAM_3_4) {
             punct_3_4 = false;
           }
         } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
+          all_mod_64QAM = false;
           encoding[i] = QAM16;
           if (d_snr[i] < MIN_SNR_16QAM_3_4) {
             punct_3_4 = false;
           }
         }else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
+          all_mod_64QAM = false;
           encoding[i] = QPSK;
           if (d_snr[i] < MIN_SNR_QPSK_3_4) {
             punct_3_4 = false;
           }
         } else {
+          all_mod_64QAM = false;
           encoding[i] = BPSK;
           if (d_snr[i] < MIN_SNR_BPSK_3_4) {
             punct_3_4 = false;
@@ -491,8 +502,11 @@ namespace gr {
       }
       dout << std::endl;
 
+
       if (punct_3_4) {
-        puncturing = punct_3_4;
+        puncturing = P_3_4;
+      } else if (all_mod_64QAM) {
+        puncturing = P_2_3;
       }
 
       d_mac_and_parse->setEncoding(encoding, puncturing);

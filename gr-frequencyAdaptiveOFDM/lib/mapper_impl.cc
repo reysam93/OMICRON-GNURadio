@@ -60,7 +60,7 @@ namespace gr {
         enc = pilots_enc;
         d_ofdm = ofdm_param(enc, punct);
 
-        std::cout << "MAPPER DEBUG ENCODDING: ";
+        std::cout << "MAPPER DEBUG ENCODDING:\n";
         d_ofdm.print_encoding();
       }
       if (tx_enc_f != "") {
@@ -105,6 +105,7 @@ namespace gr {
           dout << "MAPPER: received new message" << std::endl;
 
           int psdu_length = pmt::blob_length(pmt::cdr(msg));
+          mac_header *h = (mac_header*)pmt::blob_data(pmt::cdr(msg));
           const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
 
           pmt::pmt_t dict = pmt::car(msg);
@@ -204,7 +205,8 @@ namespace gr {
           add_item_tag(0, nitems_written(0), pmt::mp("puncturing"),
               pmt_punct, srcid);
 
-          if (tx_enc_fstream.is_open()){
+          // Only write modulation of Data frames
+          if (tx_enc_fstream.is_open() && ((h->frame_control >> 2) & 3) == 2){
             tx_enc_fstream << ofdm.toFileFormat();
             tx_enc_fstream.flush();
           }

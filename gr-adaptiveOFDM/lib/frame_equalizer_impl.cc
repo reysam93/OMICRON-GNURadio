@@ -1,18 +1,18 @@
 /* -*- c++ -*- */
-/* 
+/*
  * Copyright 2017   Samuel Rey <samuel.rey.escudero@gmail.com>
  *                  Bastian Bloessl <bloessl@ccs-labs.org>
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street,
@@ -35,7 +35,7 @@ namespace gr {
   namespace adaptiveOFDM {
 
     frame_equalizer::sptr
-    frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, 
+    frame_equalizer::make(Equalizer algo, double freq, double bw, bool log,
                           bool debug, bool debug_parity, char* delay_file) {
       return gnuradio::get_initial_sptr
         (new frame_equalizer_impl(algo, freq, bw, log, debug, debug_parity, delay_file));
@@ -62,7 +62,7 @@ namespace gr {
 
       set_tag_propagation_policy(block::TPP_DONT);
       set_algorithm(algo);
-    
+
       gettimeofday(&last_time, NULL);
       if(delay_file != ""){
         delay_fstream.open(delay_file, std::ofstream::out);
@@ -174,7 +174,7 @@ namespace gr {
           delay_fstream << d_current_symbol << ", " << delay << ", " << new_frame << "\n";
         }
         if(d_log){
-          std::cout << "OFDM symbol " << d_current_symbol << " delay: " << delay << " ms. New frame: " << new_frame << "\n"; 
+          std::cout << "OFDM symbol " << d_current_symbol << " delay: " << delay << " ms. New frame: " << new_frame << "\n";
         }
 
         std::memcpy(current_symbol, in + i*64, 64*sizeof(gr_complex));
@@ -290,7 +290,6 @@ namespace gr {
 
     bool
     frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
-
       int r = 0;
       d_frame_bytes = 0;
       bool parity = false;
@@ -383,4 +382,3 @@ namespace gr {
 
   } /* namespace adaptiveOFDM */
 } /* namespace gr */
-
