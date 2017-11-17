@@ -6,7 +6,7 @@ The aim of this experiments is to try the flexibility of SDR and GNU radio, real
 ### Dependencies
 #### GNU Radio 3.7
 The version of GNU Radio required is the 3.7.10. Some components, especially from the OFDM folder may not work correctly with previous versions.
-Instructions for installing it can be found [here](http://gnuradio.org/redmine/projects/gnuradio/wiki/InstallingGRFromSource).
+Instructions for installing it can be found [here](https://wiki.gnuradio.org/index.php/InstallingGRFromSource).
 
 #### gr-ieee802-11
 The examples inside the WiFi folder are based on the gr-ieee802-11 repository for being compatible with the 802.11 standard. For this reason, it is necessary to install this modules and its dependencies. The instructions for doing this can be found [here](https://github.com/bastibl/gr-ieee802-11#installation).
