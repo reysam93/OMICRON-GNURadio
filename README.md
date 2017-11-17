@@ -32,6 +32,15 @@ cmake ..
 make
 sudo make install
 sudo ldconfig
+
+# installing gr-frequencyAdaptiveOFDM
+cd gr-frequencyAdaptiveOFDM
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+sudo ldconfig
 ```
 
 ## gr-GNU_tutorials
