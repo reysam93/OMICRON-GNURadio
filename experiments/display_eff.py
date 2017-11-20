@@ -37,11 +37,14 @@ def display_eff(encodings_tx_f,encodings_rx_f):
 
 	mods_rx = [0, 0, 0, 0, 0, 0, 0, 0]
 	efficencies = EFF
+	probs =  [0, 0, 0, 0, 0, 0, 0, 0]
 
 	if "," in encodings_tx[0]:
 		encodings_tx = translate_data(encodings_tx)
 		encodings_rx = translate_data(encodings_rx)
 		efficencies = EFFF
+		mods_rx = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+		probs =  [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
 	for encoding in encodings_rx:
@@ -49,7 +52,6 @@ def display_eff(encodings_tx_f,encodings_rx_f):
 
 	total = len(encodings_tx)
 
-	probs =  [0, 0, 0, 0, 0, 0, 0, 0]
 	mean_eff = 0
 	for index,_ in enumerate(probs):
 		probs[index] = mods_rx[index]/float(total)
