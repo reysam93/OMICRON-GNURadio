@@ -23,8 +23,8 @@ class EncodingF(Enum):
 	_16QAM_1_2 = 4
 	_16QAM_3_4 = 5
 	_64QAM_1_2 = 6
-	_64QAM_2_3 = 7
-	_64QAM_3_4 = 8
+	_64QAM_3_4 = 7
+	_64QAM_2_3 = 8
 
 
 def translate_data(encodings):
