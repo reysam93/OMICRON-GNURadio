@@ -93,8 +93,8 @@ if __name__ == "__main__":
 		print("")
 
 	if options.per:
-		f = openDataFile(options.path+prefix+"_packets_tx.csv")
-		f2 = openDataFile(options.path+prefix+"_packets_rx.csv")
+		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
+		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f!= None and f2!= None:
 			display_PER(f,f2)
 		print("")

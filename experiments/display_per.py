@@ -4,16 +4,18 @@ import sys
 import os
 
 
-def display_PER(tx_p_f, rx_p_f):
-	n_tx_p = float(tx_p_f.readline())
-	n_rx_p = float(rx_p_f.readline())
-	PER = (1 - (n_rx_p / n_tx_p)) * 100
+def display_PER(encodings_tx_f,encodings_rx_f):
+	encodings_tx = encodings_tx_f.read()
+	encodings_rx = encodings_rx_f.read()
+	encodings_tx = encodings_tx.split("\n")[:-1]
+	encodings_rx = encodings_rx.split("\n")[:-1]
+	PER = (1 - (len(encodings_rx) / float(len(encodings_tx)))) * 100
 	print("PER (%): {0:.2f}".format(PER))
 
 
 if __name__ == "__main__":
 	if len(sys.argv) < 3:
-		print("usage: ./display_per.py tx_packets_f rx_packets_f")
+		print("usage: ./display_per.py usedEncoding_tx_f usedEncoding_rx_f")
 		sys.exit(-1)
 
 	try:	
