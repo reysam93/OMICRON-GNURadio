@@ -71,7 +71,7 @@ namespace gr {
       std::vector<int>  d_frame_enc;
       int d_frame_punct;
 
-      uint8_t d_deinterleaved[48];
+      uint8_t d_deinterleaved[48*2];
       gr_complex symbols[48];
 
       boost::shared_ptr<gr::digital::constellation> d_frame_mod[4];

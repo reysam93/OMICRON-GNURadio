@@ -34,9 +34,9 @@ signal_field::make() {
 	return signal_field::sptr(new signal_field_impl());
 }
 
-signal_field::signal_field() : packet_header_default(48, "packet_len") {}
+signal_field::signal_field() : packet_header_default(48*2, "packet_len") {}
 
-signal_field_impl::signal_field_impl() : packet_header_default(48, "packet_len") {}
+signal_field_impl::signal_field_impl() : packet_header_default(48*2, "packet_len") {}
 
 signal_field_impl::~signal_field_impl() {}
 
@@ -46,13 +46,13 @@ int signal_field_impl::get_bit(int b, int i) {
 
 void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm) {
 	//data bits of the signal header
-	char *signal_header = (char *) malloc(sizeof(char) * 24);
+	char *signal_header = (char *) malloc(sizeof(char) * 24 * 2);
 
 	//signal header after...
 	//convolutional encoding
-	char *encoded_signal_header = (char *) malloc(sizeof(char) * 48);
+	char *encoded_signal_header = (char *) malloc(sizeof(char) * 48 * 2);
 	//interleaving
-	char *interleaved_signal_header = (char *) malloc(sizeof(char) * 48);
+	char *interleaved_signal_header = (char *) malloc(sizeof(char) * 48 * 2);
 
 	int length = frame.psdu_size;
 
@@ -93,14 +93,14 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	signal_header[21] = sum % 2;
 
 	// last 6 must be 0, so we need a whole new symbol
-	for (int i = 22; i < 24; i++) {
+	for (int i = 22; i < 48; i++) {
 		signal_header[i] = 0;
 	}
 
 	std::vector<int> resource_block_e (4, BPSK);
 	ofdm_param signal_ofdm(resource_block_e, P_1_2);
 	frame_param signal_param (signal_ofdm, 0);
-	//signal_param.to_header_param();
+	signal_param.to_header_param();
 
 	// convolutional encoding (scrambling is not needed)
 	convolutional_encoding(signal_header, encoded_signal_header, signal_param);

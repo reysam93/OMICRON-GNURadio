@@ -24,6 +24,7 @@
 
 #include <gnuradio/io_signature.h>
 #include "mac_and_parse_impl.h"
+#include <algorithm>
 
 namespace gr {
   namespace frequencyAdaptiveOFDM {
@@ -151,6 +152,8 @@ namespace gr {
         return;
       }
 
+      //int max_enc = *std::max_element(ofdm.resource_blocks_e.begin(),
+      //                                ofdm.resource_blocks_e.end());
       for (int i = 0; i < ofdm.resource_blocks_e.size(); i++) {
         if (ofdm.resource_blocks_e[i] == BPSK) {
           encoding[i] = BPSK;
