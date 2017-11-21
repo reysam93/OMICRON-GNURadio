@@ -237,7 +237,7 @@ namespace gr {
 
         // do equalization
         d_equalizer->equalize(current_symbol, d_current_symbol,
-            symbols, out + 48, d_frame_mod);
+            symbols, out + o*48, d_frame_mod);
 
         // signal field
         if(d_current_symbol == 2) {

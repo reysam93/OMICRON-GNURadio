@@ -166,7 +166,7 @@ namespace gr {
         }
 
         // not interesting -> skip
-        if(d_current_symbol > (d_frame_symbols + 2)) {
+        if(d_current_symbol > (d_frame_symbols + 3)) {
           i++;
           continue;
         }
@@ -235,12 +235,16 @@ namespace gr {
           d_er = (1-alpha) * d_er + alpha * er;
         }
 
+        int index = o;
+        if (d_current_symbol == 3){
+          index += 1;
+        }
         // do equalization
         d_equalizer->equalize(current_symbol, d_current_symbol,
-            symbols, out + o*48, d_frame_mod);
+            symbols, out + index * 48, d_frame_mod);
 
         // signal field
-        if(d_current_symbol == 2) {
+        if(d_current_symbol == 3) {
           if(decode_signal_field(out + o * 48)) {
             if (d_debug){
               std::cout << "FRAME EQ: frame coding:\n";
@@ -262,7 +266,7 @@ namespace gr {
                 pmt::string_to_symbol(alias()));
           }
         }
-        if(d_current_symbol > 2) {
+        if(d_current_symbol > 3) {
           o++;
           pmt::pmt_t pdu = pmt::make_dict();
           message_port_pub(pmt::mp("symbols"), pmt::cons(pmt::make_dict(), pmt::init_c32vector(48, symbols)));
@@ -279,7 +283,7 @@ namespace gr {
       std::vector<int> resource_block_e (4, BPSK);
       static ofdm_param ofdm(resource_block_e, P_1_2);
       static frame_param frame(ofdm, 0);
-      //frame.to_header_param();
+      frame.to_header_param();
 
       interleave((char*)rx_bits, (char*)d_deinterleaved, frame, ofdm, true);
       uint8_t *decoded_bits = d_decoder.decode(&ofdm, &frame, d_deinterleaved);
@@ -319,7 +323,7 @@ namespace gr {
         if (d_debug || d_debug_parity){
           std::cout << "WARNING: FRAME EQUALIZER: wrong parity.\n";
         }
-        //return false;
+        return false;
       }
 
       bool all_mod_64QAM = true;
@@ -341,7 +345,7 @@ namespace gr {
         }
       }
 
-
+      
       if (all_mod_64QAM && d_frame_punct == P_1_2) {
         d_frame_punct = P_2_3;
       }
