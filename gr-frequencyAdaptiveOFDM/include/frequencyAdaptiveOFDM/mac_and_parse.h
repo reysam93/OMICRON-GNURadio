@@ -66,27 +66,36 @@ namespace gr {
         static const float MIN_SNR_64QAM_1_2 = 26;
         static const float MIN_SNR_64QAM_3_4 = 30;*/
 
-        // Simulated limits
+        // Simulated limits - 20/10 - LoS
+        static const float MIN_SNR_BPSK_1_2 = 1;
+        static const float MIN_SNR_BPSK_3_4 = 3.5;  //0.75;
+        static const float MIN_SNR_QPSK_1_2 = 6.5;  //4.8;
+        static const float MIN_SNR_QPSK_3_4 = 7.5;
+        static const float MIN_SNR_16QAM_1_2 = 13;
+        static const float MIN_SNR_16QAM_3_4 = 15.5;
+        static const float MIN_SNR_64QAM_2_3 = 21.5;
+        static const float MIN_SNR_64QAM_3_4 = 22.5;
+/*
+        // Simulated limits - 18/10
         static const float MIN_SNR_BPSK_1_2 = -2;
         static const float MIN_SNR_BPSK_3_4 = 3;
-        static const float MIN_SNR_QPSK_1_2 = 5;
-        static const float MIN_SNR_QPSK_3_4 = 6.5;
-        static const float MIN_SNR_16QAM_1_2 = 13;
-        static const float MIN_SNR_16QAM_3_4 = 15;
-        // Change to 64QAM_2_3
-        static const float MIN_SNR_64QAM_2_3 = 25;
-        static const float MIN_SNR_64QAM_3_4 = 27;
+        static const float MIN_SNR_QPSK_1_2 = 6;
+        static const float MIN_SNR_QPSK_3_4 = 7.5;
+        static const float MIN_SNR_16QAM_1_2 = 13.5;
+        static const float MIN_SNR_16QAM_3_4 = 16;
+        static const float MIN_SNR_64QAM_2_3 = 23;
+        static const float MIN_SNR_64QAM_3_4 = 25;
 
 /*
-        // Experimentally
-        static const float MIN_SNR_BPSK_3_4 = -1.5;
-        static const float MIN_SNR_QPSK_1_2 = 3;
-        static const float MIN_SNR_QPSK_3_4 = 4.5;
-        static const float MIN_SNR_16QAM_1_2 = 10.5;
-        static const float MIN_SNR_16QAM_3_4 = 12.5;
-        // Change to 64QAM_2_3
-        static const float MIN_SNR_64QAM_1_2 = 200;
-        static const float MIN_SNR_64QAM_3_4 = 21;
+        // Experimentally - 16/10
+        static const float MIN_SNR_BPSK_1_2 = -2;
+        static const float MIN_SNR_BPSK_3_4 = 4.5;
+        static const float MIN_SNR_QPSK_1_2 = 6;
+        static const float MIN_SNR_QPSK_3_4 = 7.5;
+        static const float MIN_SNR_16QAM_1_2 = 14.5;
+        static const float MIN_SNR_16QAM_3_4 = 17.5;
+        static const float MIN_SNR_64QAM_2_3 = 25;
+        static const float MIN_SNR_64QAM_3_4 = 27;
 
         //OLD
         // This limits have been selected experimentally for PER < 5%

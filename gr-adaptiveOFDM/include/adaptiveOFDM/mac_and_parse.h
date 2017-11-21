@@ -52,15 +52,24 @@ namespace adaptiveOFDM {
   // static const float MIN_SNR_16QAM = 52.983173665480365;
   // static const float MIN_SNR_64QAM = 222.52932939501753;
 
+  static const float MIN_SNR_BPSK_1_2 = 1;
+  static const float MIN_SNR_BPSK_3_4 = 3.5;  //0.75;
+  static const float MIN_SNR_QPSK_1_2 = 6.5;  //4.8;
+  static const float MIN_SNR_QPSK_3_4 = 7.5;
+  static const float MIN_SNR_16QAM_1_2 = 13;
+  static const float MIN_SNR_16QAM_3_4 = 15.5;
+  static const float MIN_SNR_64QAM_2_3 = 21.5;
+  static const float MIN_SNR_64QAM_3_4 = 22.5;
+  /*
   static const float MIN_SNR_BPSK_1_2 = -2;
   static const float MIN_SNR_BPSK_3_4 = 3;
   static const float MIN_SNR_QPSK_1_2 = 5;
-  static const float MIN_SNR_QPSK_3_4 = 6.5;
-  static const float MIN_SNR_16QAM_1_2 = 13;
-  static const float MIN_SNR_16QAM_3_4 = 15;
+  static const float MIN_SNR_QPSK_3_4 = 6;
+  static const float MIN_SNR_16QAM_1_2 = 12.5;
+  static const float MIN_SNR_16QAM_3_4 = 15.75;
   static const float MIN_SNR_64QAM_2_3 = 25;
   static const float MIN_SNR_64QAM_3_4 = 27;
-
+*/
 /*
   // This limits have been selected experimentally for PER < 5%
   static const float MIN_SNR_BPSK_3_4 = 4.5;
