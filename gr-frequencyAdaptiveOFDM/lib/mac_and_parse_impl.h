@@ -61,6 +61,7 @@ namespace gr {
       void createBlocks(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac,
                           bool debug, char* tx_packets_f, char* rx_packets_f);
       void connectBlocks();
+      bool all64(ofdm_param ofdm);
     };
 
   } // namespace frequencyAdaptiveOFDM

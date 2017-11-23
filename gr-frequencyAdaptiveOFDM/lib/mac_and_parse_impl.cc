@@ -148,6 +148,11 @@ namespace gr {
       int punct = P_3_4;
 
       if (ofdm.punct == P_3_4) {
+        if(all64(ofdm)){
+          std::vector<int> encodingAux(4, QAM16);
+          setEncoding(encodingAux,P_3_4);
+          return;
+        }
         setEncoding(ofdm.resource_blocks_e, P_1_2);
         return;
       }
@@ -163,6 +168,16 @@ namespace gr {
         }
       }
       setEncoding(encoding, punct);
+    }
+
+    bool
+    mac_and_parse_impl::all64(ofdm_param ofdm){
+      for (int i=0;i<ofdm.resource_blocks_e.size();i++){
+        if (ofdm.resource_blocks_e[i] != 3){
+          return false;
+        }
+      }
+      return true;
     }
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
