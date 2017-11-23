@@ -469,6 +469,7 @@ namespace gr {
       std::vector<int> encoding(4, BPSK);
       bool punct_3_4 = true;
       bool all_mod_64QAM = true;
+      bool punct3_4possible = true;
       int puncturing = P_1_2;
 
       dout << std::endl;
@@ -485,28 +486,39 @@ namespace gr {
           encoding[i] = QAM16;
           if (d_snr[i] < MIN_SNR_16QAM_3_4) {
             punct_3_4 = false;
+            punct3_4possible = false;
           }
         }else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
           all_mod_64QAM = false;
           encoding[i] = QPSK;
           if (d_snr[i] < MIN_SNR_QPSK_3_4) {
             punct_3_4 = false;
+            punct3_4possible = false;
           }
         } else {
           all_mod_64QAM = false;
           encoding[i] = BPSK;
           if (d_snr[i] < MIN_SNR_BPSK_3_4) {
             punct_3_4 = false;
+            punct3_4possible = false;
           }
         }
       }
       dout << std::endl;
 
 
+
       if (punct_3_4) {
         puncturing = P_3_4;
       } else if (all_mod_64QAM) {
         puncturing = P_2_3;
+      } else if (punct3_4possible){
+        for(int i=0; i<4; i++){
+          if (encoding[i] == 3){
+            encoding[i] = 2;
+            puncturing = P_3_4;
+          }
+        }
       }
 
       d_mac_and_parse->setEncoding(encoding, puncturing);
