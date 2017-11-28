@@ -144,21 +144,22 @@ namespace gr {
     void
     mac_and_parse_impl::decrease_encoding() {
       ofdm_param ofdm(getEncoding(), getPuncturing());
-      std::vector<int> encoding(4, BPSK);
-      int punct = P_3_4;
 
       if (ofdm.punct == P_3_4) {
         if(all64(ofdm)){
-          std::vector<int> encodingAux(4, QAM16);
-          setEncoding(encodingAux,P_3_4);
-          return;
+          setEncoding(ofdm.resource_blocks_e, P_2_3);
+        } else {
+          setEncoding(ofdm.resource_blocks_e, P_1_2);
         }
-        setEncoding(ofdm.resource_blocks_e, P_1_2);
+        return;
+      } else if (ofdm.punct == P_2_3) {
+        std::vector<int> encodingAux(N_RB, QAM16);
+        setEncoding(encodingAux, P_3_4);
         return;
       }
-
-      //int max_enc = *std::max_element(ofdm.resource_blocks_e.begin(),
-      //                                ofdm.resource_blocks_e.end());
+      // else: puncturing == P_1_2
+      std::vector<int> encoding(N_RB, BPSK);
+      int punct = P_3_4;
       for (int i = 0; i < ofdm.resource_blocks_e.size(); i++) {
         if (ofdm.resource_blocks_e[i] == BPSK) {
           encoding[i] = BPSK;
@@ -173,7 +174,7 @@ namespace gr {
     bool
     mac_and_parse_impl::all64(ofdm_param ofdm){
       for (int i=0;i<ofdm.resource_blocks_e.size();i++){
-        if (ofdm.resource_blocks_e[i] != 3){
+        if (ofdm.resource_blocks_e[i] != QAM64){
           return false;
         }
       }

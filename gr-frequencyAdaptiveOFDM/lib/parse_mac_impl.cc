@@ -474,7 +474,7 @@ namespace gr {
 
       dout << std::endl;
       for (int i = 0; i < 4; i++) {
-        dout << "SNR resource block " << i << ": " << d_snr[i] << std::endl;
+        dout << "SNR estimated rb " << i << ": " << d_snr[i] << std::endl;
 
         if (d_snr[i] >= MIN_SNR_64QAM_2_3) {
           encoding[i] = QAM64;
@@ -506,19 +506,17 @@ namespace gr {
       }
       dout << std::endl;
 
-
-
       if (punct_3_4) {
         puncturing = P_3_4;
       } else if (all_mod_64QAM) {
         puncturing = P_2_3;
       } else if (punct3_4possible){
-        for(int i=0; i<4; i++){
-          if (encoding[i] == 3){
-            encoding[i] = 2;
-            puncturing = P_3_4;
+        for(int i = 0; i < 4; i++){
+          if (encoding[i] == QAM64){
+            encoding[i] = QAM16;
           }
         }
+        puncturing = P_3_4;
       }
 
       d_mac_and_parse->setEncoding(encoding, puncturing);
