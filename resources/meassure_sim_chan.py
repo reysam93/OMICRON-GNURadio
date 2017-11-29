@@ -57,7 +57,7 @@ def meassures(prefix, path):
 		replaceSNR(FREQ_FILE, snr)
 		replaceSNR(TIME_FILE, snr)
 		
-		fileNameSNR = fileName + "_" + str(snr)
+		fileNameSNR = fileName + "_snr" + str(snr)
 		t1 = Thread(target=makeMeassure, args=(TIME_FILE, "/tmp/time_log.log"))
 		t2 = Thread(target=makeMeassure, args=(FREQ_FILE, "/tmp/freq_log.log"))
 		t1.start()
