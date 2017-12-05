@@ -105,6 +105,18 @@ namespace gr {
         std::cout << "MAC_&_PARSE: set encoding\n";
         ofdm.print_encoding();
       }
+      if (d_debug || d_debug_ack) {
+        ofdm.print_timestamp();
+      }
+    }
+
+    unsigned long
+    mac_and_parse_impl::getTimestamp() {
+      unsigned long tmp;
+      pthread_mutex_lock(&d_mutex);
+      tmp = d_ofdm.timestamp;
+      pthread_mutex_unlock(&d_mutex);
+      return tmp;
     }
 
     void
@@ -113,7 +125,7 @@ namespace gr {
       usleep(SIFS);
       d_mac->sendAck(ra, psdu_size);
     }
-
+/*
     bool
     mac_and_parse_impl::getAckReceived() {
       bool tmp;
@@ -129,7 +141,7 @@ namespace gr {
       d_ack_received = received;
       pthread_mutex_unlock(&d_mutex);
     }
-
+*/
     void
     mac_and_parse_impl::decrease_encoding() {
       Encoding enc = getEncoding();

@@ -41,8 +41,9 @@ namespace gr {
 
       Encoding getEncoding();
       void setEncoding(Encoding enc);
-      bool getAckReceived();
-      void setAckReceived(bool received);
+      unsigned long getTimestamp();
+      //bool getAckReceived();
+      //void setAckReceived(bool received);
 
       void sendAck(uint8_t ra[], int *psdu_size);
       void decrease_encoding();

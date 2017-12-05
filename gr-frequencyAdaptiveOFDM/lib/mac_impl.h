@@ -58,6 +58,7 @@ namespace gr {
 
       void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size);
       void generate_mac_ack_frame(uint8_t ra[], int *psdu_size);
+      void sendDataMsg(const char* msdu, size_t msg_len);
       void send_message(int psdu_length, ofdm_param ofdm);
       void app_in (pmt::pmt_t msg);
     };

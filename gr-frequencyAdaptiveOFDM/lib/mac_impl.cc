@@ -113,8 +113,7 @@ namespace gr {
       }
 
       // make MAC frame
-      int psdu_length;
-      if (d_mac_and_parse->getAckReceived()) {
+      /*if (d_mac_and_parse->getAckReceived()) {
         if (d_mac_and_parse->d_debug_ack){
           timeval time_now;
           gettimeofday(&time_now, NULL);
@@ -122,9 +121,49 @@ namespace gr {
           time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
         }
         d_mac_and_parse->setAckReceived(false);
+      }*/
+      sendDataMsg(msdu, msg_len);
+      usleep(TIMEOUT);
+      /*if (!d_mac_and_parse->getAckReceived()) {
+        if (d_mac_and_parse->d_debug_ack){
+          timeval time_now;
+          gettimeofday(&time_now, NULL);
+          std::cout << "\t\t\t\tWARNING: MAC: ACK NOT received after timeout: " <<
+          time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
+        }
+
+      }else{
+        d_mac_and_parse->setAckReceived(false);
+      }*/
+
+      if(tx_packets_fn != ""){
+        n_tx_packets++;
+        std::fstream tx_packets_fs(tx_packets_fn, std::ofstream::out);
+        tx_packets_fs << n_tx_packets << std::endl;
+        tx_packets_fs.close();
       }
+    }
+
+    void
+    mac_impl::sendDataMsg(const char* msdu, size_t msg_len) {
+      int psdu_length;
+      timeval tv;
+      unsigned long current_time;
+
       pthread_mutex_lock(&d_mutex);
       generate_mac_data_frame(msdu, msg_len, &psdu_length);
+      gettimeofday(&tv, NULL);
+      current_time = 1000000 * tv.tv_sec + tv.tv_usec;
+
+      unsigned long expiration = d_mac_and_parse->getTimestamp() + 3*TIMEOUT;
+      if (current_time > expiration) {
+        if (d_mac_and_parse->d_debug || d_mac_and_parse->d_debug_ack){
+          std::cout << "MAC: old timestamp. current time: " << current_time/1000000 << " s "
+                    << current_time%1000000 << " us. Expiration: " << expiration/1000000 << "s "
+                    << expiration%1000000 << " us.\n";
+        }
+        d_mac_and_parse->decrease_encoding();
+      }
       ofdm_param ofdm(d_mac_and_parse->getEncoding(), d_mac_and_parse->getPuncturing());
       send_message(psdu_length, ofdm);
       pthread_mutex_unlock(&d_mutex);
@@ -134,34 +173,6 @@ namespace gr {
         gettimeofday(&time_now, NULL);
         std::cout << "MAC: Message sent: " <<
         time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
-      }
-
-      // Study delays
-      /*timeval time_now;
-      gettimeofday(&time_now, NULL);
-      std::cerr << "MAC: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
-
-      usleep(TIMEOUT);
-      if (!d_mac_and_parse->getAckReceived()) {
-        if (d_mac_and_parse->d_debug_ack){
-          timeval time_now;
-          gettimeofday(&time_now, NULL);
-          std::cout << "\t\t\t\tWARNING: MAC: ACK NOT received after timeout: " <<
-          time_now.tv_sec << " sec " << time_now.tv_usec << " usec\n";
-        }
-
-        /*gettimeofday(&time_now, NULL);
-        std::cerr << "MAC: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
-        d_mac_and_parse->decrease_encoding();
-      }else{
-        d_mac_and_parse->setAckReceived(false);
-      }
-
-      if(tx_packets_fn != ""){
-        n_tx_packets++;
-        std::fstream tx_packets_fs(tx_packets_fn, std::ofstream::out);
-        tx_packets_fs << n_tx_packets << std::endl;
-        tx_packets_fs.close();
       }
     }
 

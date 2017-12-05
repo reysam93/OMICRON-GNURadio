@@ -43,9 +43,10 @@ namespace gr {
 
       std::vector<int> getEncoding();
       int getPuncturing();
+      unsigned long getTimestamp();
+      //bool getAckReceived();
       void setEncoding(std::vector<int> pilots_enc, int puncturing);
-      bool getAckReceived();
-      void setAckReceived(bool received);
+      //void setAckReceived(bool received);
 
       void sendAck(uint8_t ra[], int *psdu_size);
       void decrease_encoding();

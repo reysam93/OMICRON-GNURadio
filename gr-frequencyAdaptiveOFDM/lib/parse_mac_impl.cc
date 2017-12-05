@@ -337,7 +337,7 @@ namespace gr {
     void
     parse_mac_impl::process_ack() {
       //dout << ": ACK received";
-      d_mac_and_parse->setAckReceived(true);
+      //d_mac_and_parse->setAckReceived(true);
       if (d_mac_and_parse->d_debug_ack) {
         dout << "\n";
         timeval time_now;

@@ -22,24 +22,10 @@
 #include <math.h>
 #include <sstream>
 
-/*ofdm_param::ofdm_param() {
-	resource_blocks_e = std::vector<int>(4, BPSK);
-	punct = P_1_2;
-	n_dbps = 0;
 
-	for (int i = 0; i < 4; i++) {
-		n_bpcrb[i] = 1;
-		n_bpsc += 1;
-		n_cbps += 12;
-		n_dbprb[i] = 6;
-		n_dbps += 6;
-	}
-
-	// Mean of the four resource blocks
-	n_bpsc = n_bpsc / 4;
-}*/
-
-ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
+ofdm_param::ofdm_param(std::vector<int> pilots_enc,
+												int puncturing,
+												unsigned long ts) {
 	resource_blocks_e = pilots_enc;
 	punct = puncturing;
 	n_bpsc = 0;
@@ -121,6 +107,13 @@ ofdm_param::ofdm_param(std::vector<int> pilots_enc, int puncturing) {
 	}
 	// Mean of the four resource blocks
 	n_bpsc = n_bpsc / 4;
+	if (ts == 0) {
+			timeval tv;
+			gettimeofday(&tv, NULL);
+			timestamp = 1000000 * tv.tv_sec + tv.tv_usec;
+	} else {
+		timestamp = ts;
+	}
 }
 
 int
@@ -156,7 +149,13 @@ ofdm_param::print() {
 	std::cout << "n_cbps: " << n_cbps << std::endl;
 	std::cout << "n_dbps: " << n_dbps << std::endl;
 	print_encoding();
+	print_timestamp();
 	std::cout << std::endl;
+}
+
+void
+ofdm_param::print_timestamp(){
+	  std::cout << "Timestamp: " << timestamp/1000000 << " s " << timestamp%1000000 << " us.\n";
 }
 
 void

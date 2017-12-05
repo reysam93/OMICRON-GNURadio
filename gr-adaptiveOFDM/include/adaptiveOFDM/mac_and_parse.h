@@ -101,9 +101,10 @@ public:
 
     virtual Encoding getEncoding() = 0;
     virtual void setEncoding(Encoding enc) = 0;
-    virtual bool getAckReceived() = 0;
-    virtual void setAckReceived(bool received) = 0;
+    //virtual bool getAckReceived() = 0;
+    //virtual void setAckReceived(bool received) = 0;
 
+    virtual unsigned long getTimestamp() = 0;
     virtual void sendAck(uint8_t ra[], int *psdu_size) = 0;
     virtual void decrease_encoding() = 0;
 

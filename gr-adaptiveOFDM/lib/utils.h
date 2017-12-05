@@ -22,6 +22,7 @@
 #include <adaptiveOFDM/mapper.h>
 #include <gnuradio/config.h>
 #include <iostream>
+#include <sys/time.h>
 
 #define MAX_PAYLOAD_SIZE 1500
 #define MAX_PSDU_SIZE (MAX_PAYLOAD_SIZE + 28) // MAC, CRC
@@ -52,7 +53,7 @@ struct mac_ack_header {
  */
 class ofdm_param {
 public:
-	ofdm_param(Encoding e);
+	ofdm_param(Encoding e=BPSK_1_2, unsigned long ts=0);
 
 	// data rate
 	Encoding encoding;
@@ -64,8 +65,11 @@ public:
 	int      n_cbps;
 	// number of data bits per OFDM symbol
 	int      n_dbps;
+	// Time when the modulation was decided
+	unsigned long timestamp;
 
 	void print();
+	void print_timestamp();
 	void print_encoding();
 };
 

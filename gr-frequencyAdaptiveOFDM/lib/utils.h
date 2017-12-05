@@ -22,6 +22,7 @@
 #include <frequencyAdaptiveOFDM/mapper.h>
 #include <gnuradio/config.h>
 #include <iostream>
+#include <sys/time.h>
 
 #define MAX_PAYLOAD_SIZE 1500
 #define MAX_PSDU_SIZE (MAX_PAYLOAD_SIZE + 28) // MAC, CRC
@@ -30,6 +31,7 @@
 
 #define dout d_debug && std::cout
 #define mylog(msg) do { if(d_log) { GR_LOG_INFO(d_logger, msg); }} while(0);
+
 
 struct mac_header {
 	//protocol version, type, subtype, to_ds, from_ds, ...
@@ -54,7 +56,9 @@ struct mac_ack_header {
 class ofdm_param {
 public:
 	//ofdm_param();
-	ofdm_param(std::vector<int> pilots_enc, int puncturing);
+	ofdm_param(std::vector<int> pilots_enc=std::vector<int>(4, BPSK),
+													int puncturing=P_1_2,
+													unsigned long ts=0);
 
 	// resource block encoding
 	std::vector<int> resource_blocks_e;
@@ -70,6 +74,8 @@ public:
 	int      n_cbps;
 	// number of data bits per OFDM symbol
 	int      n_dbps;
+	// Time when the modulation was decided
+	unsigned long timestamp;
 
 	/** Return the index of the resource block in which is allocated
 	 *	the argumment passed to the function:
@@ -86,8 +92,9 @@ public:
 	 */
 	int rb_index_from_symbols(int n_symb);
 
-	std::string toFileFormat(); 
+	std::string toFileFormat();
 	void print();
+	void print_timestamp();
 	void print_encoding();
 };
 

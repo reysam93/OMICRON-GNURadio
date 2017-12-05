@@ -112,31 +112,20 @@ namespace gr {
         throw std::runtime_error("Frame too large (> 1500)");
       }
 
-      // make MAC frame
-      int psdu_length;
-
+/*
       if (d_mac_and_parse->getAckReceived()) {
         dout << "WARNING: MAC: ACK received after timeout!\n";
         d_mac_and_parse->setAckReceived(false);
       }
-      pthread_mutex_lock(&d_mutex);
-      generate_mac_data_frame(msdu, msg_len, &psdu_length);
-      Encoding enc = d_mac_and_parse->getEncoding();
-      send_message(psdu_length, enc);
-      pthread_mutex_unlock(&d_mutex);
-
-      // Study delays
-      /*timeval time_now;
-      gettimeofday(&time_now, NULL);
-      std::cerr << "MAC_&_PARSE: message sent: " << time_now.tv_sec << " seg " << time_now.tv_usec << " us\n";*/
-
+*/
+      sendDataMsg(msdu, msg_len);
       usleep(TIMEOUT);
-      if (!d_mac_and_parse->getAckReceived()) {
+  /*    if (!d_mac_and_parse->getAckReceived()) {
         dout << "\t\t\tWARNING: MAC: ACK NOT received after timeout\n";
         d_mac_and_parse->decrease_encoding();
       }else{
         d_mac_and_parse->setAckReceived(false);
-      }
+      }*/
 
       if(tx_packets_fn != ""){
         n_tx_packets++;
@@ -144,6 +133,31 @@ namespace gr {
         tx_packets_fs << n_tx_packets << std::endl;
         tx_packets_fs.close();
       }
+    }
+
+    void
+    mac_impl::sendDataMsg(const char* msdu, size_t msg_len) {
+      int psdu_length;
+      timeval tv;
+      unsigned long current_time;
+
+      pthread_mutex_lock(&d_mutex);
+      generate_mac_data_frame(msdu, msg_len, &psdu_length);
+      gettimeofday(&tv, NULL);
+      current_time = 1000000 * tv.tv_sec + tv.tv_usec;
+
+      unsigned long expiration = d_mac_and_parse->getTimestamp() + 3*TIMEOUT;
+      if (current_time > expiration) {
+        if (d_mac_and_parse->d_debug || d_mac_and_parse->d_debug_ack){
+          std::cout << "MAC: old timestamp. current time: " << current_time/1000000 << " s "
+                    << current_time%1000000 << " us. Expiration: " << expiration/1000000 << "s "
+                    << expiration%1000000 << " us.\n";
+        }
+        d_mac_and_parse->decrease_encoding();
+      }
+      Encoding enc = d_mac_and_parse->getEncoding();
+      send_message(psdu_length, enc);
+      pthread_mutex_unlock(&d_mutex);
     }
 
     void

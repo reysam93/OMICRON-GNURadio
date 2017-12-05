@@ -20,7 +20,8 @@
 #include <cstring>
 #include <math.h>
 
-ofdm_param::ofdm_param(Encoding e) {
+
+ofdm_param::ofdm_param(Encoding e, unsigned long ts) {
 	encoding = e;
 
 	switch(e) {
@@ -83,6 +84,14 @@ ofdm_param::ofdm_param(Encoding e) {
 			assert(false);
 			break;
 	}
+
+	if (ts == 0) {
+			timeval tv;
+			gettimeofday(&tv, NULL);
+			timestamp = 1000000 * tv.tv_sec + tv.tv_usec;
+	} else {
+		timestamp = ts;
+	}
 }
 
 void
@@ -117,6 +126,11 @@ ofdm_param::print_encoding() {
 			enc_str = "Unknown encoding.";
 	}
 	std::cout << "Endcoding: " << enc_str << std::endl;
+}
+
+void
+ofdm_param::print_timestamp(){
+	  std::cout << "Timestamp: " << timestamp/1000000 << " s " << timestamp%1000000 << " us.\n";
 }
 
 void

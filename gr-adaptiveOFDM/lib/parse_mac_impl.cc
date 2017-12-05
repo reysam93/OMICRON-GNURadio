@@ -332,9 +332,9 @@ namespace gr {
     }
 
     void
+    parse_mac_impl::process_ack() {
       //dout << ": ACK received";
-      parse_mac_impl::process_ack() {
-      d_mac_and_parse->setAckReceived(true);
+      //d_mac_and_parse->setAckReceived(true);
     }
 
     void
