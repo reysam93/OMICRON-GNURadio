@@ -53,6 +53,7 @@ def display_mean_SNR(snr_f,verbose):
 			print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
 			plotSNR(meanRBs(SNRs))
 		print("Equivalent SNR: {0:.2f}".format(sim_SNR))
+		return sim_SNR
 	else:
 		mean_SNR = 0
 		min_SNR=100
@@ -71,6 +72,8 @@ def display_mean_SNR(snr_f,verbose):
 			print("Min  SNR (dB): {0:.2f}".format(min_SNR))
 
 			plotSNR(SNRs)
+
+		return mean_SNR
 
 def meanRBs(SNRs):
 	meanSNR = []

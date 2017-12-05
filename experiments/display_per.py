@@ -11,7 +11,7 @@ def display_PER(encodings_tx_f,encodings_rx_f):
 	encodings_rx = encodings_rx.split("\n")[:-1]
 	PER = (1 - (len(encodings_rx) / float(len(encodings_tx)))) * 100
 	print("PER (%): {0:.2f}".format(PER))
-
+	return PER
 
 if __name__ == "__main__":
 	if len(sys.argv) < 3:

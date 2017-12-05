@@ -58,6 +58,7 @@ def display_eff(encodings_tx_f,encodings_rx_f):
 		mean_eff += probs[index]*efficencies[index]
 		
 	print("Spectral eff: {0}".format(mean_eff))
+	return mean_eff
 
 if __name__ == "__main__":
 	if len(sys.argv) < 3:
