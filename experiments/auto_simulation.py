@@ -144,7 +144,7 @@ class AutoSimulator:
 
 
 	def toCSV(self, file):
-		csv_file = open(file + ".csv", "w")
+		csv_file = open(file, "w")
 
 		data_str = ""
 		csv_file.write(str(self.data.keys()) + "\n")
@@ -166,7 +166,7 @@ class AutoSimulator:
 
 
 	def singleTapToCSV(self):
-		file = self.singleTapPath + self.fileName + "_multitap.csv"
+		file = self.singleTapPath + self.fileName + "_singletap.csv"
 		self.toCSV(file)
 
 
