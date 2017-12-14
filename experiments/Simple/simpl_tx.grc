@@ -97,7 +97,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(312, 8)</value>
+      <value>(304, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -165,7 +165,7 @@
     </param>
     <param>
       <key>options</key>
-      <value>[0,1,2,3]</value>
+      <value>0, 1, 3, 2</value>
     </param>
     <param>
       <key>orient</key>
@@ -196,11 +196,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(496, 8)</value>
+      <value>(488, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,2,1,2</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -287,7 +287,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.9</value>
+      <value>.95</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -295,11 +295,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(856, 8)</value>
+      <value>(848, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>1,0,1,3</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -362,7 +362,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,4,1,2</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -449,7 +449,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>1000</value>
+      <value>500</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -457,11 +457,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(992, 8)</value>
+      <value>(984, 0)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>1,3,1,3</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -520,11 +520,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 8)</value>
+      <value>(664, 8)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,0,1,2</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1074,7 +1074,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1282,7 +1282,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1388,7 +1388,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1974,7 +1974,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -4546,15 +4546,15 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
-    <source_key>fer</source_key>
-    <sink_key>pdus</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>adaptiveOFDM_write_frame_data_0</sink_block_id>
     <source_key>frame data</source_key>
     <sink_key>frame data</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
+    <source_key>per</source_key>
+    <sink_key>pdus</sink_key>
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
