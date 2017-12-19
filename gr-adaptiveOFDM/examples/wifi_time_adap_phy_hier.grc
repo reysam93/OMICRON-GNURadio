@@ -205,7 +205,7 @@
     </param>
     <param>
       <key>debug_rx_err</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>debug</key>
@@ -248,7 +248,7 @@
     </param>
     <param>
       <key>bw</key>
-      <value>10e6</value>
+      <value>bandwidth</value>
     </param>
     <param>
       <key>alias</key>
@@ -276,7 +276,7 @@
     </param>
     <param>
       <key>freq</key>
-      <value>5.89e9</value>
+      <value>frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
