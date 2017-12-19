@@ -1393,7 +1393,7 @@
     </param>
     <param>
       <key>bw</key>
-      <value>10e6</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>alias</key>
@@ -1401,7 +1401,7 @@
     </param>
     <param>
       <key>fc</key>
-      <value>5.2e6</value>
+      <value>freq</value>
     </param>
     <param>
       <key>comment</key>
@@ -4472,7 +4472,7 @@
     </param>
     <param>
       <key>bandwidth</key>
-      <value>10e6</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>chan_est</key>

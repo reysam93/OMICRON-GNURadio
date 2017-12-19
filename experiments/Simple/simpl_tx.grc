@@ -4507,7 +4507,7 @@
     </param>
     <param>
       <key>bandwidth</key>
-      <value>10e6</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>chan_est</key>
