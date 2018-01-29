@@ -9,7 +9,7 @@ The version of GNU Radio required is the 3.7.10. Some components, especially fro
 Instructions for installing it can be found [here](https://wiki.gnuradio.org/index.php/InstallingGRFromSource).
 
 #### gr-ieee802-11
-The examples inside the WiFi folder are based on the gr-ieee802-11 repository for being compatible with the 802.11 standard. For this reason, it is necessary to install this modules and its dependencies. The instructions for doing this can be found [here](https://github.com/bastibl/gr-ieee802-11#installation).
+The code of this project is based on the repostory gr-ieee802-11 which has an OFDM transceiver compatible with the 802.11 a/g/p standard. For this reason, it is necessary to install this modules and its dependencies. The instructions for doing this can be found [here](https://github.com/bastibl/gr-ieee802-11#installation).
 
 ### Installation of OMICRON-GNURadio
 This steps will install the two modules that contains this repository. The explanation of this modules can be found later.
@@ -43,9 +43,17 @@ sudo make install
 sudo ldconfig
 ```
 
-## gr-GNU_tutorials
-This module allows to execute the file inside Tutorials folder. This contains examples that have been realized following the GNU Radio [guided tutorials](http://gnuradio.org/redmine/projects/gnuradio/wiki/Guided_Tutorials). This tutorial offers a first contact with GNU Radio and it is highly recommended for new users.
+## Modules
+### gr-GNU_tutorials
+This module contains the examples realized following the GNU Radio [guided tutorials](http://gnuradio.org/redmine/projects/gnuradio/wiki/Guided_Tutorials), allowing to run them. This tutorial offers a first contact with GNU Radio and it is highly recommended for new users.
 
-## gr-adaptiveOFDM
-This module contains the blocks for implementing time adaptive modulation following the ieee 802.11 standard. Examples of this functionality can be found inside the WiFi folder. 
-It is also necessary for executing the examples inside the OFDM folder.
+### gr-adaptiveOFDM
+This code implements the IEEE 802.11 standard using adaptive modulation and coding (AMC) in point to point transmissions. The channel is estimated at the transmitter and the modulation and coding is selected according to the desired SNR, so when the module of the channel is low the transmitter will select a more robust modulation with a reduced rate. As wireless channels are time variant, different modulations will be used during transmission, using the highest rate possible while assuring a package error rate (PER) less than a 10%.
+
+For the channel state information at the transmitter (CSIT), a symmetric channel is assumed. Also, it is assumed that the noise power is the same in both ends of the communication.  This way, every time a package is receive, its SNR is estimated, and it is used to select the modulation and the redundancy of the transmission. However, this estimation will only be used during a brief time, while the channel is considering to be the same, being this time the coherent time of the channel.
+
+Finally, for assuring that the channel estimation is updated frequently, the transmission of ACKs has also been implemented. Any time the receiver receives a WiFi data frame, it will send an ACK message to the transmitter in BPSK, so the transmitter will be able to adapt the modulation and coding used if the channel is different.
+
+
+
+### gr-frequencyAdaptiveOFDM
