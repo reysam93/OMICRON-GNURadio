@@ -66,4 +66,27 @@ The counter part of this improvement is that it is no longer compatible with the
 
 
 ## Experiments
+In summary, the following experiments are going to be realized:
+   - Using a simulated channel, a sweep of SNR values with:
+	   - gr-adaptiveOFDM and a flat channel
+	   - gr-frequencyAdaptiveOFDM and a flat channel
+	   - gr-adaptiveOFDM and a frequency selective channel
+	   - gr-frequencyAdaptiveOFDM and a frequency selective channel
+	   - gr-adaptiveOFDM and a different frequency selective channel
+	   - gr-frequencyAdaptiveOFDM and a different frequency selective channel
+       
+   - Using a real channel and using two USRP B210:
+	   - gr-adaptiveOFDM with a flat channel (LoS)
+	   - gr-frequencyAdaptiveOFDM with a flat channel (LoS)
+	   - gr-adaptiveOFDM and a frequency selective channel
+	   - gr-frequencyAdaptiveOFDM and a frequency selective channel
 
+### Simulated experiments
+These experiments consist of simulating a channel and making the transmitter send the information to himself using that channel. This process has ben repeated several times, doing a sweep of SNR values for the gr-adaptiveOFDM and the gr-frequencyAdaptiveOFDM, comparing the spectral efficiency for al SNR with both algorithms. The sweep has been made three times using different coefficients for the simulated channel. First, a flat channel has been used, and then two different frequency selective channels have been simulated.
+
+The auto_simulation.py script inside the experiments folder has been used for doing this sweep automatically and storing the results. In addition, any simulation can be made by using the files_loopback.grc file inside the experiment folder of the modules gr-adaptiveOFDM and gr-frequencyAdaptiveOFDM.
+
+### Hardware Experiments
+In addition to the simulations, experiments using real hardware and real wireless transmission will also be realized.
+
+Two different scenarios will be considered now, one with a flat channel, and another with a frequency selective channel. These scenarios will be used for testing the correct functioning of the modules gr-adaptiveOFDM and gr-frequencyAdaptiveOFDM and comparing them. Several measures will be made which each module using the two scenarios.
