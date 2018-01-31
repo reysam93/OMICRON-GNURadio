@@ -12,6 +12,7 @@ from display_delay    import display_mean_delay
 from display_encoding import display_encoding
 from display_eff      import display_eff
 from display_per_eff  import display_PER_eff
+from display_per_eff  import show_results
 
 
 def openDataFile(file):
@@ -77,7 +78,8 @@ if __name__ == "__main__":
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f != None and f2!= None:
-			display_eff(f,f2)
+			mean_eff = display_eff(f,f2)
+			print("Spectral eff: {0}".format(mean_eff))
 		print("")
 
 	if options.snr:
@@ -96,17 +98,19 @@ if __name__ == "__main__":
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f!= None and f2!= None:
-			display_PER(f,f2)
+			PER = display_PER(f,f2)
+			print("PER (%): {0:.2f}".format(PER))
 		print("")
 
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f != None and f2!= None:
-			display_PER_eff(f,f2)
+			(Enconames,rx,tx,total)= display_PER_eff(f,f2)
+			show_results(EncoNames,rx, tx,total)
 		print("")
 
 	if options.delay:
 		f = openDataFile(options.path+prefix+"_wifi_frame_delay_"+filetype+".csv")
 		if f != None:
 			display_mean_delay(f,verbose)
-		print("")	
+		print("")

@@ -24,7 +24,7 @@ class EncodingF(Enum):
 	_64QAM_1_2 = 6
 	_64QAM_3_4 = 7
 	_64QAM_2_3 = 8
-	
+
 
 def translate_data(encodings):
 	translated_encoding = []
@@ -81,7 +81,8 @@ def display_PER_eff(encodings_tx_f,encodings_rx_f):
 			rx[int(encodings_rx[i])] += 1
 		i += 1
 
-	show_results(EncoNames,rx, tx, len(encodings_tx))
+
+	return (EncoNames,rx,tx,len(encodings_tx))
 
 
 if __name__ == "__main__":
@@ -96,7 +97,7 @@ if __name__ == "__main__":
 		print ("I/O error: {0:}").format(e)
 		sys.exit(-1)
 
-	display_PER_eff(encodings_tx_f, encodings_rx_f)
-
+	(Enconames,rx,tx,total)= display_PER_eff(encodings_tx_f, encodings_rx_f)
+	show_results(EncoNames,rx, tx, total)
 	encodings_tx_f.close()
 	encodings_rx_f.close()

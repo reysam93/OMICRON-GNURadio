@@ -27,8 +27,6 @@ def translate_data(encodings):
 	return translated_encoding
 
 
-
-
 def display_eff(encodings_tx_f,encodings_rx_f):
 	encodings_tx = encodings_tx_f.read()
 	encodings_rx = encodings_rx_f.read()
@@ -56,8 +54,8 @@ def display_eff(encodings_tx_f,encodings_rx_f):
 	for index,_ in enumerate(probs):
 		probs[index] = mods_rx[index]/float(total)
 		mean_eff += probs[index]*efficencies[index]
-		
-	print("Spectral eff: {0}".format(mean_eff))
+
+
 	return mean_eff
 
 if __name__ == "__main__":
@@ -72,7 +70,8 @@ if __name__ == "__main__":
 		print ("I/O error: {0:}").format(e)
 		sys.exit(-1)
 
-	display_eff(encodings_tx_f, encodings_rx_f)
+	mean_eff = display_eff(encodings_tx_f, encodings_rx_f)
+	print("Spectral eff: {0}".format(mean_eff))
 
 	encodings_tx_f.close()
 	encodings_rx_f.close()

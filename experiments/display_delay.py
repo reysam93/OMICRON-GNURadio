@@ -6,7 +6,7 @@ import os
 
 def display_mean_delay(delay_f,verbose):
 	delays = delay_f.read().split("\n")[2:-1]
-	
+
 	if len(delays) == 0:
 		print("ERROR: delays file is not correct")
 		return
@@ -19,7 +19,7 @@ def display_mean_delay(delay_f,verbose):
 		if float(delay)>=max_delay:
 			max_delay = float(delay)
 		if float(delay)<=min_delay:
-			min_delay = float(delay)	
+			min_delay = float(delay)
 	mean_delay /= len(delays)
 
 	print("Mean WiFi frame delay (ms): {0:.2f}".format(mean_delay))
@@ -27,14 +27,14 @@ def display_mean_delay(delay_f,verbose):
 		print("Max  WiFi frame delay (ms): {0:.2f}".format(max_delay))
 		print("Min  WiFi frame delay (ms): {0:.2f}".format(min_delay))
 
-
+	return mean_delay
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
 		print("usage: ./display_delay.py delay_file")
 		sys.exit(-1)
 
-	try:	
+	try:
 		frame_delay_f = open(sys.argv[1])
 	except IOError as e:
 		print ("I/O error: {0}").format(e)

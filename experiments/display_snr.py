@@ -28,7 +28,7 @@ def display_mean_SNR(snr_f,verbose):
 				if fSNR>=max_SNR[i]:
 					max_SNR[i] = fSNR
 				if fSNR<=min_SNR[i]:
-					min_SNR[i] = fSNR	
+					min_SNR[i] = fSNR
 				if fSNR<=min_Rb:
 					min_Rb = fSNR
 				mean_SNR[i] += fSNR
@@ -40,7 +40,7 @@ def display_mean_SNR(snr_f,verbose):
 			if verbose:
 				print("Max  SNR RB {0} (dB): {1:.2f}".format(i, max_SNR[i]))
 				print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
-		
+
 		sim_SNR /= len(SNRs)
 		whole_mean_SNR = 0
 
@@ -53,7 +53,7 @@ def display_mean_SNR(snr_f,verbose):
 			print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
 			plotSNR(meanRBs(SNRs))
 		print("Equivalent SNR: {0:.2f}".format(sim_SNR))
-		return sim_SNR
+		return (mean_SNR,sim_SNR)
 	else:
 		mean_SNR = 0
 		min_SNR=100
@@ -63,7 +63,7 @@ def display_mean_SNR(snr_f,verbose):
 			if fSNR>=max_SNR:
 				max_SNR = fSNR
 			if fSNR<=min_SNR:
-				min_SNR = fSNR	
+				min_SNR = fSNR
 			mean_SNR += fSNR
 		mean_SNR /= len(SNRs)
 		print("Mean SNR (dB): {0:.2f}".format(mean_SNR))
@@ -73,7 +73,9 @@ def display_mean_SNR(snr_f,verbose):
 
 			plotSNR(SNRs)
 
-		return mean_SNR
+		return (mean_SNR,mean_SNR)
+
+
 
 def meanRBs(SNRs):
 	meanSNR = []

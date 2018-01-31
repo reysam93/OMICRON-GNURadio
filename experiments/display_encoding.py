@@ -59,7 +59,7 @@ def display_encoding(encoding_f,verbose):
 		print("ERROR: encoding file is not correct")
 		return
 
-	
+
 	for encoding in encodings:
 		n_encoding[int(encoding)]+=1
 
@@ -71,6 +71,7 @@ def display_encoding(encoding_f,verbose):
 			print ("   {0}: {1:.2f}%".format(name[1:],encoding_percent))
 		i+=1
 
+	return (n_encoding,EncoNames,len(encodings))
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
