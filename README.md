@@ -11,36 +11,24 @@ Instructions for installing it can be found [here](https://wiki.gnuradio.org/ind
 #### gr-ieee802-11
 The code of this project is based on the repostory gr-ieee802-11 which has an OFDM transceiver compatible with the 802.11 a/g/p standard. For this reason, it is necessary to install this modules and its dependencies. The instructions for doing this can be found [here](https://github.com/bastibl/gr-ieee802-11#installation).
 
-### Installation of OMICRON-GNURadio
-This steps will install the two modules that contains this repository. The explanation of this modules can be found later.
+Additionally, this dependencies can be configured executing the install_dependencies.sh script, inside the resource folder:
 ```
-git clone https://github.com/reysam93/OMICRON-GNURadio.git
-# installing gr-GNU_tutorials
-cd gr-GNU_tutorials
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-sudo ldconfig
+samuel@samuel-laptop:~/GNURadio/OMICRON-GNURadio/resources$ bash install_dependencies.sh
+```
 
-# installing gr-adaptiveOFDM
-cd gr-adaptiveOFDM
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-sudo ldconfig
+### Installation of OMICRON-GNURadio
+After cloning the repository, the diferent modules of this repository can be intalled using the make files inside the module's folder. The following examples show how to do it, assuming that we are in the root folder of this repository:
 
-# installing gr-frequencyAdaptiveOFDM
-cd gr-frequencyAdaptiveOFDM
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-sudo ldconfig
+* For installing the gr-adaptiveOFDM module:
+```
+cd gr-adaptiveOFDM/
+sudo make clean-build
+```
+
+* For installing the gr-frequencyAdaptiveOFDM module:
+```
+cd gr-frequencyAdaptiveOFDM/
+sudo make clean-build
 ```
 
 ## Modules
