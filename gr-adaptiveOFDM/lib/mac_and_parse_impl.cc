@@ -56,7 +56,7 @@ namespace gr {
       message_port_register_hier_out(pmt::mp("app out"));
 
       d_debug = debug;
-      //d_debug_ack = debug_ack;
+      d_debug_ack = false;
       //d_debug_delay = debug_delay;
       pthread_mutex_init(&d_mutex, NULL);
       createBlocks(src_mac, dst_mac, bss_mac, debug, tx_packets_f, rx_packets_f);

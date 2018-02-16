@@ -27,6 +27,7 @@
 #include "utils.h"
 #include "viterbi_decoder/viterbi_decoder.h"
 
+
 namespace gr {
   namespace frequencyAdaptiveOFDM {
 
@@ -52,10 +53,13 @@ namespace gr {
       int copied;
       bool d_frame_complete;
 
+
+
      public:
       decode_mac_impl(bool log, bool debug, bool debug_rx_err);
       ~decode_mac_impl();
 
+      int nSinq;
 
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
