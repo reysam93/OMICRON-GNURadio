@@ -27,6 +27,7 @@
 
 #include <gnuradio/io_signature.h>
 #include <boost/crc.hpp>
+#include <fstream>
 
 #define LINKTYPE_IEEE802_11 105 /* http://www.tcpdump.org/linktypes.html */
 
@@ -58,6 +59,7 @@ namespace gr {
       d_frame_complete(true)
     {
       message_port_register_out(pmt::mp("out"));
+      nSinq = 0;
     }
 
 
@@ -72,6 +74,7 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
+
       const uint8_t *in = (const uint8_t*)input_items[0];
       timeval time_now;
       int i = 0;
@@ -90,6 +93,11 @@ namespace gr {
             if (d_debug || d_debug_rx_err) {
               std::cout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
             }
+            std::fstream sinqLog_fstream("/tmp/freq_contador_rx.csv", std::ofstream::out);
+            nSinq++;
+            sinqLog_fstream << nSinq << std::endl;
+            sinqLog_fstream.close();
+
             dout << "Already copied " << copied << " out of " << d_frame.n_sym << " symbols of last frame" << std::endl;
           }
           d_frame_complete = false;

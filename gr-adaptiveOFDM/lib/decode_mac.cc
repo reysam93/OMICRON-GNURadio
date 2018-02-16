@@ -21,6 +21,7 @@
 
 #include <boost/crc.hpp>
 #include <gnuradio/io_signature.h>
+#include <fstream>
 
 using namespace gr::adaptiveOFDM;
 
@@ -53,6 +54,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	const uint8_t *in = (const uint8_t*)input_items[0];
 
 	int i = 0;
+	int nSinq = 0;
 
 	std::vector<gr::tag_t> tags;
 	const uint64_t nread = this->nitems_read(0);
@@ -69,6 +71,12 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 				if (d_debug ||d_debug_rx_err) {
 					std::cout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
 				}
+
+				std::fstream sinqLog_fstream("/tmp/time_contador_rx.csv", std::ofstream::out);
+				nSinq++;
+				sinqLog_fstream << nSinq << std::endl;
+				sinqLog_fstream.close();
+
 				dout << "Already copied " << copied << " out of " << d_frame.n_sym << " symbols of last frame" << std::endl;
 			}
 			d_frame_complete = false;
@@ -138,7 +146,7 @@ void decode() {
 	result.process_bytes(out_bytes + 2, d_frame.psdu_size);
 	if(result.checksum() != 558161692) {
 		if (d_debug || d_debug_rx_err){
-			std::cout << "WARNING: DECODE MAC: checksum wrong -- dropping\n";		
+			std::cout << "WARNING: DECODE MAC: checksum wrong -- dropping\n";
 		}
 		return;
 	}
