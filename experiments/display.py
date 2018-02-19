@@ -105,7 +105,7 @@ if __name__ == "__main__":
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
 		f2 = openDataFile(options.path+prefix+"_received_encoding_rx.csv")
 		if f != None and f2!= None:
-			(Enconames,rx,tx,total)= display_PER_eff(f,f2)
+			EncoNames,rx,tx,total= display_PER_eff(f,f2)
 			show_results(EncoNames,rx, tx,total)
 		print("")
 
