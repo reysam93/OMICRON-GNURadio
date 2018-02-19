@@ -59,7 +59,11 @@ namespace gr {
       d_frame_complete(true)
     {
       message_port_register_out(pmt::mp("out"));
+<<<<<<< HEAD
       nSinq =0;
+=======
+      nSinq = 0;
+>>>>>>> ad15689c1062951a2fc2bdf7484961a7682fdeb6
     }
 
 
@@ -93,7 +97,10 @@ namespace gr {
             if (d_debug || d_debug_rx_err) {
               std::cout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ad15689c1062951a2fc2bdf7484961a7682fdeb6
             std::fstream sinqLog_fstream("/tmp/freq_contador_rx.csv", std::ofstream::out);
             nSinq++;
             sinqLog_fstream << nSinq << std::endl;

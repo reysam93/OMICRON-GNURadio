@@ -59,6 +59,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	const uint8_t *in = (const uint8_t*)input_items[0];
 
 	int i = 0;
+	int nSinq = 0;
 
 
 	std::vector<gr::tag_t> tags;

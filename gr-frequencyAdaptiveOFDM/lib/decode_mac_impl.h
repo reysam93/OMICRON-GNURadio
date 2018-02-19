@@ -53,7 +53,7 @@ namespace gr {
       int copied;
       bool d_frame_complete;
 
-
+      int nSinq;
 
      public:
       decode_mac_impl(bool log, bool debug, bool debug_rx_err);
