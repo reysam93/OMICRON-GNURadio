@@ -50,13 +50,6 @@ volk_profile
 cd $root_dir
 rm -rf /tmp/tmpDependenciesDir
 
-echo "Setting project environment in .bashrc"
-sed "/OMICRON_ROOT_DIR/d" ~/.bashrc > /tmp/bashrc.tmp
-echo "# OMICRON_ROOT_DIR: variable with the path for the OMICRON project" >> /tmp/bashrc.tmp
-echo "OMICRON_ROOT_DIR=$root_dir" >> /tmp/bashrc.tmp
-mv /tmp/bashrc.tmp ~/.bashrc
-rm /tmp/bashrc.tmp
-
 echo "Installing gr-adaptiveOFDM module"
 cd gr-adaptiveOFDM
 sudo make build
@@ -64,5 +57,14 @@ sudo make build
 echo "Installing gr-frequencyAdaptiveOFDM"
 cd gr-frequencyAdaptiveOFDM
 sudo make build
+
+
+# Setup
+echo "Setting project environment in .bashrc"
+sed "/OMICRON_ROOT_DIR/d" ~/.bashrc > /tmp/bashrc.tmp
+echo "# OMICRON_ROOT_DIR: variable with the path for the OMICRON project" >> /tmp/bashrc.tmp
+echo "export OMICRON_ROOT_DIR=$root_dir" >> /tmp/bashrc.tmp
+mv /tmp/bashrc.tmp ~/.bashrc
+rm /tmp/bashrc.tmp
 
 echo "Done!"
