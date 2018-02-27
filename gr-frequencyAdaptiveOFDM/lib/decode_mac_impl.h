@@ -59,8 +59,6 @@ namespace gr {
       decode_mac_impl(bool log, bool debug, bool debug_rx_err);
       ~decode_mac_impl();
 
-      int nSinq;
-
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
            gr_vector_const_void_star &input_items,
