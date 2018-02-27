@@ -33,6 +33,9 @@
 #define mylog(msg) do { if(d_log) { GR_LOG_INFO(d_logger, msg); }} while(0);
 
 
+const int CODING_EFFS[4] = {1, 2, 4, 6};
+const float PUNCTURING_EFFS[3] = {1.0/2.0, 3.0/4.0, 2.0/3.0};
+
 struct mac_header {
 	//protocol version, type, subtype, to_ds, from_ds, ...
 	uint16_t frame_control;
@@ -131,6 +134,8 @@ public:
  * \param seq sequence number of the frame
  */
 void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *psdu_size, char seq);
+
+float get_spectral_eff(Encoding enc, Puncturing punct);
 
 void scramble(const char *input, char *out, frame_param &frame, char initial_state);
 

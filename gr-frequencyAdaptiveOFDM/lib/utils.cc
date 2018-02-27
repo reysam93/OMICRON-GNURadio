@@ -26,6 +26,7 @@
 ofdm_param::ofdm_param(std::vector<int> pilots_enc,
 												int puncturing,
 												unsigned long ts) {
+	// store ofdm symbol efficiency??
 	resource_blocks_e = pilots_enc;
 	punct = puncturing;
 	n_bpsc = 0;
@@ -234,6 +235,11 @@ frame_param::print() {
 	std::cout << "n_pad: " << n_pad << std::endl;
 	std::cout << "n_encoded_bits: " << n_encoded_bits << std::endl;
 	std::cout << "n_data_bits: " << n_data_bits << std::endl << std::endl;
+}
+
+float
+get_spectral_eff(Encoding enc, Puncturing punct) {
+	return  CODING_EFFS[enc]*PUNCTURING_EFFS[punct];
 }
 
 void scramble(const char *in, char *out, frame_param &frame, char initial_state) {

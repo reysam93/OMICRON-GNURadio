@@ -472,36 +472,61 @@ namespace gr {
       bool punct3_4possible = true;
       int puncturing = P_1_2;
 
+      float min_snr = 5000;
+      int min_enc = 0;
+      int min_punct = 0;
+      int punct_aux = 0;
+
+      //int min_coding = 64QAM;
+      float eff1 = 0;
+      float eff2 = 0;
+
       dout << std::endl;
       for (int i = 0; i < 4; i++) {
         dout << "SNR estimated rb " << i << ": " << d_snr[i] << std::endl;
 
         if (d_snr[i] >= MIN_SNR_64QAM_2_3) {
+          punct_aux = P_3_4;
           encoding[i] = QAM64;
           if (d_snr[i] < MIN_SNR_64QAM_3_4) {
+            punct_aux = P_2_3;
             punct_3_4 = false;
           }
+
         } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
+          punct_aux = P_3_4;
           all_mod_64QAM = false;
           encoding[i] = QAM16;
           if (d_snr[i] < MIN_SNR_16QAM_3_4) {
+            punct_aux = P_1_2;
             punct_3_4 = false;
             punct3_4possible = false;
           }
+
         }else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
+          punct_aux = P_3_4;
           all_mod_64QAM = false;
           encoding[i] = QPSK;
           if (d_snr[i] < MIN_SNR_QPSK_3_4) {
+            punct_aux = P_1_2;
             punct_3_4 = false;
             punct3_4possible = false;
           }
         } else {
+          punct_aux = P_3_4;
           all_mod_64QAM = false;
           encoding[i] = BPSK;
           if (d_snr[i] < MIN_SNR_BPSK_3_4) {
+            punct_aux = P_1_2;
             punct_3_4 = false;
             punct3_4possible = false;
           }
+        }
+
+        if (d_snr[i] < min_snr) {
+          min_snr = d_snr[i];
+          min_enc = encoding[i];
+          min_punct = punct_aux;
         }
       }
       dout << std::endl;
@@ -519,7 +544,24 @@ namespace gr {
         puncturing = P_3_4;
       }
 
-      d_mac_and_parse->setEncoding(encoding, puncturing);
+
+
+      for (int i = 0; i <4;i++){
+        eff1 += 0.25*get_spectral_eff((Encoding)encoding[i],(Puncturing)puncturing);
+        //std::cerr << "\t\tPARSE_MAC: ENC: " << encoding[i] << " PUNCT: " << puncturing << "\n";
+      }
+      eff2 = get_spectral_eff((Encoding)min_enc,(Puncturing)min_punct);
+
+      //std::cerr << "PARSE_MAC: eficiencia1: " << eff1 << "PARSE_MAC: eficiencia2: " << eff2 << "\n";
+
+      if (eff2 >= eff1) {
+        std::vector<int> encoding(4, BPSK);
+        d_mac_and_parse->setEncoding(std::vector<int>(4,min_enc), min_punct);
+      } else {
+        d_mac_and_parse->setEncoding(encoding, puncturing);
+      }
+
+      //d_mac_and_parse->setEncoding(encoding, puncturing);
     }
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */
