@@ -28,6 +28,7 @@
 
 
 enum Encoding {
+  NULL_ENC = -1,
   BPSK  = 0,
   QPSK  = 1,
   QAM16 = 2,
@@ -35,6 +36,7 @@ enum Encoding {
 };
 
 enum Puncturing {
+  NULL_P = -1,
   P_1_2 = 0,
   P_3_4 = 1,
   P_2_3 = 2,

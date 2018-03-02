@@ -457,111 +457,112 @@ namespace gr {
       message_port_pub(pmt::mp("app out"), pmt::cons( pmt::PMT_NIL, pdu ));
     }
 
-    /*std::vector<int>
-    parse_mac_impl::change64QAM(std::vector<int> enc, int punct) {
-      for (int i = 0; i < N_RB; i++) {
-        if (enc[i] == QAM64 && punct == )
+    ofdm_param
+    parse_mac_impl::unifyEncoding(std::vector<int> enc, std::vector<int> punct,
+                                  std::map<int, int> n_enc, std::map<int, int> n_punct){
+      float eff_1_2 = 0;
+      float eff_3_4 = 0;
+
+      if (n_enc[QAM64] == N_RB) {
+        return ofdm_param(enc, P_2_3);
       }
-    }*/
+
+      std::vector<int> enc_aux(enc);
+      for (int i = 0; i < N_RB; i++) {
+        if (enc[i] == BPSK && punct[i] == P_1_2) {
+          return ofdm_param(enc, P_1_2);
+        } else if (punct[i] == P_1_2) {
+          enc_aux[i]--;
+        }
+        eff_1_2 += 0.25 * get_spectral_eff((Encoding)enc[i], P_1_2);
+        eff_3_4 += 0.25 * get_spectral_eff((Encoding)enc_aux[i], P_3_4);
+      }
+
+      std::cerr << "\tPARSE_MAC: eff 1/2: " << eff_1_2 << " eff 3/4 " << eff_3_4 <<"\n";
+
+      if (eff_1_2 > eff_3_4) {
+        return ofdm_param(enc, P_1_2);
+      } else {
+        return ofdm_param(enc_aux, P_3_4);
+      }
+    }
 
     void
     parse_mac_impl::decide_encoding(){
-      std::vector<int> encoding(4, BPSK);
-      bool punct_3_4 = true;
-      bool all_mod_64QAM = true;
-      bool punct3_4possible = true;
-      int puncturing = P_1_2;
+      std::vector<int> encoding(N_RB, BPSK);
+      std::vector<int> vect_pun(N_RB, NULL_P);
+      ofdm_param ofdm(encoding, P_1_2);
 
-      float min_snr = 5000;
-      int min_enc = 0;
-      int min_punct = 0;
-      int punct_aux = 0;
+      std::map<int, int> n_enc;
+      n_enc[BPSK] = 0;
+      n_enc[QPSK] = 0;
+      n_enc[QAM16] = 0;
+      n_enc[QAM64] = 0;
 
-      //int min_coding = 64QAM;
-      float eff1 = 0;
-      float eff2 = 0;
+      std::map<int, int> n_pun;
+      n_pun[P_1_2] = 0;
+      n_pun[P_2_3] = 0;
+      n_pun[P_3_4] = 0;
 
       dout << std::endl;
       for (int i = 0; i < 4; i++) {
         dout << "SNR estimated rb " << i << ": " << d_snr[i] << std::endl;
 
-        if (d_snr[i] >= MIN_SNR_64QAM_2_3) {
-          punct_aux = P_3_4;
+        if (d_snr[i] >= MIN_SNR_64QAM_3_4) {
           encoding[i] = QAM64;
-          if (d_snr[i] < MIN_SNR_64QAM_3_4) {
-            punct_aux = P_2_3;
-            punct_3_4 = false;
-          }
-
-        } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
-          punct_aux = P_3_4;
-          all_mod_64QAM = false;
+          vect_pun[i] = P_3_4;
+          n_enc[QAM64]++;
+          n_pun[P_3_4]++;
+        } else if (d_snr[i] >= MIN_SNR_64QAM_2_3) {
+          encoding[i] = QAM64;
+          vect_pun[i] = P_2_3;
+          n_enc[QAM64]++;
+          n_pun[P_2_3]++;
+        } else if (d_snr[i] >= MIN_SNR_16QAM_3_4) {
           encoding[i] = QAM16;
-          if (d_snr[i] < MIN_SNR_16QAM_3_4) {
-            punct_aux = P_1_2;
-            punct_3_4 = false;
-            punct3_4possible = false;
-          }
-
-        }else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
-          punct_aux = P_3_4;
-          all_mod_64QAM = false;
+          vect_pun[i] = P_3_4;
+          n_enc[QAM16]++;
+          n_pun[P_3_4]++;
+        } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
+          encoding[i] = QAM16;
+          vect_pun[i] = P_1_2;
+          n_enc[QAM16]++;
+          n_pun[P_1_2]++;
+        } else if (d_snr[i] >= MIN_SNR_QPSK_3_4) {
           encoding[i] = QPSK;
-          if (d_snr[i] < MIN_SNR_QPSK_3_4) {
-            punct_aux = P_1_2;
-            punct_3_4 = false;
-            punct3_4possible = false;
-          }
-        } else {
-          punct_aux = P_3_4;
-          all_mod_64QAM = false;
+          vect_pun[i] = P_3_4;
+          n_enc[QPSK]++;
+          n_pun[P_3_4]++;
+        } else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
+          encoding[i] = QPSK;
+          vect_pun[i] = P_1_2;
+          n_enc[QPSK]++;
+          n_pun[P_1_2]++;
+        } else if (d_snr[i] >= MIN_SNR_QPSK_3_4) {
           encoding[i] = BPSK;
-          if (d_snr[i] < MIN_SNR_BPSK_3_4) {
-            punct_aux = P_1_2;
-            punct_3_4 = false;
-            punct3_4possible = false;
-          }
-        }
-
-        if (d_snr[i] < min_snr) {
-          min_snr = d_snr[i];
-          min_enc = encoding[i];
-          min_punct = punct_aux;
+          vect_pun[i] = P_3_4;
+          n_enc[BPSK]++;
+          n_pun[P_3_4]++;
+        } else {
+          encoding[i] = BPSK;
+          vect_pun[i] = P_1_2;
+          n_enc[BPSK]++;
+          n_pun[P_1_2]++;
         }
       }
       dout << std::endl;
 
-      if (punct_3_4) {
-        puncturing = P_3_4;
-      } else if (all_mod_64QAM) {
-        puncturing = P_2_3;
-      } else if (punct3_4possible){
-        for(int i = 0; i < 4; i++){
-          if (encoding[i] == QAM64){
-            encoding[i] = QAM16;
-          }
-        }
-        puncturing = P_3_4;
-      }
-
-
-
-      for (int i = 0; i <4;i++){
-        eff1 += 0.25*get_spectral_eff((Encoding)encoding[i],(Puncturing)puncturing);
-        //std::cerr << "\t\tPARSE_MAC: ENC: " << encoding[i] << " PUNCT: " << puncturing << "\n";
-      }
-      eff2 = get_spectral_eff((Encoding)min_enc,(Puncturing)min_punct);
-
-      //std::cerr << "PARSE_MAC: eficiencia1: " << eff1 << "PARSE_MAC: eficiencia2: " << eff2 << "\n";
-
-      if (eff2 >= eff1) {
-        std::vector<int> encoding(4, BPSK);
-        d_mac_and_parse->setEncoding(std::vector<int>(4,min_enc), min_punct);
+      if (n_pun[P_1_2] == N_RB) {
+        ofdm = ofdm_param (encoding, P_1_2);
+      } else if(n_pun[P_2_3] == N_RB) {
+        ofdm = ofdm_param (encoding, P_2_3);
+      } else if(n_pun[P_3_4] == N_RB){
+        ofdm = ofdm_param (encoding, P_3_4);
       } else {
-        d_mac_and_parse->setEncoding(encoding, puncturing);
+        ofdm = unifyEncoding(encoding, vect_pun, n_enc, n_pun);
       }
-
-      //d_mac_and_parse->setEncoding(encoding, puncturing);
+      ofdm.print();
+      d_mac_and_parse->setEncoding(ofdm.resource_blocks_e, ofdm.punct);
     }
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */

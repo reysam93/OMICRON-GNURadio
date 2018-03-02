@@ -66,6 +66,10 @@ namespace gr {
       void parse_body(char* frame, mac_header *h, int data_len);
       void decide_encoding();
       void phy_in (pmt::pmt_t msg);
+      ofdm_param unifyEncoding(std::vector<int> enc,
+                                                std::vector<int> punct,
+                                                std::map<int, int> n_enc,
+                                                std::map<int, int> n_punct);
     };
 
   } // namespace frequencyAdaptiveOFDM
