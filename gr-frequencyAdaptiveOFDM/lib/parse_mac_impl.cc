@@ -89,7 +89,9 @@ namespace gr {
       }
 
       pmt::pmt_t dict = pmt::car(msg);
-      d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
+      std::vector<double> snr;
+      snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
+      //mac_and_parse->setSnr(snr);
       std::vector<int> enc = pmt::s32vector_elements(pmt::dict_ref(dict,
                               pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
       int punct = pmt::to_long(pmt::dict_ref(dict, pmt::mp("puncturing"), pmt::from_long(-1)));
@@ -140,19 +142,19 @@ namespace gr {
             rx_packets_fs.close();
           }
           // Only send the received information if its from a data package
-          send_frame_data(enc, punct);
+          send_frame_data(enc, punct, snr);
           break;
         default:
           dout << " (unknown)" << std::endl;
           break;
       }
-      decide_encoding();
+      decide_encoding(snr);
     }
 
     void
-    parse_mac_impl::send_frame_data(std::vector<int> enc, int punct) {
+    parse_mac_impl::send_frame_data(std::vector<int> enc, int punct, std::vector<double> snr) {
       pmt::pmt_t dict = pmt::make_dict();
-      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(N_RB, d_snr));
+      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(N_RB, snr));
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(N_RB, enc));
       dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(punct));
       message_port_pub(pmt::mp("frame data"), dict);
@@ -471,14 +473,12 @@ namespace gr {
       for (int i = 0; i < N_RB; i++) {
         if (enc[i] == BPSK && punct[i] == P_1_2) {
           return ofdm_param(enc, P_1_2);
-        } else if (punct[i] == P_1_2) {
+        } else if (punct[i] != P_3_4) {
           enc_aux[i]--;
         }
         eff_1_2 += 0.25 * get_spectral_eff((Encoding)enc[i], P_1_2);
         eff_3_4 += 0.25 * get_spectral_eff((Encoding)enc_aux[i], P_3_4);
       }
-
-      std::cerr << "\tPARSE_MAC: eff 1/2: " << eff_1_2 << " eff 3/4 " << eff_3_4 <<"\n";
 
       if (eff_1_2 > eff_3_4) {
         return ofdm_param(enc, P_1_2);
@@ -488,7 +488,7 @@ namespace gr {
     }
 
     void
-    parse_mac_impl::decide_encoding(){
+    parse_mac_impl::decide_encoding(std::vector<double> snr){
       std::vector<int> encoding(N_RB, BPSK);
       std::vector<int> vect_pun(N_RB, NULL_P);
       ofdm_param ofdm(encoding, P_1_2);
@@ -506,39 +506,39 @@ namespace gr {
 
       dout << std::endl;
       for (int i = 0; i < 4; i++) {
-        dout << "SNR estimated rb " << i << ": " << d_snr[i] << std::endl;
+        dout << "SNR estimated rb " << i << ": " << snr[i] << std::endl;
 
-        if (d_snr[i] >= MIN_SNR_64QAM_3_4) {
+        if (snr[i] >= MIN_SNR_64QAM_3_4) {
           encoding[i] = QAM64;
           vect_pun[i] = P_3_4;
           n_enc[QAM64]++;
           n_pun[P_3_4]++;
-        } else if (d_snr[i] >= MIN_SNR_64QAM_2_3) {
+        } else if (snr[i] >= MIN_SNR_64QAM_2_3) {
           encoding[i] = QAM64;
           vect_pun[i] = P_2_3;
           n_enc[QAM64]++;
           n_pun[P_2_3]++;
-        } else if (d_snr[i] >= MIN_SNR_16QAM_3_4) {
+        } else if (snr[i] >= MIN_SNR_16QAM_3_4) {
           encoding[i] = QAM16;
           vect_pun[i] = P_3_4;
           n_enc[QAM16]++;
           n_pun[P_3_4]++;
-        } else if (d_snr[i] >= MIN_SNR_16QAM_1_2) {
+        } else if (snr[i] >= MIN_SNR_16QAM_1_2) {
           encoding[i] = QAM16;
           vect_pun[i] = P_1_2;
           n_enc[QAM16]++;
           n_pun[P_1_2]++;
-        } else if (d_snr[i] >= MIN_SNR_QPSK_3_4) {
+        } else if (snr[i] >= MIN_SNR_QPSK_3_4) {
           encoding[i] = QPSK;
           vect_pun[i] = P_3_4;
           n_enc[QPSK]++;
           n_pun[P_3_4]++;
-        } else if (d_snr[i] >= MIN_SNR_QPSK_1_2) {
+        } else if (snr[i] >= MIN_SNR_QPSK_1_2) {
           encoding[i] = QPSK;
           vect_pun[i] = P_1_2;
           n_enc[QPSK]++;
           n_pun[P_1_2]++;
-        } else if (d_snr[i] >= MIN_SNR_QPSK_3_4) {
+        } else if (snr[i] >= MIN_SNR_BPSK_3_4) {
           encoding[i] = BPSK;
           vect_pun[i] = P_3_4;
           n_enc[BPSK]++;
@@ -561,7 +561,6 @@ namespace gr {
       } else {
         ofdm = unifyEncoding(encoding, vect_pun, n_enc, n_pun);
       }
-      ofdm.print();
       d_mac_and_parse->setEncoding(ofdm.resource_blocks_e, ofdm.punct);
     }
   } /* namespace frequencyAdaptiveOFDM */

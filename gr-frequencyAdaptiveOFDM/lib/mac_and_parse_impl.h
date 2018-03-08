@@ -50,6 +50,7 @@ namespace gr {
 
       void sendAck(uint8_t ra[], int *psdu_size);
       void decrease_encoding();
+      void decide_encoding(std::vector<double> snr);
 
     private:
       boost::shared_ptr<mac> d_mac;

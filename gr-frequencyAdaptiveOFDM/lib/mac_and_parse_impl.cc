@@ -192,5 +192,10 @@ namespace gr {
       }
       return true;
     }
+
+    void
+    mac_and_parse_impl::decide_encoding(std::vector<double> snr) {
+      d_parse_mac->decide_encoding(snr);
+    }
   } /* namespace frequencyAdaptiveOFDM */
 } /* namespace gr */

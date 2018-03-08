@@ -41,7 +41,6 @@ namespace gr {
     private:
       mac_and_parse*  d_mac_and_parse;
 
-      std::vector<double> d_snr;
       uint8_t d_src_mac[6];
       int d_last_seq_no;
 
@@ -57,14 +56,14 @@ namespace gr {
       void print_mac_address(uint8_t *addr, bool new_line = false);
       bool equal_mac(uint8_t *addr1, uint8_t *addr2);
       void print_ascii(char* buf, int length);
-      void send_frame_data(std::vector<int> enc, int punct);
+      void send_frame_data(std::vector<int> enc, int punct, std::vector<double> snr);
       void send_data(char* buf, int length);
       void parse_management(char *buf, int length);
       void process_ack();
       void parse_data(char *buf, int length);
       void parse_control(char *buf, int length);
       void parse_body(char* frame, mac_header *h, int data_len);
-      void decide_encoding();
+      void decide_encoding(std::vector<double> snr);
       void phy_in (pmt::pmt_t msg);
       ofdm_param unifyEncoding(std::vector<int> enc,
                                                 std::vector<int> punct,

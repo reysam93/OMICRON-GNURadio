@@ -34,7 +34,7 @@
 
 
 const int CODING_EFFS[4] = {1, 2, 4, 6};
-const float PUNCTURING_EFFS[3] = {1.0/2.0, 2.0/3.0, 3.0/4.0};
+const float PUNCTURING_EFFS[3] = {1.0/2.0, 3.0/4.0, 2.0/3.0};
 
 
 

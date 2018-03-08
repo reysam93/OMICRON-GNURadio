@@ -39,6 +39,8 @@ namespace gr {
         					std::vector<uint8_t> src_mac,
         					bool debug,
         					char* rx_packets_f);
+
+        virtual void decide_encoding(std::vector<double> snr) = 0;
       };
 
   } // namespace frequencyAdaptiveOFDM

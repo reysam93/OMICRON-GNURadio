@@ -100,6 +100,8 @@ namespace gr {
       virtual void sendAck(uint8_t ra[], int *psdu_size) = 0;
       virtual void decrease_encoding() = 0;
 
+      virtual void decide_encoding(std::vector<double> snr) = 0;
+
       bool check_mac(std::vector<uint8_t> mac);
 
       // Debug
