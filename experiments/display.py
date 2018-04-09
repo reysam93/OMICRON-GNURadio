@@ -13,7 +13,7 @@ from display_encoding import display_encoding
 from display_eff      import display_eff
 from display_per_eff  import display_PER_eff
 from display_per_eff  import show_results
-
+from display_rbvar    import display_rbvar
 
 def openDataFile(file):
 	try:
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	parser = OptionParser()
 	parser.add_option("-t", "--time",action="store_true",help="Prefix of data files")
 	parser.add_option("-f","--freq",action="store_true",help="Prefix of data files")
-	parser.add_option("-s","--simple",action="store_true",help="Prefix of data files")
+	parser.add_option("-s","--simple",action="store_true",help="Print less data")
 	parser.add_option("-v","--verbose",action="store_true",help="Print more data")
 	parser.add_option("--path",help="Path of the data files")
 	parser.add_option("--tx",action="store_true",help="Transmision files")
@@ -86,6 +86,10 @@ if __name__ == "__main__":
 		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
 		if f != None:
 			display_mean_SNR(f,verbose)
+		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
+		if f != None:
+			rbvar,dbvar = display_rbvar(f)
+			print("Varianza SNR transmision: {0:.2f}/{1:.2f}db".format(rbvar,dbvar))
 		print("")
 
 	if options.encoding:
