@@ -35,11 +35,13 @@ public:
 	void estimate_channel_state(gr_complex *in);
 	double get_snr();
 	double get_snr_min();
+	double get_snr_max();
 
 
 	gr_complex d_H[64];
 	double d_snr;
-    double d_snr_min;
+  double d_snr_min;
+	double d_snr_max;
 
 protected:
 	static const gr_complex LONG[64];

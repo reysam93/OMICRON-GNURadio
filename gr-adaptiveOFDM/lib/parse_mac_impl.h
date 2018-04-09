@@ -42,6 +42,7 @@ namespace gr {
       mac_and_parse*  d_mac_and_parse;
 
       double d_snr;
+      double d_snr_var;
       uint8_t d_src_mac[6];
       int d_last_seq_no;
 

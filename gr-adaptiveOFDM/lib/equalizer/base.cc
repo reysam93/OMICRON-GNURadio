@@ -57,6 +57,7 @@ base::estimate_channel_state(gr_complex *in){
 	double noise_inst = 0;
 	double signal_inst = 0;
 	d_snr_min = 10000;
+	d_snr_max = -10000;
 
 	for(int i = 0; i < 64; i++) {
 		if (i == 32 || i < 6 || i > 58) {
@@ -69,6 +70,9 @@ base::estimate_channel_state(gr_complex *in){
 		snr_inst = signal_inst/ noise_inst;
 		if(d_snr_min >= snr_inst) {
 			d_snr_min = snr_inst;
+		}
+		if(d_snr_max<= snr_inst){
+			d_snr_max = snr_inst;
 		}
 	}
 
@@ -90,3 +94,7 @@ base::get_snr_min(){
 	return (10 * std::log10(d_snr_min / 2));
 }
 
+double
+base::get_snr_max(){
+	return(10 * std::log10(d_snr_max / 2));
+}

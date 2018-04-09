@@ -89,6 +89,7 @@ namespace gr {
 
       pmt::pmt_t dict = pmt::car(msg);
       d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+      d_snr_var = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr_var"), pmt::from_double(0)));
       int enc = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("encoding"),
                                       pmt::from_uint64(-1)));
       msg = pmt::cdr(msg);
@@ -151,6 +152,7 @@ namespace gr {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(enc));
+      dict = pmt::dict_add(dict, pmt::mp("snr_var"),pmt::from_double(d_snr_var));
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
