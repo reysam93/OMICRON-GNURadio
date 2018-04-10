@@ -51,7 +51,7 @@ namespace gr {
       d_log(log),
       d_debug(debug),
       d_debug_rx_err(debug_rx_err),
-      d_snr(std::vector<double>(4,0)),
+      d_min_snr(std::vector<double>(4,0)),
       d_nom_freq(0.0),
       d_freq_offset(0.0),
       d_ofdm(std::vector<int>(4, BPSK), P_1_2),
@@ -107,7 +107,8 @@ namespace gr {
           int len_data = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE+1)));
           std::vector<int> encoding = pmt::s32vector_elements(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
           int puncturing = pmt::to_long(pmt::dict_ref(dict, pmt::mp("puncturing"), pmt::from_long(-1)));
-          d_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
+          d_min_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("min_snr"), pmt::init_f64vector(0,0)));
+          d_max_snr = pmt::f64vector_elements(pmt::dict_ref(dict,pmt::mp("max_snr"), pmt::init_f64vector(0,0)));
           d_nom_freq = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
           d_freq_offset = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
 
@@ -195,7 +196,8 @@ namespace gr {
       pmt::pmt_t dict = pmt::make_dict();
       dict = pmt::dict_add(dict, pmt::mp("encoding"), enc);
       dict = pmt::dict_add(dict, pmt::mp("puncturing"), punct);
-      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(4, d_snr));
+      dict = pmt::dict_add(dict, pmt::mp("min_snr"), pmt::init_f64vector(4, d_min_snr));
+      dict = pmt::dict_add(dict, pmt::mp("max_snr"), pmt::init_f64vector(4, d_max_snr));
       dict = pmt::dict_add(dict, pmt::mp("nomfreq"), pmt::from_double(d_nom_freq));
       dict = pmt::dict_add(dict, pmt::mp("freqofs"), pmt::from_double(d_freq_offset));
       dict = pmt::dict_add(dict, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));

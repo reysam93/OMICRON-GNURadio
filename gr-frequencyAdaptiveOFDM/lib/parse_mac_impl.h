@@ -56,7 +56,7 @@ namespace gr {
       void print_mac_address(uint8_t *addr, bool new_line = false);
       bool equal_mac(uint8_t *addr1, uint8_t *addr2);
       void print_ascii(char* buf, int length);
-      void send_frame_data(std::vector<int> enc, int punct, std::vector<double> snr);
+      void send_frame_data(std::vector<int> enc, int punct, std::vector<double> snr,std::vector<double> snr_var);
       void send_data(char* buf, int length);
       void parse_management(char *buf, int length);
       void process_ack();

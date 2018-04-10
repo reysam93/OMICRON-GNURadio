@@ -1527,6 +1527,10 @@
       <key>snr_file</key>
       <value>/tmp/freq_snr_rx.csv</value>
     </param>
+    <param>
+      <key>snr_var_file</key>
+      <value>/tmp/freq_snr_var_rx.csv</value>
+    </param>
   </block>
   <block>
     <key>import</key>
@@ -2910,7 +2914,7 @@
     </param>
     <param>
       <key>debug_encoding</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>delay_file</key>

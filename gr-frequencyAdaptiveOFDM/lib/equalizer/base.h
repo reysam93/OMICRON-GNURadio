@@ -33,14 +33,16 @@ public:
 
 	std::vector<double> resource_blocks_snr();
 	std::vector<double> min_rb_snr();
+	std::vector<double> max_rb_snr();
 
 	static const gr_complex POLARITY[127];
 
 protected:
 	static const gr_complex LONG[64];
-	
+
 	std::vector<double> d_resource_block_snr;
 	std::vector<double> d_min_rb_snr;
+	std::vector<double> d_max_rb_snr;
 	gr_complex d_H[64];
 
 	int rb_index_from_carrier(int n_carrier);

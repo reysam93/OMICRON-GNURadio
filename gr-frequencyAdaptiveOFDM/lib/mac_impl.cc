@@ -249,6 +249,7 @@ namespace gr {
       boost::crc_32_type result;
       result.process_bytes(d_psdu, *psdu_size);
 
+
       uint32_t fcs = result.checksum();
       memcpy(d_psdu + *psdu_size, &fcs, sizeof(uint32_t));
 

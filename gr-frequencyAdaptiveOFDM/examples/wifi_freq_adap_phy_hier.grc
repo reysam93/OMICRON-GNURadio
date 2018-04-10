@@ -1331,7 +1331,7 @@
     </param>
     <param>
       <key>debug_errors</key>
-      <value>True</value>
+      <value>False</value>
     </param>
   </block>
   <block>
@@ -1828,7 +1828,7 @@
     </param>
     <param>
       <key>debug</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1879,7 +1879,7 @@
     </param>
     <param>
       <key>debug</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>_enabled</key>

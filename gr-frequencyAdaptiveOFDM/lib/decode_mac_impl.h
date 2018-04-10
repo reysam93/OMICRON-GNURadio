@@ -40,7 +40,8 @@ namespace gr {
 
       frame_param d_frame;
       ofdm_param d_ofdm;
-      std::vector<double> d_snr;  // dB
+      std::vector<double> d_min_snr;  // dB
+      std::vector<double> d_max_snr;
       double d_nom_freq;  // nominal frequency, Hz
       double d_freq_offset;  // frequency offset, Hz
       viterbi_decoder d_decoder;

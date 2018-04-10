@@ -89,9 +89,10 @@ namespace gr {
       }
 
       pmt::pmt_t dict = pmt::car(msg);
-      std::vector<double> snr;
-      snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("snr"), pmt::init_f64vector(0,0)));
-      //mac_and_parse->setSnr(snr);
+      std::vector<double> min_snr;
+      std::vector<double> max_snr;
+      min_snr = pmt::f64vector_elements(pmt::dict_ref(dict, pmt::mp("min_snr"), pmt::init_f64vector(0,0)));
+      max_snr = pmt::f64vector_elements(pmt::dict_ref(dict,pmt::mp("max_snr"), pmt::init_f64vector(0,0)));
       std::vector<int> enc = pmt::s32vector_elements(pmt::dict_ref(dict,
                               pmt::mp("encoding"), pmt::init_s32vector(0, 0)));
       int punct = pmt::to_long(pmt::dict_ref(dict, pmt::mp("puncturing"), pmt::from_long(-1)));
@@ -142,19 +143,20 @@ namespace gr {
             rx_packets_fs.close();
           }
           // Only send the received information if its from a data package
-          send_frame_data(enc, punct, snr);
+          send_frame_data(enc, punct, min_snr, max_snr);
           break;
         default:
           dout << " (unknown)" << std::endl;
           break;
       }
-      decide_encoding(snr);
+      decide_encoding(min_snr);
     }
 
     void
-    parse_mac_impl::send_frame_data(std::vector<int> enc, int punct, std::vector<double> snr) {
+    parse_mac_impl::send_frame_data(std::vector<int> enc, int punct, std::vector<double> min_snr,std::vector<double> max_snr) {
       pmt::pmt_t dict = pmt::make_dict();
-      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::init_f64vector(N_RB, snr));
+      dict = pmt::dict_add(dict, pmt::mp("min_snr"), pmt::init_f64vector(N_RB, min_snr));
+      dict = pmt::dict_add(dict, pmt::mp("max_snr"), pmt::init_f64vector(N_RB, max_snr));
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::init_s32vector(N_RB, enc));
       dict = pmt::dict_add(dict, pmt::mp("puncturing"), pmt::from_long(punct));
       message_port_pub(pmt::mp("frame data"), dict);
