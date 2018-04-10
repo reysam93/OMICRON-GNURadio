@@ -240,15 +240,11 @@ namespace gr {
         if(d_current_symbol == 2) {
 
           if(decode_signal_field(out + o * 48)) {
-
             pmt::pmt_t dict = pmt::make_dict();
             dict = pmt::dict_add(dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
             dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_uint64(d_frame_encoding));
-            double snr_min = d_equalizer->get_snr_min();
-            double snr_max = d_equalizer->get_snr_max();
-            double snr_var = snr_max -snr_min;
-            dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(snr_min));
-            dict = pmt::dict_add(dict, pmt::mp("snr_var"), pmt::from_double(snr_var));
+            dict = pmt::dict_add(dict, pmt::mp("min_snr"), pmt::from_double(d_equalizer->get_snr_min()));
+            dict = pmt::dict_add(dict, pmt::mp("max_snr"), pmt::from_double(d_equalizer->get_snr_max()));
             dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
             dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
             add_item_tag(0, nitems_written(0) + o,

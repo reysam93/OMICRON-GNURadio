@@ -669,6 +669,10 @@
       <key>snr_file</key>
       <value>/tmp/time_snr_rx.csv</value>
     </param>
+    <param>
+      <key>snr_var_file</key>
+      <value>/tmp/time_snr_var_rx.csv</value>
+    </param>
   </block>
   <block>
     <key>blocks_file_sink</key>

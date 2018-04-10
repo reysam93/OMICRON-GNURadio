@@ -4,7 +4,7 @@
   <key>adaptiveOFDM_write_frame_data</key>
   <category>[Time Adaptive OFDM]</category>
   <import>import adaptiveOFDM</import>
-  <make>adaptiveOFDM.write_frame_data($snr_file,$snr_var_file, $enc_file, $delay_file, $debug)</make>
+  <make>adaptiveOFDM.write_frame_data($snr_file, $snr_var_file, $enc_file, $delay_file, $debug)</make>
 
   <param>
     <name>SNR File</name>

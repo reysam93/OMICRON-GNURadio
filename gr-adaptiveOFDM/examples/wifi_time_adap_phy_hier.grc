@@ -205,7 +205,7 @@
     </param>
     <param>
       <key>debug_rx_err</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>debug</key>

@@ -36,7 +36,7 @@ class write_frame_data(gr.sync_block):
         - delay_file: path for the file for the wifi frame delay data
         - debug: if true, the information writen in the files will be displayed
     """
-    def __init__(self, snr_file,snr_var_file, enc_file, delay_file, debug):
+    def __init__(self, snr_file, snr_var_file, enc_file, delay_file, debug):
         gr.sync_block.__init__(self,
             "sink",
             None,
@@ -54,33 +54,32 @@ class write_frame_data(gr.sync_block):
         if self.snr_file != "":
             open(self.snr_file, 'w').close()
         else:
-            print("No file for SNR information provided.")
+            print("WRITE FRAME DATA: No file for SNR information provided.")
         if self.snr_var_file != "":
-            open(self.snr_file,'w').close()
+            open(self.snr_var_file, 'w').close()
         else:
-            print("No file for SNR variation provided.")
+            print("WRITE FRAME DATA: No file for SNR variation provided.")
         if self.enc_file != "":
             open(self.enc_file, 'w').close()
         else:
-            print("No file for Encoding information provided.")
+            print("WRITE FRAME DATA: No file for Encoding information provided.")
         if self.delay_file != "":
             open(self.delay_file, 'w').close()
         else:
-            print("No file for Frame Delay information provided.")
+            print("WRITE FRAME DATA: No file for Frame Delay information provided.")
 
         self.message_port_register_in(pmt.intern("frame data"))
         self.set_msg_handler(pmt.intern("frame data"), self.write_data)
 
 
     def write_data(self, msg):
-        snr = pmt.to_double(pmt.dict_ref(msg, pmt.intern("snr"), pmt.from_double(0)))
+        snr = pmt.to_double(pmt.dict_ref(msg, pmt.intern("min_snr"), pmt.from_double(0)))
+        max_snr = pmt.to_double(pmt.dict_ref(msg, pmt.intern("max_snr"), pmt.from_double(0)))
         encoding = pmt.to_long(pmt.dict_ref(msg, pmt.intern("encoding"), pmt.from_long(0)))
-        snr_var = pmt.to_double(pmt.dict_ref(msg, pmt.intern("snr_var"), pmt.from_double(0)))
 
         time_now = time() * 1000
         delay = str(time_now - self.last_time)
         self.last_time = time_now
-
 
         if self.snr_file != "":
             f_snr = open(self.snr_file, 'a')
@@ -88,9 +87,9 @@ class write_frame_data(gr.sync_block):
             f_snr.close()
 
         if self.snr_var_file != "":
-            f_snr = open(self.snr_var_file, 'a')
-            f_snr.write(str(snr_var)+'\n')
-            f_snr.close()
+            f_snr_var = open(self.snr_var_file, 'a')
+            f_snr_var.write("{}, {}\n".format(max_snr, snr))
+            f_snr_var.close()
 
         if self.enc_file != "":
             f_enc = open(self.enc_file, 'a')
@@ -104,6 +103,6 @@ class write_frame_data(gr.sync_block):
 
         if self.debug:
             print("SNR:" + str(snr))
-            print("SNRvar:"+ str(snr_var))
+            print("Max SNR: {}\t Min SNR: {}\tSNR Var: {}".format(snr, max_snr, max_snr-snr))
             print("Encoding:" + str(encoding))
             print("Delay in millis: " + delay)

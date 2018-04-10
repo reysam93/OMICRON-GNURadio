@@ -88,8 +88,8 @@ namespace gr {
       }
 
       pmt::pmt_t dict = pmt::car(msg);
-      d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
-      d_snr_var = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr_var"), pmt::from_double(0)));
+      d_min_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("min_snr"), pmt::from_double(0)));
+      d_max_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("max_snr"), pmt::from_double(0)));
       int enc = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("encoding"),
                                       pmt::from_uint64(-1)));
       msg = pmt::cdr(msg);
@@ -150,9 +150,9 @@ namespace gr {
     void
     parse_mac_impl::send_frame_data(int enc) {
       pmt::pmt_t dict = pmt::make_dict();
-      dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
+      dict = pmt::dict_add(dict, pmt::mp("min_snr"), pmt::from_double(d_min_snr));
+      dict = pmt::dict_add(dict, pmt::mp("max_snr"), pmt::from_double(d_max_snr));
       dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_long(enc));
-      dict = pmt::dict_add(dict, pmt::mp("snr_var"),pmt::from_double(d_snr_var));
       message_port_pub(pmt::mp("frame data"), dict);
     }
 
@@ -446,21 +446,21 @@ namespace gr {
 
     void
     parse_mac_impl::decide_encoding(){
-      dout << std::endl << "SNR: " << d_snr << std::endl;
+      dout << std::endl << "SNR: " << d_min_snr << std::endl;
 
-      if (d_snr >= MIN_SNR_64QAM_3_4) {
+      if (d_min_snr >= MIN_SNR_64QAM_3_4) {
         d_mac_and_parse->setEncoding(QAM64_3_4);
-      } else if (d_snr >= MIN_SNR_64QAM_2_3) {
+      } else if (d_min_snr >= MIN_SNR_64QAM_2_3) {
         d_mac_and_parse->setEncoding(QAM64_2_3);
-      } else if (d_snr >= MIN_SNR_16QAM_3_4) {
+      } else if (d_min_snr >= MIN_SNR_16QAM_3_4) {
         d_mac_and_parse->setEncoding(QAM16_3_4);
-      } else if (d_snr >= MIN_SNR_16QAM_1_2) {
+      } else if (d_min_snr >= MIN_SNR_16QAM_1_2) {
         d_mac_and_parse->setEncoding(QAM16_1_2);
-      } else if (d_snr >= MIN_SNR_QPSK_3_4) {
+      } else if (d_min_snr >= MIN_SNR_QPSK_3_4) {
         d_mac_and_parse->setEncoding(QPSK_3_4);
-      } else if (d_snr >= MIN_SNR_QPSK_1_2) {
+      } else if (d_min_snr >= MIN_SNR_QPSK_1_2) {
         d_mac_and_parse->setEncoding(QPSK_1_2);
-      } else if (d_snr >= MIN_SNR_BPSK_3_4) {
+      } else if (d_min_snr >= MIN_SNR_BPSK_3_4) {
         d_mac_and_parse->setEncoding(BPSK_3_4);
       } else {
         d_mac_and_parse->setEncoding(BPSK_1_2);

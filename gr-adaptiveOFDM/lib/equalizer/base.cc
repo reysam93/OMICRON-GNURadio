@@ -67,7 +67,7 @@ base::estimate_channel_state(gr_complex *in){
 		signal_inst = std::pow(std::abs(d_H[i] + in[i]), 2);
 		noise += noise_inst;
 		signal += signal_inst;
-		snr_inst = signal_inst/ noise_inst;
+		snr_inst = signal_inst / noise_inst;
 		if(d_snr_min >= snr_inst) {
 			d_snr_min = snr_inst;
 		}
