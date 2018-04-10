@@ -7,8 +7,8 @@ import os
 from optparse         import OptionParser
 from display_rate     import display_mean_rate
 from display_per      import display_PER
-from channel_snr      import get_mean_SNR
-from channel_snr      import get_rb_snr_var
+from rb_snr      import get_mean_SNR
+from rb_snr      import get_rb_snr_var
 from display_delay    import display_mean_delay
 from display_encoding import display_encoding
 from display_eff      import display_eff
