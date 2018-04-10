@@ -13,6 +13,6 @@ mkdir $dir
 
 for files in "${filesType[@]}"
 do
-  scp lab1@10.1.147.216:/tmp/$files* /tmp;
+  scp lab1@10.1.152.129:/tmp/$files* /tmp;
   cp /tmp/$files* $dir
 done

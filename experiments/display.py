@@ -7,13 +7,13 @@ import os
 from optparse         import OptionParser
 from display_rate     import display_mean_rate
 from display_per      import display_PER
-from display_snr      import display_mean_SNR
+from channel_snr      import get_mean_SNR
+from channel_snr      import get_rb_snr_var
 from display_delay    import display_mean_delay
 from display_encoding import display_encoding
 from display_eff      import display_eff
 from display_per_eff  import display_PER_eff
 from display_per_eff  import show_results
-from display_rbvar    import display_rbvar
 
 def openDataFile(file):
 	try:
@@ -85,10 +85,8 @@ if __name__ == "__main__":
 	if options.snr:
 		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
 		if f != None:
-			display_mean_SNR(f,verbose)
-		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
-		if f != None:
-			rbvar,dbvar = display_rbvar(f)
+			get_mean_SNR(f,verbose)
+			rbvar,dbvar = get_rb_snr_var(f)
 			print("Varianza SNR transmision: {0:.2f}/{1:.2f}db".format(rbvar,dbvar))
 		print("")
 

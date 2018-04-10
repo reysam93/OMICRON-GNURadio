@@ -4,9 +4,9 @@ import sys
 import os
 from numpy import var
 import matplotlib.pyplot as plt
+from numpy import log10
 
-
-def display_mean_SNR(snr_f,verbose):
+def get_mean_SNR(snr_f,verbose):
 	SNRs = snr_f.read().split("\n")[:-1]
 
 	if len(SNRs) == 0:
@@ -72,9 +72,38 @@ def display_mean_SNR(snr_f,verbose):
 			print("Min  SNR (dB): {0:.2f}".format(min_SNR))
 
 			plotSNR(SNRs)
-
 		return (mean_SNR,mean_SNR)
 
+
+def get_rb_snr_var(snr_f):
+    SNRs = snr_f.read().split("\n")[:-1]
+
+    if len(SNRs) == 0:
+      print("ERROR: SNR file is not correct")
+      return
+
+    min_SNR=100
+    max_SNR=0
+    if SNRs[0].find(",") > 0:
+        for SNR in SNRs:
+            SNRrbs = SNR.split(", ")
+            for SNRrb in SNRrbs:
+                fSNR = float(SNRrb)
+                if fSNR>=max_SNR:
+                    max_SNR = fSNR
+                if fSNR<=min_SNR:
+                    min_SNR = fSNR
+    else:
+        for SNR in SNRs:
+            fSNR = float(SNR)
+            if fSNR>=max_SNR:
+                max_SNR = fSNR
+            if fSNR<=min_SNR:
+                min_SNR = fSNR
+
+    rbvar = max_SNR-min_SNR
+    dbvar = 10*log10(rbvar)
+    return (rbvar,dbvar)
 
 
 def meanRBs(SNRs):
