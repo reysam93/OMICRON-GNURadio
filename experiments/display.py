@@ -4,16 +4,18 @@
 import sys
 import os
 
+from numpy import log10
+
 from optparse         import OptionParser
 from display_rate     import display_mean_rate
 from display_per      import display_PER
-from rb_snr      import get_mean_SNR
-from rb_snr      import get_rb_snr_var
 from display_delay    import display_mean_delay
 from display_encoding import display_encoding
 from display_eff      import display_eff
 from display_per_eff  import display_PER_eff
 from display_per_eff  import show_results
+from snr_class		  import SNRdata
+from get_channel_snr_var import  get_channel_snr_var
 
 def openDataFile(file):
 	try:
@@ -38,6 +40,7 @@ if __name__ == "__main__":
 	parser.add_option("-e","--encoding",action="store_true",help="Print encoding info")
 	parser.add_option("-p","--per",action="store_true",help="Print PER info")
 	parser.add_option("-d","--delay",action="store_true",help="Print frame delay info")
+	parser.add_option("--var",action="store_true",help="Print channel variation")
 
 	(options, args) = parser.parse_args()
 
@@ -67,12 +70,13 @@ if __name__ == "__main__":
 		verbose = True
 
 	#If all flags are false, show all
-	if not options.rate and not options.snr and not options.encoding and not options.per and not options.delay:
+	if not options.rate and not options.snr and not options.encoding and not options.per and not options.delay and not options.var:
 		options.rate = True
 		options.snr = True
 		options.encoding = True
 		options.per = True
 		options.delay = True
+		options.var = True
 
 	if options.rate:
 		f = openDataFile(options.path+prefix+"_transmited_encoding_tx.csv")
@@ -85,9 +89,18 @@ if __name__ == "__main__":
 	if options.snr:
 		f = openDataFile(options.path+prefix+"_snr_"+filetype+".csv")
 		if f != None:
-			get_mean_SNR(f,verbose)
-			rbvar,dbvar = get_rb_snr_var(f)
-			print("Varianza SNR transmision: {0:.2f}/{1:.2f}db".format(rbvar,dbvar))
+			SNRd = SNRdata(f,verbose)
+		SNRd.get_mean_SNR()
+		if options.freq:
+			rbvar = SNRd.get_rb_snr_var()
+			print("Varianza SNR Rb: {0:.2f}db".format(rbvar))
+		print("")
+
+	if options.var:
+		f = openDataFile(options.path+prefix+"_snr_var_"+filetype+".csv")
+		if f!= None:
+			channVar = get_channel_snr_var(f)
+			print("Varianza del canal {0:.2f}db".format(channVar))
 		print("")
 
 	if options.encoding:
