@@ -2,6 +2,7 @@
 
 import sys
 from optparse         import OptionParser
+from numpy            import log10
 
 
 def get_channel_snr_var(file):
@@ -15,10 +16,10 @@ def get_channel_snr_var(file):
     for SNR in SNRs:
         max_snr = float(SNR.split(", ")[0])
         min_snr = float(SNR.split(", ")[1])
-        chan_var += max_snr - min_snr
+        chan_var += 10**(max_snr/10) - 10**(min_snr/10)
 
     chan_var /= len(SNRs)
-    return chan_var
+    return 10*log10(chan_var)
 
 
 if __name__ == "__main__":

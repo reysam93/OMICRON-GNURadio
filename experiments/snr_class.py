@@ -3,6 +3,7 @@
 import sys
 import os
 from numpy import var
+from numpy import log10
 import matplotlib.pyplot as plt
 
 class SNRdata:
@@ -98,6 +99,7 @@ class SNRdata:
     def get_rb_snr_var(self):
         min_SNR=100
         max_SNR=0
+        rbvar = 0
         if self.SNRs[0].find(",") > 0:
             for SNR in self.SNRs:
                 SNRrbs = SNR.split(", ")
@@ -107,16 +109,12 @@ class SNRdata:
                         max_SNR = fSNR
                     if fSNR<=min_SNR:
                         min_SNR = fSNR
+                rbvar += 10**(max_SNR/10)-10**(min_SNR/10)
         else:
-            for SNR in self.SNRs:
-                fSNR = float(SNR)
-                if fSNR>=max_SNR:
-                    max_SNR = fSNR
-                if fSNR<=min_SNR:
-                    min_SNR = fSNR
-
-        rbvar = max_SNR-min_SNR
-        return rbvar
+            print("Wrong format")
+            return 0
+        rbvar /= len(self.SNRs)
+        return  10*log10(rbvar)
 
 
 
