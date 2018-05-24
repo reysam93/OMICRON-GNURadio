@@ -28,7 +28,7 @@ class SNRdata:
 
     		for SNR in self.SNRs:
     			SNR_rbs = SNR.split(", ")
-    			min_Rb= SNR_rbs[0]
+    			min_Rb = float(SNR_rbs[0])
     			for i in range(len(SNR_rbs)):
     				fSNR = float(SNR_rbs[i])
     				if fSNR>=max_SNR[i]:
