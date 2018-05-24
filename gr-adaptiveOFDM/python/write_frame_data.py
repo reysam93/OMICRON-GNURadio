@@ -81,6 +81,9 @@ class write_frame_data(gr.sync_block):
         delay = str(time_now - self.last_time)
         self.last_time = time_now
 
+        snr = 10**(snr/10.0)
+        max_snr = 10**(max_snr/10.0)
+
         if self.snr_file != "":
             f_snr = open(self.snr_file, 'a')
             f_snr.write(str(snr) + '\n')
@@ -103,6 +106,6 @@ class write_frame_data(gr.sync_block):
 
         if self.debug:
             print("SNR:" + str(snr))
-            print("Max SNR: {}\t Min SNR: {}\tSNR Var: {}".format(snr, max_snr, max_snr-snr))
+            print("Max SNR: {}\t Min SNR: {}\tSNR Var: {}".format(max_snr, snr, max_snr-snr))
             print("Encoding:" + str(encoding))
             print("Delay in millis: " + delay)

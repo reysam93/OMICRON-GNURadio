@@ -75,8 +75,16 @@ class write_frame_data(gr.sync_block):
     def write_data(self, msg):
         snr = pmt.f64vector_elements(pmt.dict_ref(msg, pmt.intern("min_snr"),
                                     pmt.make_vector(0, pmt.from_long(0))))
+        snr_aux = []
+        for i in range(len(snr)):
+            snr_aux.append(10**(snr[i]/10.0))
+        snr = snr_aux
         max_snr = pmt.f64vector_elements(pmt.dict_ref(msg,pmt.intern("max_snr"),
                                     pmt.make_vector(0, pmt.from_long(0))))
+        max_snr_aux = []
+        for i in range(len(max_snr)):
+            max_snr_aux.append(10**(max_snr[i]/10.0))
+        max_snr = max_snr_aux
         encoding = pmt.s32vector_elements(pmt.dict_ref(msg, pmt.intern("encoding"),
                                     pmt.make_vector(0, pmt.from_long(0))))
         puncturing = pmt.to_long(pmt.dict_ref(msg, pmt.intern("puncturing"),
