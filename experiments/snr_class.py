@@ -58,7 +58,7 @@ class SNRdata:
     			print("Whole Max  SNR (dB): {0:.2f}".format(10*log10(max(max_SNR))))
     			print("Whole Min  SNR (dB): {0:.2f}".format(10*log10(min(min_SNR))))
     			plotSNR(meanRBs(SNRs))
-    		print("Equivalent SNR: {0:.2f}".format(sim_SNR))
+    		print("Equivalent SNR: {0:.2f}".format(10*log10(sim_SNR)))
     		return (mean_SNR,sim_SNR)
     	else:
     		mean_SNR = 0
