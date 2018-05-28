@@ -42,10 +42,10 @@ class SNRdata:
 
     		for i in range(len(mean_SNR)):
     			mean_SNR[i] /= len(self.SNRs)
-    			print("Mean SNR RB {0} (dB): {1:.2f}".format(i, mean_SNR[i]))
+    			print("Mean SNR RB {0} (dB): {1:.2f}".format(i, 10*log10(mean_SNR[i])))
     			if self.verbose:
-    				print("Max  SNR RB {0} (dB): {1:.2f}".format(i, max_SNR[i]))
-    				print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, min_SNR[i]))
+    				print("Max  SNR RB {0} (dB): {1:.2f}".format(i, 10*log10(max_SNR[i])))
+    				print("Min  SNR RB {0} (dB): {1:.2f} \n".format(i, 10*log10(min_SNR[i])))
 
     		sim_SNR /= len(self.SNRs)
     		whole_mean_SNR = 0
@@ -53,10 +53,10 @@ class SNRdata:
     		for i in range(len(mean_SNR)):
     			whole_mean_SNR += mean_SNR[i]
     		whole_mean_SNR /= len(mean_SNR)
-    		print("Whole Mean SNR (dB): {0:.2f}".format(whole_mean_SNR))
+    		print("Whole Mean SNR (dB): {0:.2f}".format(10*log10(whole_mean_SNR)))
     		if self.verbose:
-    			print("Whole Max  SNR (dB): {0:.2f}".format(max(max_SNR)))
-    			print("Whole Min  SNR (dB): {0:.2f}".format(min(min_SNR)))
+    			print("Whole Max  SNR (dB): {0:.2f}".format(10*log10(max(max_SNR))))
+    			print("Whole Min  SNR (dB): {0:.2f}".format(10*log10(min(min_SNR))))
     			plotSNR(meanRBs(SNRs))
     		print("Equivalent SNR: {0:.2f}".format(sim_SNR))
     		return (mean_SNR,sim_SNR)
@@ -72,10 +72,10 @@ class SNRdata:
     				min_SNR = fSNR
     			mean_SNR += fSNR
     		mean_SNR /= len(self.SNRs)
-    		print("Mean SNR (dB): {0:.2f}".format(mean_SNR))
+    		print("Mean SNR (dB): {0:.2f}".format(10*log10(mean_SNR)))
     		if self.verbose:
-    			print("Max  SNR (dB): {0:.2f}".format(max_SNR))
-    			print("Min  SNR (dB): {0:.2f}".format(min_SNR))
+    			print("Max  SNR (dB): {0:.2f}".format(10*log10(max_SNR)))
+    			print("Min  SNR (dB): {0:.2f}".format(10*log10(min_SNR)))
 
     			plotSNR(self.SNRs)
     		return (mean_SNR,mean_SNR)
@@ -97,11 +97,12 @@ class SNRdata:
     	plt.show()
 
     def get_rb_snr_var(self):
-        min_SNR=100
-        max_SNR=0
+
         rbvar = 0
         if self.SNRs[0].find(",") > 0:
             for SNR in self.SNRs:
+                min_SNR=100
+                max_SNR=0
                 SNRrbs = SNR.split(", ")
                 for SNRrb in SNRrbs:
                     fSNR = float(SNRrb)
@@ -114,7 +115,7 @@ class SNRdata:
             print("Wrong format")
             return 0
         rbvar /= len(self.SNRs)
-        return  rbvar
+        return  10*log10(rbvar)
 
 
 
