@@ -109,7 +109,7 @@ class SNRdata:
                         max_SNR = fSNR
                     if fSNR<=min_SNR:
                         min_SNR = fSNR
-                rbvar += max_SNR-min_SNR)
+                rbvar += max_SNR-min_SNR
         else:
             print("Wrong format")
             return 0

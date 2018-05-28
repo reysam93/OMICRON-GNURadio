@@ -16,7 +16,7 @@ def get_channel_snr_var(file):
     for SNR in SNRs:
         max_snr = float(SNR.split(", ")[0])
         min_snr = float(SNR.split(", ")[1])
-        chan_var += 10**(max_snr/10) - 10**(min_snr/10)
+        chan_var += max_snr - min_snr
 
     chan_var /= len(SNRs)
     return 10*log10(chan_var)

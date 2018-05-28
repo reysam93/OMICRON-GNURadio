@@ -158,9 +158,9 @@ namespace gr {
       unsigned long expiration = d_mac_and_parse->getTimestamp() + 3*TIMEOUT;
       if (current_time > expiration) {
         if (d_mac_and_parse->d_debug || d_mac_and_parse->d_debug_ack){
-          std::cout << "MAC: old timestamp. current time: " << current_time/1000000 << " s "
-                    << current_time%1000000 << " us. Expiration: " << expiration/1000000 << "s "
-                    << expiration%1000000 << " us.\n";
+          std::cout << "MAC: WARNING: MCS timestamp expired: \n\tCurrent time: " <<
+          << current_time/1000000 << " s " << current_time%1000000 <<
+          " us. \n\tExpiration: " << expiration/1000000 << "s " << expiration%1000000 << " us.\n";
         }
         d_mac_and_parse->decrease_encoding();
       }

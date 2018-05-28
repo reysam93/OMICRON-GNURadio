@@ -654,10 +654,6 @@
       <value>adaptiveOFDM_mac_and_parse_0</value>
     </param>
     <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
       <key>maxoutbuf</key>
       <value>0</value>
     </param>
@@ -4628,12 +4624,20 @@
       <value>"/tmp/time_symbol_delay.csv"</value>
     </param>
     <param>
+      <key>encoding</key>
+      <value>0</value>
+    </param>
+    <param>
       <key>frequency</key>
       <value>5.89e9</value>
     </param>
     <param>
       <key>sensitivity</key>
       <value>0.56</value>
+    </param>
+    <param>
+      <key>tx_enc</key>
+      <value>""</value>
     </param>
   </block>
   <connection>
@@ -4644,15 +4648,15 @@
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
-    <source_key>fer</source_key>
-    <sink_key>pdus</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
     <sink_block_id>adaptiveOFDM_write_frame_data_0</sink_block_id>
     <source_key>frame data</source_key>
     <sink_key>frame data</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>
+    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
+    <source_key>per</source_key>
+    <sink_key>pdus</sink_key>
   </connection>
   <connection>
     <source_block_id>adaptiveOFDM_mac_and_parse_0</source_block_id>

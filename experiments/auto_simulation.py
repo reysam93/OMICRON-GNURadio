@@ -19,8 +19,13 @@ class AutoSimulator:
 
 	REPLACED_STR_TAP = "taps=("
 	REPLACED_STR_SNR = "self.snr = snr ="
+	REPLACED_STR_GUI_SNR = "self._snr_range = Range("
 	REPLACING_STR_TAP = "            taps=({0}),\n"
 	REPLACING_STR_SNR = "        self.snr = snr = {0}\n"
+	REPLACING_STR_GUI_SNR = "        self._snr_range = Range(-15, 30, 0.1, {0}, 200)\n"
+
+
+
 
 
 	def __init__(self, options, taps):
@@ -113,6 +118,10 @@ class AutoSimulator:
 							self.REPLACING_STR_SNR.format(str(snr)))
 			self.replaceString(self.TIME_FILE, self.REPLACED_STR_SNR,
 							self.REPLACING_STR_SNR.format(str(snr)))
+			self.replaceString(self.FREQ_FILE, self.REPLACED_STR_GUI_SNR,
+							self.REPLACING_STR_GUI_SNR.format(str(snr)))
+			self.replaceString(self.TIME_FILE, self.REPLACED_STR_GUI_SNR,
+							self.REPLACING_STR_GUI_SNR.format(str(snr)))
 
 			fileSNR = file + "_snr" + str(snr)
 			t1 = Thread(target=self.makeMeassure, args=(self.TIME_FILE, "/tmp/time_log.log"))
@@ -155,8 +164,8 @@ class AutoSimulator:
 	def toCSV(self):
 		file_name = self.experiment_path + self.fileName + ".csv"
 		csv_file = open(file_name, "w")
-		data_str = "SNR, TimeEff, FreqEff, Gain, TimePer, FreqPer, TimeSNR, \
-					FreqSNR, TimeChanVar, FreqChanVar, RBVar\n"
+		data_str = "SNR, TimeEff, FreqEff, Gain, TimePer, FreqPer, TimeSNR, "
+		data_str += "FreqSNR, TimeChanVar, FreqChanVar, RBVar\n"
 
 		for i in range(len(self.data["SNR"])):
 			data_str += str(self.data["SNR"][i])
@@ -196,6 +205,7 @@ def parseArgs():
 
 if __name__ == "__main__":
 	CHANNELS_TAPS = ["1,","taps1","taps2"]
+	#CHANNELS_TAPS = ["taps1"]
 
 	(options, args) = parseArgs()
 
