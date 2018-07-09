@@ -89,7 +89,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -404,7 +404,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>25</value>
+      <value>15</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -471,7 +471,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 4)</value>
+      <value>(864, 68)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -479,11 +479,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>taps</value>
+      <value>taps_1</value>
     </param>
     <param>
       <key>value</key>
-      <value>[.4-.5j, 0, .3,  -.1+.15j]</value>
+      <value>[-0.4,0.9,0.7,-0.2,-.5]</value>
     </param>
   </block>
   <block>
@@ -498,7 +498,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 68)</value>
+      <value>(864, 4)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -506,11 +506,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>taps_0</value>
+      <value>taps_2</value>
     </param>
     <param>
       <key>value</key>
-      <value>[-0.4,0.9,0.7,-0.2,-.5]</value>
+      <value>[.4-.5j, 0, .3,  -.1+.15j]</value>
     </param>
   </block>
   <block>
@@ -1338,7 +1338,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>taps</value>
+      <value>1</value>
     </param>
   </block>
   <block>
@@ -2786,7 +2786,7 @@
     </param>
     <param>
       <key>chan_est</key>
-      <value>1</value>
+      <value>chan_est</value>
     </param>
     <param>
       <key>debug_encoding</key>
